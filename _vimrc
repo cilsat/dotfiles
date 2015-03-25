@@ -15,8 +15,6 @@ Plugin 'tpope/vim-sensible'
 Plugin 'scrooloose/nerdtree'
 " Syntastic
 Plugin 'scrooloose/syntastic'
-" Airline
-Plugin 'bling/vim-airline'
 " Bufferline
 Plugin 'bling/vim-bufferline'
 " Powershell script syntax highlighting
@@ -59,15 +57,7 @@ function MyDiff()
     silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
-" Airline settings
-"set laststatus=2
-set encoding=utf-8
-set t_Co=256
-let g:airline_detect_whitespace=0
-let g:airline_theme='dark'
-let g:airline_powerline_fonts=1
-let g:airline#extensons#tabline#enabled=1
-
+au FocusGained * :redraw!
 set nu
 set tabstop=8
 set expandtab
@@ -76,7 +66,3 @@ set autoindent
 set cindent
 set paste
 set cursorline
-
-" GVim settings
-set gfn=Fira_Mono_for_Powerline:h8:cANSI
-colorscheme desert

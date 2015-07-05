@@ -1,0 +1,35 @@
+!cursor
+xcursor*theme:  Bluecurve
+
+!font rendering settings
+Xft.autohint:           0
+Xft.lcdfilter:          lcddefault
+Xft*hintsyle:           hintfull
+Xft*hinting:            1
+Xft*antialias:          1
+Xft*dpi:                96
+Xft*rgba:               rgb
+
+!xterm settings
+xterm*termName:         xterm-256color
+xterm*dynamicColors:    true
+xterm*utf8:             2
+xterm*faceName:         Ubuntu Mono derivative Powerline:size=9
+
+!urxvt settings
+urxvt*termName:         rxvt-unicode
+urxvt.letterSpace:      -1
+!urxvt*font:             xft:Envy Code R for Powerline-8
+!urxvt*boldFont:         xft:Envy Code R for Powerline-8:bold
+!urxvt*font: 		xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
+!urxvt*boldFont:	xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
+urxvt*font:             xft:Ubuntu Mono derivative Powerline:pixelsize=12
+urxvt*boldFont:         xft:Ubuntu Mono derivative Powerline:bold:pixelsize=12
+!urxvt*font:             xft:Terminess Powerline:size=9
+!urxvt*boldFont:         xft:Terminess Powerline:bold:size=9
+urxvt*internalBorder:   0
+urxvt*externalBorder:   0
+urxvt*borderLess:       false
+urxvt.borderColor:      black
+urxvt*scrollBar:        false
+

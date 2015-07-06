@@ -61,13 +61,13 @@ export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/g
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
- export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
+    export EDITOR='vim'
 else
-  export EDITOR='vim'
+    export EDITOR='vim'
 fi
 
 # Compilation flags
@@ -83,13 +83,25 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Base16 shell
-BASE16_SHELL="$HOME/.config/base16-shell/base16-flat.dark.sh"
+# Custom workspaces
+ws=$(wmctrl -d | grep '*' | cut -d " " -f14)
+
+if [ "$ws" = work ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-monokai.dark.sh"
+elif [ "$ws" = conf ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-bespin.dark.sh"
+elif [ "$ws" = misc ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-flat.dark.sh"
+else
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-default.light.sh"
+fi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
 if [ -z $TMUX ];then
-    tmux -2 new -ADs "$(wmctrl -d | grep '*' | cut -d " " -f14)"
+    tmux -2 new -ADs "$ws"
 fi
+
+# Start maximized
 
 # Python virtualenvs
 export WORKON_HOME=$HOME/.virtualenvs

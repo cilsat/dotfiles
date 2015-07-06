@@ -19,6 +19,8 @@ xterm*faceName:         Ubuntu Mono derivative Powerline:size=9
 !urxvt settings
 urxvt*termName:         rxvt-unicode
 urxvt.letterSpace:      -1
+urxvt*iconFile:         /usr/share/icons/Numix-Circle/48x48/apps/final-term.svg
+
 !urxvt*font:             xft:Envy Code R for Powerline-8
 !urxvt*boldFont:         xft:Envy Code R for Powerline-8:bold
 !urxvt*font: 		xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
@@ -30,6 +32,6 @@ urxvt*boldFont:         xft:Ubuntu Mono derivative Powerline:bold:pixelsize=12
 urxvt*internalBorder:   0
 urxvt*externalBorder:   0
 urxvt*borderLess:       false
-urxvt.borderColor:      black
+urxvt.borderColor:      00
 urxvt*scrollBar:        false
 

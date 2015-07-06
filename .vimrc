@@ -97,4 +97,4 @@ let g:tmuxline_theme='vim_powerline'
 let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
 
 " Set colorscheme
-colorscheme base16-bespin
+colorscheme base16-default

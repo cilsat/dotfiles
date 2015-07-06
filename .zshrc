@@ -93,7 +93,7 @@ elif [ "$ws" = conf ];then
 elif [ "$ws" = misc ];then
     BASE16_SHELL="$HOME/.config/base16-shell/base16-flat.dark.sh"
 else
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-default.light.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 fi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 

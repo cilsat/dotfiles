@@ -35,6 +35,7 @@ set t_Co=256               " Ensures 256 colors. Put before set colorscheme
 let base16colorspace=256    " Ensures 256 colors for base16-colorspace
 set cursorline              " Show cursor line
 au FocusGained * :redraw!
+set timeoutlen=50
 
 " Tabs
 set softtabstop=4
@@ -42,7 +43,7 @@ set tabstop=8
 set shiftwidth=4
 set expandtab
 set listchars=tab:>.,eol:$
-"set foldmethod=syntax
+set foldmethod=syntax
 "set foldcolumn=2
 
 " Plugins
@@ -61,11 +62,11 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'Yggdroot/indentLine'
 
 " Autocompletion
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 
 " Visual enhancement
 Plugin 'bling/vim-airline'
-"Plugin 'edkolev/tmuxline.vim'
+Plugin 'edkolev/tmuxline.vim'
 Plugin 'scrooloose/syntastic'
 
 " Color schemes
@@ -84,6 +85,16 @@ filetype plugin indent on
 " Airline settings
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tmuxline#enabled=0
+let g:airline#extensions#tabline#enabled=1
+" Airline settings for Consolas
+"let g:air"line_symbo"ls = {}
+"let g:air"line_"left_sep = "\u2b80"
+"let g:air"line_"left_a"lt_sep = "\u2b81"
+"let g:air"line_right_sep = "\u2b82"
+"let g:air"line_right_a"lt_sep = "\u2b83"
+"let g:air"line_symbo"ls.branch = "\u2b60"
+"let g:air"line_symbo"ls.readon"ly = "\u2b64"
+"let g:air"line_symbo"ls."linenr = "\u2b61"
 
 " tmux.vim settings
 let g:tmuxline_preset='full'
@@ -94,7 +105,7 @@ let g:tmuxline_theme='vim_powerline'
 "let g:indent_guides_indent_leves=20
 
 " YCM settings
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
+"let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
 
 " Set colorscheme
 colorscheme base16-default

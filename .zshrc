@@ -87,18 +87,19 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 ws=$(wmctrl -d | grep '*' | cut -d " " -f14)
 
 if [ "$ws" = work ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-monokai.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
 elif [ "$ws" = conf ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-bespin.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-bright.dark.sh"
 elif [ "$ws" = misc ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-flat.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-eighties.dark.sh"
 else
     BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 fi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
+# Resume workspace session in first opened terminal
 if [ -z $TMUX ];then
-    tmux -2 new -ADs "$ws"
+    tmux -2 new -As "$ws"
 fi
 
 # Start maximized

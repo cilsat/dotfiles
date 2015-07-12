@@ -27,7 +27,7 @@ ZSH_THEME=afowler
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # COMPLETION_WAITING_DOTS="true"
@@ -35,12 +35,12 @@ ZSH_THEME=afowler
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="dd/mm/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -83,21 +83,20 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Custom workspaces
+# Use a different color scheme for each workspace
 ws=$(wmctrl -d | grep '*' | cut -d " " -f14)
-
 if [ "$ws" = work ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-monokai.dark.sh"
 elif [ "$ws" = conf ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-bright.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-colors.dark.sh"
 elif [ "$ws" = misc ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-eighties.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
 else
     BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 fi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-# Resume workspace session in first opened terminal
+# Resume workspace session in workspace terminals. If session already attached then duplicate into the new terminal.
 if [ -z $TMUX ];then
     tmux -2 new -As "$ws"
 fi
@@ -108,3 +107,8 @@ fi
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Projects-Active
 source /usr/local/bin/virtualenvwrapper_lazy.sh
+
+# Ruby environment
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"

@@ -22,7 +22,7 @@ URxvt*loginShell:       true
 URxvt*iconFile:         /usr/share/icons/Numix-Circle/48x48/apps/final-term.svg
 URxvt.saveLines:        9999
 
-URxvt.geometry:         90x58+10+35
+URxvt.geometry:         90x50+815+30
 URxvt*internalBorder:   0
 URxvt*externalBorder:   0
 URxvt*borderLess:       false
@@ -39,7 +39,7 @@ URxvt.letterSpace:      -1
 !URxvt*boldFont:         xft:Droid Sans Mono Dotted for Powerline:bold:pixelsize=13,xft:Ubuntu Mono derivative Powerline-9:bold
 !URxvt*font:            xft:Envy Code R for Powerline-8
 !URxvt*boldFont:        xft:Envy Code R for Powerline-8:bold
-!URxvt*font: 		xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
+!URxvt*font:            xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
 !URxvt*boldFont:         xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
 URxvt*font:             xft:Ubuntu Mono derivative Powerline:pixelsize=14
 URxvt*boldFont:         xft:Ubuntu Mono derivative Powerline:bold:pixelsize=14

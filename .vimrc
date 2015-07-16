@@ -21,9 +21,9 @@ au FocusGained * :redraw!   " Redraw console on focus gain
 set timeoutlen=50           " Fixes slow mode changes
 
 set softtabstop=4
-set tabstop=4
+set tabstop=8
 set shiftwidth=4
-"set expandtab
+set expandtab
 set listchars=tab:>.,eol:$
 
 " FUNCTIONS AND KEYBINDINGS

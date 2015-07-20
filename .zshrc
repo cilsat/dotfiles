@@ -5,7 +5,7 @@ export ZSH=/home/cilsat/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME=afowler
+ZSH_THEME=blinks
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -82,26 +82,26 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
 # Use a different color scheme for each workspace
 ws=$(wmctrl -d | grep '*' | cut -d " " -f14)
 if [ "$ws" = work ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-monokai.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-molokai.dark.sh"
 elif [ "$ws" = conf ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-colors.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-summerfruit.dark.sh"
 elif [ "$ws" = misc ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-ocean.dark.sh"
 else
     BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
 fi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-# Resume workspace session in workspace terminals. If session already attached then duplicate into the new terminal.
+# Resume workspace session in workspace terminals. If session already attached then create a new one.
 if [ -z $TMUX ];then
-    tmux -2 new -As "$ws"
+    attached=$(tmux ls | grep "$ws" | cut -d " " -f11)
+    if [ "$attached" != "(attached)" ];then
+        tmux -2 new -As "$ws"
+    fi
 fi
-
-# Start maximized
 
 # Python virtualenvs
 export WORKON_HOME=$HOME/.virtualenvs

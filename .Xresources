@@ -22,29 +22,34 @@ URxvt*loginShell:       true
 URxvt*iconFile:         /usr/share/icons/Numix-Circle/48x48/apps/final-term.svg
 URxvt.saveLines:        9999
 
-URxvt.geometry:         90x50+815+30
+URxvt.geometry:         90x54+815+30
 URxvt*internalBorder:   0
 URxvt*externalBorder:   0
 URxvt*borderLess:       false
 URxvt.borderColor:      00
 URxvt*scrollBar:        false
 
-URxvt.letterSpace:      -1
+URxvt.letterSpace:      -2
 
-!URxvt*font:             xft:Source Code Pro for Powerline:pixelsize=13,xft:Ubuntu Mono derivative Powerline:pixelsize=13
-!URxvt*boldFont:         xft:Source Code Pro for Powerline:bold:pixelsize=12,xft:Ubuntu Mono derivative Powerline:bold:pixelsize=13
-!URxvt*font:             xft:Meslo LG L DZ for Powerline:pixelsize=12
-!URxvt*fontBold:         xft:Meslo LG L DZ for Powerline:bold:pizelsize=12
-!URxvt*font:             xft:Droid Sans Mono Dotted for Powerline:pixelsize=13,xft:Ubuntu Mono derivative Powerline-9
-!URxvt*boldFont:         xft:Droid Sans Mono Dotted for Powerline:bold:pixelsize=13,xft:Ubuntu Mono derivative Powerline-9:bold
-!URxvt*font:            xft:Envy Code R for Powerline-8
-!URxvt*boldFont:        xft:Envy Code R for Powerline-8:bold
-!URxvt*font:            xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
-!URxvt*boldFont:         xft:Bitstream Vera Sans Mono-8,xft:Terminess Powerline:pixelsize=8
-URxvt*font:             xft:Ubuntu Mono derivative Powerline:pixelsize=14
-URxvt*boldFont:         xft:Ubuntu Mono derivative Powerline:bold:pixelsize=14
-!URxvt*font:             xft:Consolas for Powerline:size=9,xft:Droid Sans Mono Slashed for Powerline:size=10
-!URxvt*boldFont:         xft:Consolas for Powerline:bold:size=9,xft:Droid Sans Mono Slased for  Powerline:bold:size=10
+!TrueType fonts
+URxvt*font:             xft:DejaVu Sans Mono for Powerline-8,xft:Terminess Powerline:pixelsize=9
+URxvt*boldFont:         xft:DejaVu Sans Mono for Powerline-8:bold,xft:Terminess Powerline:bold:pixelsize=9
+URxvt*italicFont:       xft:DejaVu Sans Mono for Powerline-8:italic
+!URxvt*font:             xft:Droid Sans Mono Dotted for Powerline:pixelsize=11,xft:Ubuntu Mono derivative Powerline-8
+!URxvt*boldFont:         xft:Droid Sans Mono Dotted for Powerline:bold:pixelsize=11,xft:Ubuntu Mono derivative Powerline-8:bold
+!URxvt*font:             xft:Ubuntu Mono derivative Powerline:pixelsize=12
+!URxvt*boldFont:         xft:Ubuntu Mono derivative Powerline:bold:pixelsize=12
+!URxvt*italicFont:       xft:Ubuntu Mono derivative Powerline:italic:pixelsize=12
+
+!Bitmap fonts
+!URxvt*font:             xft:Ubuntu Mono Bitmap:size=9,xft:Terminess Powerline:size=9
+!URxvt*boldFont:         xft:Ubuntu Mono Bitmap:bold:size=9,xft:Terminess Powerline:bold:size=9
 !URxvt*font:             xft:Terminess Powerline:size=9
 !URxvt*boldFont:         xft:Terminess Powerline:bold:size=9
+!URxvt*font:             xft:Ttyp0-9
+!URxvt*boldFont:         xft:Ttyp0-9:bold
+!URxvt*italicFont:       xft:Ttyp0-9:italic
+!URxvt*font:             xft:Dina Powerline:size=9,xft:Terminess Powerline:size=9
+!URxvt*boldFont:         xft:Dina Powerline:bold:size=9,xft:Terminess Powerline:size=9:bold
+!URxvt*italicFont:       xft:Dina Powerline:italic:size=9,xft:Terminess Powerline:size=9:italic
 

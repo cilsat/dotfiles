@@ -22,7 +22,7 @@ URxvt*loginShell:       true
 URxvt*iconFile:         /usr/share/icons/Numix-Circle/48x48/apps/final-term.svg
 URxvt.saveLines:        9999
 
-URxvt.geometry:         90x54+815+30
+URxvt.geometry:         90x55+815+30
 URxvt*internalBorder:   0
 URxvt*externalBorder:   0
 URxvt*borderLess:       false

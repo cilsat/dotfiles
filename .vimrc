@@ -13,6 +13,7 @@ set autowrite               " Automatically save before commands like :next and 
 set hidden                  " Hide buffers when they are abandoned
 set mouse=a                 " Enable mouse usage (all modes)
 set number
+set relativenumber
 set cursorline              " Show cursor line
 set scrolloff=2             " Keep 2 lines of context around cursorline
 set laststatus=2            " Always show status line
@@ -110,7 +111,7 @@ let g:syntastic_style_warning_symbol = '⚠'
 
 "Airline settings
 let g:airline_powerline_fonts=1
-let g:airline_theme = 'murmur'
+"let g:airline_theme = 'murmur'
 let g:airline#extensions#tmuxline#enabled=0
 let g:airline#extensions#tabline#enabled=1
 

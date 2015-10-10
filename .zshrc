@@ -37,6 +37,40 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 HIST_STAMPS="dd/mm/yyyy"
 
+# Use a different color scheme for each workspace
+ws=$(wmctrl -d | grep '*' | cut -d " " -f13)
+if [ "$ws" = 1 ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
+elif [ "$ws" = 2 ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-dusk.dark.sh"
+elif [ "$ws" = 3 ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-paraiso.dark.sh"
+elif [ "$ws" = 4 ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-twilight.dark.sh"
+elif [ "$ws" = 5 ];then
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-harmonic16.dark.sh"
+fi
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
+# Resume workspace session in workspace terminals. If session already attached then create a new one.
+if [ -z $TMUX ];then
+    attached=$(tmux ls | grep "$ws: " | cut -d " " -f12)
+    if [ "$attached" != "(attached)" ];then
+        tmux -2 new -As "$ws"
+    fi
+fi
+
+# Python virtualenvs
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Projects-Active
+export LD_LIBRARY_PATH=/opt/OpenBLAS/lib:$LD_LIBRARY_PATH
+source /usr/local/bin/virtualenvwrapper_lazy.sh
+
+# Ruby environment
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -44,7 +78,7 @@ HIST_STAMPS="dd/mm/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(command-not-found git-fast svn-fast-info python virtualenvwrapper nyan web-search zsh-syntax-highlighting)
+plugins=(command-not-found git-fast svn-fast-info python virtualenvwrapper nyan ssh-agent zsh-syntax-highlighting)
 
 # User configuration
 # zsh-syntax-highlighting
@@ -60,7 +94,7 @@ export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='vim'
+    export EDITOR='nvim'
 else
     export EDITOR='vim'
 fi
@@ -78,33 +112,4 @@ export GPGKEY=716809DD
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-# Use a different color scheme for each workspace
-ws=$(wmctrl -d | grep '*' | cut -d " " -f14)
-if [ "$ws" = work ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
-elif [ "$ws" = conf ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-molokai.dark.sh"
-elif [ "$ws" = misc ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-ocean.dark.sh"
-else
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
-fi
-[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
-
-# Resume workspace session in workspace terminals. If session already attached then create a new one.
-if [ -z $TMUX ];then
-    attached=$(tmux ls | grep "$ws" | cut -d " " -f11)
-    if [ "$attached" != "(attached)" ];then
-        tmux -2 new -As "$ws"
-    fi
-fi
-
-# Python virtualenvs
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Projects-Active
-source /usr/local/bin/virtualenvwrapper_lazy.sh
-
-# Ruby environment
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+alias nv="nvim"

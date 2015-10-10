@@ -7,10 +7,10 @@ Xft*hinting:            1
 Xft*autohint:           0
 Xft*hintstyle:          hintfull
 Xft*dpi:                96
-Xft*rgba:               rgb
+Xft*rgba:               rgb 
 
 !xterm settings
-xterm*termName:         xterm-256color
+xterm*termName:         xterm-253color
 xterm*dynamicColors:    true
 xterm*utf8:             2
 xterm*faceName:         Ubuntu Mono derivative Powerline:size=9
@@ -22,34 +22,36 @@ URxvt*loginShell:       true
 URxvt*iconFile:         /usr/share/icons/Numix-Circle/48x48/apps/final-term.svg
 URxvt.saveLines:        9999
 
-URxvt.geometry:         90x55+815+30
+URxvt.geometry:         90x52+815+26
 URxvt*internalBorder:   0
-URxvt*externalBorder:   0
+!URxvt*externalBorder:   0
 URxvt*borderLess:       false
-URxvt.borderColor:      00
+URxvt*borderColor:      00
 URxvt*scrollBar:        false
 
-URxvt.letterSpace:      -2
+URxvt.letterSpace:      -1
 
 !TrueType fonts
-URxvt*font:             xft:DejaVu Sans Mono for Powerline-8,xft:Terminess Powerline:pixelsize=9
-URxvt*boldFont:         xft:DejaVu Sans Mono for Powerline-8:bold,xft:Terminess Powerline:bold:pixelsize=9
-URxvt*italicFont:       xft:DejaVu Sans Mono for Powerline-8:italic
-!URxvt*font:             xft:Droid Sans Mono Dotted for Powerline:pixelsize=11,xft:Ubuntu Mono derivative Powerline-8
-!URxvt*boldFont:         xft:Droid Sans Mono Dotted for Powerline:bold:pixelsize=11,xft:Ubuntu Mono derivative Powerline-8:bold
-!URxvt*font:             xft:Ubuntu Mono derivative Powerline:pixelsize=12
-!URxvt*boldFont:         xft:Ubuntu Mono derivative Powerline:bold:pixelsize=12
-!URxvt*italicFont:       xft:Ubuntu Mono derivative Powerline:italic:pixelsize=12
+!Rxvt.font:             xft:DejaVu Sans Mono:pixelsize=11,xft:Terminess Powerline:pixelsize=12
+!Rxvt.boldFont:         xft:DejaVu Sans Mono:pixelsize=11:bold,xft:Terminess Powerline:bold:pixelsize=12
+!Rxvt.italicFont:       xft:DejaVu Sans Mono:pixelsize=11:italic,xft:Droid Sans Mono Dotted for Powerline:pixelsize=10:italic,xft:Ubuntu Mono derivative Powerline-12:italic
+!Rxvt.font:             xft:Envy Code R for Powerline:pixelsize=12,xft:Terminess Powerline:pixelsize=9
+!Rxvt.boldFont:         xft:Envy Code R for Powerline:pixelsize=12:bold,xft:Terminess Powerline:bold:pixelsize=9
+!Rxvt.italicFont:       xft:Envy Code R for Powerline:pixelsize=12:italic,xft:Ubuntu Mono derivative Powerline-9:italic
+URxvt.font:             xft:Ubuntu Mono-10.5,xft:DejaVu Sans Mono for Powerline-11,xft:Terminess Powerline-12
+URxvt.boldFont:         xft:Ubuntu Mono-10.5:bold,xft:DejaVu Sans Mono for Powerline-11:bold,xft:Terminess Powerline-12
+URxvt.italicFont:       xft:Ubuntu Mono-10.5:italic,xft:DejaVu Sans Mono for Powerline-11:italic,xft:Terminess Powerline-12
 
 !Bitmap fonts
-!URxvt*font:             xft:Ubuntu Mono Bitmap:size=9,xft:Terminess Powerline:size=9
-!URxvt*boldFont:         xft:Ubuntu Mono Bitmap:bold:size=9,xft:Terminess Powerline:bold:size=9
-!URxvt*font:             xft:Terminess Powerline:size=9
-!URxvt*boldFont:         xft:Terminess Powerline:bold:size=9
-!URxvt*font:             xft:Ttyp0-9
-!URxvt*boldFont:         xft:Ttyp0-9:bold
-!URxvt*italicFont:       xft:Ttyp0-9:italic
-!URxvt*font:             xft:Dina Powerline:size=9,xft:Terminess Powerline:size=9
-!URxvt*boldFont:         xft:Dina Powerline:bold:size=9,xft:Terminess Powerline:size=9:bold
-!URxvt*italicFont:       xft:Dina Powerline:italic:size=9,xft:Terminess Powerline:size=9:italic
+!Rxvt.font:             xft:Tamzen:size=13,xft:Terminess Powerline:size=9
+!Rxvt.boldFont:         xft:Tamzen:bold:size=13,xft:Terminess Powerline:bold:size=9
+!Rxvt.italicFont:       xft:Tamzen:size=13,xft:Terminess Powerline:size=9
+!Rxvt*font:             xft:Terminess Powerline:size=9
+!Rxvt*boldFont:         xft:Termines Powerline:bold:size=9
+!Rxvt.font:             xft:envypn-9
+!Rxvt.boldFont:         xft:Tamzen-9:bold
+!Rxvt.italicFont:       xft:envypn-9:italic
+!Rxvt.font:             xft:Dina Powerline:size=9,xft:Terminess Powerline:size=9
+!Rxvt.boldFont:         xft:Dina Powerline:bold:size=9,xft:Terminess Powerline:size=9:bold
+!Rxvt.italicFont:       xft:Dina Powerline:italic:size=9,xft:Terminess Powerline:size=9:italic
 

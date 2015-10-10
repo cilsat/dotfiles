@@ -56,16 +56,18 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'scrooloose/nerdtree'
-Plugin 'sjl/gundo.vim'
+Plugin 'simnalamburt/vim-mundo'
 Plugin 'wincent/Command-T'
 
 " Shell
 Plugin 'tpope/vim-fugitive'
 
 " Source dev
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'wellle/targets.vim'
+Plugin 'vim-scripts/VisIncr'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
-Plugin 'SirVer/ultisnips'
+"Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 
 " Purely visual 
@@ -90,7 +92,7 @@ hi SpecialKey   ctermfg=239 ctermbg=NONE
 hi CursorLineNr ctermfg=172 ctermbg=NONE cterm=bold
 "hi CursorLine   ctermbg=235 cterm=NONE
 hi LineNr       cterm=bold
-hi Comment      ctermbg=NONE    cterm=italic
+hi Comment      ctermbg=NONE    cterm=NONE
 
 " Indent settings
 let g:indentLine_char='┊'

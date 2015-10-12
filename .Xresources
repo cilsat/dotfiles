@@ -29,18 +29,20 @@ URxvt*borderLess:       false
 URxvt*borderColor:      00
 URxvt*scrollBar:        false
 
-URxvt.letterSpace:      -1
+!Rxvt*transparent:      true
+!Rxvt*shading:          30
+!Rxvt*depth:            32
+!Rxvt*background:       rgba:0000/0000/0200/c800
+
+URxvt.letterSpace:      -2
 
 !TrueType fonts
-!Rxvt.font:             xft:DejaVu Sans Mono:pixelsize=11,xft:Terminess Powerline:pixelsize=12
-!Rxvt.boldFont:         xft:DejaVu Sans Mono:pixelsize=11:bold,xft:Terminess Powerline:bold:pixelsize=12
-!Rxvt.italicFont:       xft:DejaVu Sans Mono:pixelsize=11:italic,xft:Droid Sans Mono Dotted for Powerline:pixelsize=10:italic,xft:Ubuntu Mono derivative Powerline-12:italic
-!Rxvt.font:             xft:Envy Code R for Powerline:pixelsize=12,xft:Terminess Powerline:pixelsize=9
-!Rxvt.boldFont:         xft:Envy Code R for Powerline:pixelsize=12:bold,xft:Terminess Powerline:bold:pixelsize=9
-!Rxvt.italicFont:       xft:Envy Code R for Powerline:pixelsize=12:italic,xft:Ubuntu Mono derivative Powerline-9:italic
-URxvt.font:             xft:Ubuntu Mono-10.5,xft:DejaVu Sans Mono for Powerline-11,xft:Terminess Powerline-12
-URxvt.boldFont:         xft:Ubuntu Mono-10.5:bold,xft:DejaVu Sans Mono for Powerline-11:bold,xft:Terminess Powerline-12
-URxvt.italicFont:       xft:Ubuntu Mono-10.5:italic,xft:DejaVu Sans Mono for Powerline-11:italic,xft:Terminess Powerline-12
+URxvt.font:             xft:DejaVu Sans Mono for Powerline:pixelsize=11.5,xft:Terminess Powerline-11
+URxvt.boldFont:         xft:DejaVu Sans Mono for Powerline:pixelsize=11.5:bold,xft:Terminess Powerline-11
+URxvt.italicFont:       xft:DejaVu Sans Mono for Powerline:pixelsize=11.5:italic,xft:Terminess Powerline-11
+!Rxvt.font:             xft:Ubuntu Mono-10.5,xft:DejaVu Sans Mono for Powerline-11,xft:Terminess Powerline-12
+!Rxvt.boldFont:         xft:Ubuntu Mono-10.5:bold,xft:DejaVu Sans Mono for Powerline-11:bold,xft:Terminess Powerline-12
+!Rxvt.italicFont:       xft:Ubuntu Mono-10.5:italic,xft:DejaVu Sans Mono for Powerline-11:italic,xft:Terminess Powerline-12
 
 !Bitmap fonts
 !Rxvt.font:             xft:Tamzen:size=13,xft:Terminess Powerline:size=9

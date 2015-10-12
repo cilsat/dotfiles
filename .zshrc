@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/home/cilsat/.oh-my-zsh
 
-ZSH_THEME=bureau
+ZSH_THEME=agnoster
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -42,13 +42,13 @@ ws=$(wmctrl -d | grep '*' | cut -d " " -f13)
 if [ "$ws" = 1 ];then
     BASE16_SHELL="$HOME/.config/base16-shell/base16-solarized.dark.sh"
 elif [ "$ws" = 2 ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-dusk.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-tomorrow.dark.sh"
 elif [ "$ws" = 3 ];then
     BASE16_SHELL="$HOME/.config/base16-shell/base16-paraiso.dark.sh"
 elif [ "$ws" = 4 ];then
     BASE16_SHELL="$HOME/.config/base16-shell/base16-twilight.dark.sh"
 elif [ "$ws" = 5 ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-harmonic16.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-google.dark.sh"
 fi
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 

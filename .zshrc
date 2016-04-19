@@ -116,6 +116,7 @@ export LANG=en_US.UTF-8
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
     export EDITOR='nvim'
+    export TERM=tmux-256color
 else
     export EDITOR='vim'
     export TERM=xterm-256color

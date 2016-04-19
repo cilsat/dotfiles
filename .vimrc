@@ -28,6 +28,7 @@ set shiftwidth=4
 set expandtab
 set autoindent
 set cindent
+set colorcolumn=80
 
 " Jump to last position upon reopening file
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
@@ -57,7 +58,6 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'scrooloose/nerdtree'
 Plugin 'simnalamburt/vim-mundo'
-Plugin 'wincent/Command-T'
 
 " Shell
 Plugin 'tpope/vim-fugitive'
@@ -65,18 +65,16 @@ Plugin 'tpope/vim-fugitive'
 " Source dev
 Plugin 'wellle/targets.vim'
 Plugin 'vim-scripts/VisIncr'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
-"Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
 
 " Purely visual 
-Plugin 'gosukiwi/vim-atom-dark'
 Plugin 'Yggdroot/indentLine'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'edkolev/tmuxline.vim'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'chriskempson/base16-vim'
+Plugin 'luochen1990/rainbow'
 
 " All plugins must be added before the following lines
 call vundle#end()
@@ -91,8 +89,18 @@ hi NonText      ctermfg=236 ctermbg=NONE
 hi SpecialKey   ctermfg=239 ctermbg=NONE
 hi CursorLineNr ctermfg=172 ctermbg=NONE cterm=bold
 "hi CursorLine   ctermbg=235 cterm=NONE
+hi Normal       ctermbg=NONE
 hi LineNr       cterm=bold
-hi Comment      ctermbg=NONE    cterm=NONE
+hi Comment      cterm=italic
+hi Statement    cterm=bold
+hi Conditional  cterm=bold
+hi Repeat       cterm=bold
+hi Function     cterm=bold
+hi StorageClass cterm=bold
+hi Structure    cterm=bold
+hi Macro        cterm=bold
+hi Keyword      cterm=bold
+hi Type         cterm=bold
 
 " Indent settings
 let g:indentLine_char='┊'
@@ -113,22 +121,23 @@ let g:syntastic_style_warning_symbol = '⚠'
 
 "Airline settings
 let g:airline_powerline_fonts=1
-"let g:airline_theme = 'murmur'
+let g:airline_theme = 'base16'
 let g:airline#extensions#tmuxline#enabled=0
 let g:airline#extensions#tabline#enabled=1
 
-" tmux.vim settings
-"let g:tmuxline_preset='full'
-"let g:tmuxline_theme='vim_powerline'
+" tagbbar settings
+let g:tagbar_width=25
+let g:tagbar_autoclose=1
+
+" Rainbow parentheses setting
+let g:rainbow_active=1
 
 " YCM settings
 "let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.py"
 
 " Plugin key mappings
-let g:UltiSnipsExpandTrigger="<c-tab>"
-let g:UltiSnipsExpandTrigger="<c-b>"
-let g:UltiSnipsExpandTrigger="<c-z>"
+nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F2> :e %:p:h<CR>
-nnoremap <F3> :GundoToggle<CR>
-nnoremap <F4> :TagbarToggle<CR>
+nnoremap <F3> :TagbarToggle<CR>
+nnoremap <F4> :MundoToggle<CR>
 

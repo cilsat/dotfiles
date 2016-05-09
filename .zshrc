@@ -46,16 +46,16 @@ if [ "$ws" = 1 ];then
 elif [ "$ws" = 2 ];then
     BASE16_SHELL="$HOME/.config/base16-shell/base16-darktooth.dark.sh"
 elif [ "$ws" = 3 ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-oceanicnext.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-google.dark.sh"
 elif [ "$ws" = 4 ];then
-    BASE16_SHELL="$HOME/.config/base16-shell/base16-ocean.dark.sh"
+    BASE16_SHELL="$HOME/.config/base16-shell/base16-oceanicnext.dark.sh"
 elif [ "$ws" = 5 ];then
     BASE16_SHELL="$HOME/.config/base16-shell/base16-marrakesh.light.sh"
 fi
 #BASE16_SHELL="$HOME/.config/base16-shell/base16-marrakesh.light.sh"
 [[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
 
-# Resume workspace session in workspace terminals. If session already attached 
+# Resume workspace session in workspace terminals. If session already attached
 # then create a new one.
 if [ -z $TMUX ];then
     attached=$(tmux ls | grep "$ws: " | cut -d " " -f14)
@@ -76,10 +76,12 @@ export LD_LIBRARY_PATH=/opt/OpenBLAS/lib:$LD_LIBRARY_PATH
 #TP_PROXY=http://cache.itb.ac.id:8080/
 #O_PROXY="localhost, 127.0.0.1, *.itb.ac.id"
 
+# export MANPATH="/usr/local/man:$MANPATH"
+
 # Java environment
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64
 export SCALA_HOME=/usr/bin/scala
-export SPARK_HOME=/home/cilsat/lib/spark-1.5.1-bin-hadoop2.6
+export SPARK_HOME=$HOME/cilsat/lib/spark-1.5.1-bin-hadoop2.6
 
 # Python virtualenvs
 export WORKON_HOME=$HOME/.virtualenvs
@@ -87,9 +89,11 @@ export PROJECT_HOME=$HOME/dev
 source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 # Ruby environment
-export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$PATH:$HOME/.rbenv/bin"
 eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+export PATH="$PATH:$HOME/.rbenv/plugins/ruby-build/bin"
+
+export PATH="$PATH:$HOME/bin:$HOME/.conda/bin:$HOME/.local/bin"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -98,15 +102,11 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(command-not-found git-fast svn-fast-info python virtualenvwrapper nyan ssh-agent zsh-syntax-highlighting)
+plugins=(command-not-found git-fast python pip virtualenvwrapper nyan ssh-agent zsh-syntax-highlighting)
 
 # User configuration
 # zsh-syntax-highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets root line)
-
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin: \
-    /usr/games:/usr/local/games:/home/cilsat/bin:/home/cilsat/.conda/bin:$PATH"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -137,4 +137,6 @@ export GPGKEY=716809DD
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias nv="nvim"
 
+# fzf settings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

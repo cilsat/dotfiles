@@ -140,4 +140,5 @@ nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F2> :e %:p:h<CR>
 nnoremap <F3> :TagbarToggle<CR>
 nnoremap <F4> :MundoToggle<CR>
+nnoremap <esc> :noh<return><esc>
 

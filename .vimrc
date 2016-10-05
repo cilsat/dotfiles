@@ -1,4 +1,4 @@
-runtime! ubuntu.vim
+runtime! debian.vim
 
 " These settings are probably permanent
 filetype off
@@ -12,8 +12,8 @@ set incsearch               " Incremental search
 set autowrite               " Automatically save before commands like :next and :make
 set hidden                  " Hide buffers when they are abandoned
 set mouse=a                 " Enable mouse usage (all modes)
-set number
-set relativenumber
+set number                  " Show line number
+set relativenumber          " Show line number relative to current
 set cursorline              " Show cursor line
 set scrolloff=2             " Keep 2 lines of context around cursorline
 set laststatus=2            " Always show status line
@@ -55,20 +55,22 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
+" Features
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'scrooloose/nerdtree'
 Plugin 'simnalamburt/vim-mundo'
-
-" Shell
-Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
 
 " Source dev
+Plugin 'tpope/vim-fugitive'
 Plugin 'wellle/targets.vim'
 Plugin 'vim-scripts/VisIncr'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
+Plugin 'vim-scripts/Conque-GDB'
 
-" Purely visual 
+" Purely visual
 Plugin 'Yggdroot/indentLine'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -81,8 +83,8 @@ call vundle#end()
 filetype plugin indent on
 
 " COLORS
-"let g:base16_shell_path="~/.config/base16-shell/"       
-colorscheme base16-default
+"let g:base16_shell_path="~/.config/base16-shell/"
+colorscheme base16-default-dark
 
 set listchars=tab:··,trail:·
 hi NonText      ctermfg=236 ctermbg=NONE
@@ -120,7 +122,7 @@ let g:syntastic_warning_symbol       = '⚠'
 let g:syntastic_style_warning_symbol = '⚠'
 
 "Airline settings
-let g:airline_powerline_fonts=1
+let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
 let g:airline#extensions#tmuxline#enabled=0
 let g:airline#extensions#tabline#enabled=1
@@ -128,12 +130,13 @@ let g:airline#extensions#tabline#enabled=1
 " tagbbar settings
 let g:tagbar_width=25
 let g:tagbar_autoclose=1
+let g:tagbar_sort=0
 
 " Rainbow parentheses setting
 let g:rainbow_active=1
 
 " YCM settings
-"let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.py"
+let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
 
 " Plugin key mappings
 nnoremap <leader>jj :YcmCompleter GoTo<CR>
@@ -142,3 +145,12 @@ nnoremap <F3> :TagbarToggle<CR>
 nnoremap <F4> :MundoToggle<CR>
 nnoremap <esc> :noh<return><esc>
 
+vnoremap <leader>y "+y
+nnoremap <leader>Y "+yg_
+nnoremap <leader>y "+y
+nnoremap <leader>yy "+yy
+
+vnoremap <leader>p "+p
+nnoremap <leader>p "+P
+nnoremap <leader>p "+p
+nnoremap <leader>pp "+P

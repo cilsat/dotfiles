@@ -16,42 +16,37 @@ xterm*utf8:             2
 xterm*faceName:         Ubuntu Mono derivative Powerline:size=9
 
 !URxvt settings
-URxvt*termName:         tmux-256color
+!URxvt*termName:         tmux-256color
 URxvt.depth:            32
 URxvt*loginShell:       true
-URxvt*iconFile:         /usr/share/icons/Numix/48x48/apps/final-term.svg
+URxvt*iconFile:         /home/cilsat/.local/share/icons/Oranchelo/apps/scalable/utilities-terminal.svg
 URxvt.saveLines:        9999
 
-URxvt.geometry:         90x52+815+26
+URxvt.geometry:         80x57+900+0
 URxvt*internalBorder:   0
 !URxvt*externalBorder:   0
 URxvt*borderLess:       false
 URxvt*borderColor:      00
 URxvt*scrollBar:        false
 
-URxvt*transparent:      true
-URxvt*shading:          30
-URxvt*depth:            32
-URxvt*background:       rgba:0000/0000/0200/c800
+URxvt*skipBuiltinGlyphs: true
+URxvt*cursorBar:        false
+URxvt*cursorBlink:      true
+
+!URxvt*transparent:      true
+!URxvt*shading:          30
+!URxvt*depth:            32
+!URxvt*background:       rgba:0000/0000/0200/c800
 
 URxvt.letterSpace:      -1
 
 !TrueType fonts
+!URxvt.font:             xft:Hack:size=9
 URxvt.font:             xft:DejaVu Sans Mono for Powerline:pixelsize=10.5:book, xft:Terminess Powerline:pixelsize=12
-URxvt.boldFont:         xft:DejaVu Sans Mono for Powerline:pixelsize=10.5:bold, xft:Terminess Powerline:pixelsize=12
-URxvt.italicFont:       xft:DejaVu Sans Mono for Powerline:pixelsize=10.5:italic, xft:Terminess Powerline:pixelsize=12
-!Rxvt.font:             xft:Source Code Pro for Powerline:pixelsize=12:book, xft:Terminess Powerline:pixelsize=12
-!Rxvt.boldFont:         xft:Source Code Pro for Powerline:pixelsize=12:bold, xft:Terminess Powerline:pixelsize=12
-!Rxvt.italicFont:       xft:Source Code Pro for Powerline:pixelsize=12:italic, xft:Terminess Powerline:pixelsize=12
-!Rxvt.font:             xft:Ubuntu Mono for Powerline:pixelsize=11.5,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5
-!Rxvt.boldFont:         xft:Ubuntu Mono for Powerline:pixelsize=11.5:bold,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5:bold
-!Rxvt.italicFont:       xft:Ubuntu Mono for Powerline:pixelsize=11.5:italic,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5:italic
+!URxvt.font:             xft:Source Code Pro for Powerline:pixelsize=12:book, xft:Terminess Powerline:pixelsize=12
+!URxvt.font:             xft:Ubuntu Mono for Powerline:pixelsize=11.5,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5
 
 !Bitmap fonts
 !Rxvt.font:             xft:envypn-9
-!Rxvt.boldFont:         xft:envypn-9:bold
-!Rxvt.italicFont:       xft:envypn-9:italic
 !Rxvt.font:             xft:Dina Powerline:size=9,xft:Terminess Powerline:size=9
-!Rxvt.boldFont:         xft:Dina Powerline:bold:size=9,xft:Terminess Powerline:size=9:bold
-!Rxvt.italicFont:       xft:Dina Powerline:italic:size=9,xft:Terminess Powerline:size=9:italic
 

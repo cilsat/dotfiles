@@ -68,7 +68,7 @@ Plugin 'wellle/targets.vim'
 Plugin 'vim-scripts/VisIncr'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
-Plugin 'vim-scripts/Conque-GDB'
+"Plugin 'vim-scripts/Conque-GDB'
 
 " Purely visual
 Plugin 'Yggdroot/indentLine'

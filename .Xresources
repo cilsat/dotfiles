@@ -42,8 +42,8 @@ URxvt.letterSpace:      -1
 
 !TrueType fonts
 !URxvt.font:             xft:Hack:size=9
-URxvt.font:             xft:DejaVu Sans Mono for Powerline:pixelsize=10.5:book, xft:Terminess Powerline:pixelsize=12
-!URxvt.font:             xft:Source Code Pro for Powerline:pixelsize=12:book, xft:Terminess Powerline:pixelsize=12
+!URxvt.font:             xft:DejaVu Sans Mono for Powerline:pixelsize=10.5:book, xft:Terminess Powerline:pixelsize=12
+URxvt.font:             xft:Droid Sans Mono Slashed for Powerline:pixelsize=10.5
 !URxvt.font:             xft:Ubuntu Mono for Powerline:pixelsize=11.5,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5
 
 !Bitmap fonts

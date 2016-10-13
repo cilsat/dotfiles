@@ -31,29 +31,24 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 4 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-apathy.sh"
     fi
-    [[ -s $BASE16_THEME ]] && source $BASE16_THEME
-    # Resume workspace session in workspace terminals.
-    # If session already attached then open normal terminal.
+    [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
+    # Attach shell to workspace tmux session
     a=": .*attached"
     if [[ -z $(tmux ls | egrep $ws$a) ]]; then
-        tmux new -A -s $ws
+        tmux new -A -s "$ws"
     fi
 fi
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
+if [[ -n "$SSH_CONNECTION" ]]; then
     export EDITOR='vim'
-    #export TERM=screen-256color
 else
     export EDITOR='nvim'
-    #export TERM=screen-256color
 fi
 
 # System environment
-# export ARCHFLAGS="-arch x86_64"
 export OMP_THREAD_LIMIT=4
-export LD_LIBRARY_PATH=/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH
-#export LANG=en_US.UTF-8
+export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys
 export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -66,10 +61,10 @@ export GPGKEY=716809DD
 #source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 # User Path
-export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/.conda/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"
 
 # Aliases
 alias nv="nvim"
 alias loc="locate"
 
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"

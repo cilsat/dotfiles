@@ -66,7 +66,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-fugitive'
 Plugin 'wellle/targets.vim'
 Plugin 'vim-scripts/VisIncr'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
 "Plugin 'vim-scripts/Conque-GDB'
 
@@ -147,10 +147,8 @@ nnoremap <esc> :noh<return><esc>
 
 vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
-nnoremap <leader>y "+y
 nnoremap <leader>yy "+yy
 
 vnoremap <leader>p "+p
-nnoremap <leader>p "+P
-nnoremap <leader>p "+p
+nnoremap <leader>P "+P
 nnoremap <leader>pp "+P

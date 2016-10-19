@@ -19,7 +19,7 @@ xterm*faceName:         Ubuntu Mono derivative Powerline:size=9
 !URxvt*termName:         tmux-256color
 URxvt.depth:            32
 URxvt*loginShell:       true
-URxvt*iconFile:         /home/cilsat/.local/share/icons/Oranchelo/apps/scalable/utilities-terminal.svg
+URxvt*iconFile:         /usr/share/icons/Paper/48x48/apps/utilities-x-terminal.png
 URxvt.saveLines:        9999
 
 URxvt.geometry:         80x57+900+0
@@ -38,12 +38,12 @@ URxvt*cursorBlink:      true
 !URxvt*depth:            32
 !URxvt*background:       rgba:0000/0000/0200/c800
 
-URxvt.letterSpace:      -1
+!URxvt.letterSpace:      -1
 
 !TrueType fonts
-!URxvt.font:             xft:Hack:size=9
-!URxvt.font:             xft:DejaVu Sans Mono for Powerline:pixelsize=10.5:book, xft:Terminess Powerline:pixelsize=12
-URxvt.font:             xft:Droid Sans Mono Slashed for Powerline:pixelsize=10.5
+URxvt.font:             xft:Hack:size=9
+!URxvt.font:             xft:DejaVu Sans Mono:pixelsize=12:book
+!URxvt.font:             xft:Droid Sans Mono Slashed for Powerline:pixelsize=10.5
 !URxvt.font:             xft:Ubuntu Mono for Powerline:pixelsize=11.5,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5
 
 !Bitmap fonts

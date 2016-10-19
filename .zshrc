@@ -41,7 +41,7 @@ fi
 
 # Preferred editor for local and remote sessions
 if [[ -n "$SSH_CONNECTION" ]]; then
-    export EDITOR='vim'
+    export EDITOR='vi'
 else
     export EDITOR='nvim'
 fi
@@ -51,9 +51,10 @@ export OMP_THREAD_LIMIT=4
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-export GNUPGHOME="~/.config/gnupg"
+export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
+export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
+export PASSWORD_STORE_DIR="$HOME/dot/.password-store"
 
 # Python virtualenvs
 #export WORKON_HOME=$HOME/.virtualenvs
@@ -66,5 +67,6 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"
 # Aliases
 alias nv="nvim"
 alias loc="locate"
+alias pac="pacaur"
 
 source "$ZSH/oh-my-zsh.sh"

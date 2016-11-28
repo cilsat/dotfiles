@@ -8,8 +8,6 @@ DEFAULT_USER="cilsat"
 ENABLE_CORRECTION="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd/mm/yyyy"
-# COMPLETION_WAITING_DOTS="true"
-# DISABLE_AUTO_TITLE="true"
 
 plugins=(colored-man-pages command-not-found git-fast ssh-agent zsh-syntax-highlighting)
 
@@ -27,7 +25,7 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.dark.sh"
     elif [ "$ws" = 3 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.dark.sh"
     elif [ "$ws" = 4 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-apathy.sh"
     fi
@@ -46,6 +44,8 @@ else
     export EDITOR='nvim'
 fi
 
+fortune -e fortunes | cowsay
+
 # System environment
 export OMP_THREAD_LIMIT=4
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
@@ -55,11 +55,6 @@ export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$HOME/dot/.password-store"
-
-# Python virtualenvs
-#export WORKON_HOME=$HOME/.virtualenvs
-#export PROJECT_HOME=$HOME/dev
-#source /usr/local/bin/virtualenvwrapper_lazy.sh
 
 # User Path
 export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"

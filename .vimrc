@@ -66,7 +66,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-fugitive'
 Plugin 'wellle/targets.vim'
 Plugin 'vim-scripts/VisIncr'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
 "Plugin 'vim-scripts/Conque-GDB'
 

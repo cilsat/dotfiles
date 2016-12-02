@@ -8,8 +8,6 @@ DEFAULT_USER="cilsat"
 ENABLE_CORRECTION="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="dd/mm/yyyy"
-# COMPLETION_WAITING_DOTS="true"
-# DISABLE_AUTO_TITLE="true"
 
 plugins=(colored-man-pages command-not-found git-fast ssh-agent zsh-syntax-highlighting)
 
@@ -45,6 +43,8 @@ if [[ -n "$SSH_CONNECTION" ]]; then
 else
     export EDITOR='nvim'
 fi
+
+fortune -e fortunes | cowsay
 
 # System environment
 export OMP_THREAD_LIMIT=4

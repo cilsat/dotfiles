@@ -1,95 +1,118 @@
+" STARTUP
 runtime! debian.vim
-
-" These settings are probably permanent
 filetype off
 syntax enable
-set background=dark
-set showcmd                 " Show (partial) command in status line.
-set showmatch               " Show matching brackets.
-set ignorecase              " Do case insensitive matching
-set smartcase               " Do smart case matching
-set incsearch               " Incremental search
-set autowrite               " Automatically save before commands like :next and :make
-set hidden                  " Hide buffers when they are abandoned
-set mouse=a                 " Enable mouse usage (all modes)
-set number                  " Show line number
-set relativenumber          " Show line number relative to current
-set cursorline              " Show cursor line
-set scrolloff=2             " Keep 2 lines of context around cursorline
-set laststatus=2            " Always show status line
-set t_Co=256                " Ensures 256 colors for tmux. Put before set colorscheme
-let base16colorspace=256    " Ensures 256 colors for base16-colorspace
-au FocusGained * :redraw!   " Redraw console on focus gain
-set timeoutlen=250          " Fixes slow mode changes
 
-set softtabstop=4
-set tabstop=4
-set shiftwidth=4
+" Open file from previous buffer position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+" PLUGINS
+set rtp+=~/.vim/bundle/Vundle.vim       " Add Vundle to runtime path and initialize
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'              " let Vundle manage Vundle, required
+
+" Functional
+Plugin 'christoomey/vim-tmux-navigator' " Navigate between tmux/vim panes
+Plugin 'scrooloose/nerdtree'            " File navigator
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'simnalamburt/vim-mundo'         " Vim undo tree graphical navigator
+Plugin 'wellle/targets.vim'             " Expands text object actions/gestures
+Plugin 'tpope/vim-repeat'               " Expands repeatable actions/gestures
+Plugin 'tpope/vim-fugitive'             " Git wrapper for vim
+Plugin 'vim-scripts/VisIncr'            " Expands autoincrement functions
+Plugin 'Valloric/YouCompleteMe'         " Auto-completion for various languages
+Plugin 'majutsushi/tagbar'              " Code tags for C/C++ languages
+Plugin 'chrisbra/csv.vim'               " CSV support
+
+" Visual
+Plugin 'Yggdroot/indentLine'            " Custom char at indentation levels
+Plugin 'vim-airline/vim-airline'        " Custom status line
+Plugin 'vim-airline/vim-airline-themes' " Airline themes
+Plugin 'edkolev/tmuxline.vim'           " Vim status line as tmux status line
+Plugin 'chriskempson/base16-vim'        " base16 colors for vim
+Plugin 'luochen1990/rainbow'            " Assign colors to matching brackets
+
+call vundle#end()                       " Plugins must be added before this line
+filetype plugin indent on
+
+
+" EDITOR/CODE/NAVIGATION SETTINGS
+" Vim settings
+set showcmd                             " Show (partial) command in status line
+set showmatch                           " Show matching brackets
+set ignorecase                          " Do case insensitive matching
+set smartcase                           " Do smart case matching
+set incsearch                           " Incremental search
+set hidden                              " Hide buffers when they are abandoned
+set laststatus=2                        " Always show status line
+set mouse=a                             " Enable mouse usage (all modes)
+set number                              " Show line number
+set relativenumber                      " Use relative line number
+set cursorline                          " Highlight current cursor line
+set scrolloff=2                         " Keep 2 lines around cursorline
+set timeoutlen=250                      " Fixes slow mode changes
+set undofile                            " Saves undo tree to file
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1     " Change cursor shape in insert mode
+let mapleader=" "                       " Set leader key
+
+" Vim Autocommands
+au FocusGained * :redraw!               " Redraw console on focus gain
+au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
+au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
+
+" Syntastic settings
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_style_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_style_warning_symbol = '⚠'
+"
+" Tagbbar settings
+let g:tagbar_width=25
+let g:tagbar_sort=0
+
+" Rainbow parentheses setting
+let g:rainbow_active=1
+
+" YCM settings
+let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
+let g:ycm_global_ycm_extra_conf="~/.vim/.ycm_extra_conf.py"
+
+" NERDTree settings
+let NERDTreeWinSize=25
+let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
+let NERDTreeHijackNetrw=1
+let NERDTreeChDirMode=2
+
+
+" INDENTATION
+set softtabstop=2
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 set cindent
 set colorcolumn=80
 
-" Jump to last position upon reopening file
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" indentLine settings
+let g:indentLine_char='┊'
+let g:indentLine_enabled=1
+let g:indentLine_LeadingSpaceEnabled=1
+let g:indentLine_LeadingSpaceChar = '·'
 
-" Relative/absolute line numbering
-autocmd InsertEnter * :set norelativenumber
-autocmd InsertLeave * :set relativenumber
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set norelativenumber
-    else
-        set relativenumber
-    endif
-endfunc
-nnoremap <C-n> :call NumberToggle()<CR>
 
-" Set leader before loading plugins
-let mapleader=" "
+" INTERFACE/COLORS
+set background=dark
+let base16colorspace=256                " Set base16-colorspace
+colorscheme base16-default-dark         " Use base16 shell colorscheme
 
-" PLUGINS
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" Features
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'scrooloose/nerdtree'
-Plugin 'simnalamburt/vim-mundo'
-Plugin 'tpope/vim-repeat'
-
-" Source dev
-Plugin 'tpope/vim-fugitive'
-Plugin 'wellle/targets.vim'
-Plugin 'vim-scripts/VisIncr'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'majutsushi/tagbar'
-
-" Purely visual
-Plugin 'Yggdroot/indentLine'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'edkolev/tmuxline.vim'
-Plugin 'chriskempson/base16-vim'
-Plugin 'luochen1990/rainbow'
-
-" All plugins must be added before the following lines
-call vundle#end()
-filetype plugin indent on
-
-" COLORS
-"let g:base16_shell_path="~/.config/base16-shell/"
-colorscheme base16-default-dark
-
+" Custom highlight settings
 set listchars=tab:··,trail:·
 hi NonText      ctermfg=236 ctermbg=NONE
 hi SpecialKey   ctermfg=239 ctermbg=NONE
 hi CursorLineNr ctermfg=172 ctermbg=NONE cterm=bold
-"hi CursorLine   ctermbg=235 cterm=NONE
 hi Normal       ctermbg=NONE
 hi LineNr       cterm=bold
 hi Comment      cterm=italic
@@ -103,46 +126,19 @@ hi Macro        cterm=bold
 hi Keyword      cterm=bold
 hi Type         cterm=bold
 
-" Indent settings
-let g:indentLine_char='┊'
-"let g:indentLine_color_term = 237
-let g:indentLine_enabled=1
-"Let g:indentLine_LeadingSpaceEnabled=0
-"Let g:indentLine_LeadingSpaceChar = '·'
-
-" Buffer/file plugin settings
-let NERDTreeHijackNetrw=1
-
-" Syntastic settings
-let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol         = '✗'
-let g:syntastic_style_error_symbol   = '✗'
-let g:syntastic_warning_symbol       = '⚠'
-let g:syntastic_style_warning_symbol = '⚠'
-
-"Airline settings
+" Airline settings
 let g:airline_powerline_fonts = 1
 let g:airline_theme = 'base16'
 let g:airline#extensions#tmuxline#enabled=0
 let g:airline#extensions#tabline#enabled=1
 
-" tagbbar settings
-let g:tagbar_width=25
-let g:tagbar_autoclose=1
-let g:tagbar_sort=0
 
-" Rainbow parentheses setting
-let g:rainbow_active=1
-
-" YCM settings
-let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
-
+" CUSTOM KEY MAPPINGS
 " Plugin key mappings
 nnoremap <leader>jj :YcmCompleter GoTo<CR>
-nnoremap <F2> :e %:p:h<CR>
-nnoremap <F3> :TagbarToggle<CR>
-nnoremap <F4> :MundoToggle<CR>
-nnoremap <esc> :noh<return><esc>
+nnoremap <F1> :NERDTreeTabsToggle<CR>
+nnoremap <F2> :TagbarToggle<CR>
+nnoremap <F3> :MundoToggle<CR>
 
 vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
@@ -151,3 +147,7 @@ nnoremap <leader>yy "+yy
 vnoremap <leader>p "+p
 nnoremap <leader>P "+P
 nnoremap <leader>pp "+P
+
+" Vim key mappings
+nnoremap <esc> :noh<return><esc>
+

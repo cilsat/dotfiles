@@ -41,12 +41,10 @@ URxvt*cursorBlink:      true
 URxvt.letterSpace:      -1
 
 !TrueType fonts
-!URxvt.font:             xft:Hack:size=8.5
 URxvt.font:             xft:DejaVu Sans Mono:pixelsize=10.5:book,xft:envypn-9
-!URxvt.font:             xft:Droid Sans Mono Slashed for Powerline:size=8.5,xft:Hack:size=8.5
-!URxvt.font:             xft:Ubuntu Mono for Powerline:pixelsize=11.5,xft:DejaVu Sans Mono for Powerline:pixelsize=11.5
+!URxvt.font:             xft:Droid Sans Mono Slashed for Powerline:size=9,xft:Hack:size=9
+!URxvt.font:             xft:Source Code Pro for Powerline:size=9,xft:Hack:size=9
 
 !Bitmap fonts
 !URxvt.font:             xft:envypn-9
-!Rxvt.font:             xft:Dina Powerline:size=9,xft:Terminess Powerline:size=9
 

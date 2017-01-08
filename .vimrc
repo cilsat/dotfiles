@@ -54,13 +54,19 @@ set cursorline                          " Highlight current cursor line
 set scrolloff=2                         " Keep 2 lines around cursorline
 set timeoutlen=250                      " Fixes slow mode changes
 set undofile                            " Saves undo tree to file
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1     " Change cursor shape in insert mode
 let mapleader=" "                       " Set leader key
 
 " Vim Autocommands
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
+
+" Neovim settings
+if has('nvim')
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1   " Change cursor shape in insert mode
+  let g:python_host_prog='/usr/bin/python2'
+  let g:python3_host_prog='/usr/bin/python3'
+endif
 
 " Syntastic settings
 let g:syntastic_enable_signs = 1
@@ -79,6 +85,7 @@ let g:rainbow_active=1
 " YCM settings
 let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
 let g:ycm_global_ycm_extra_conf="~/.vim/.ycm_extra_conf.py"
+let g:ycm_python_binary_path='python'   " Enables completion inside env
 
 " NERDTree settings
 let NERDTreeWinSize=25

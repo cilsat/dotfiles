@@ -37,14 +37,13 @@ endif
 " PLUGINS & SETTINGS
 call plug#begin('~/.vim/plugs')
 " Functional
-" Navigate between tmux/vim panes
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeTabsToggle'}
 Plug 'jistr/vim-nerdtree-tabs', {'on': 'NERDTreeTabsToggle'}
 Plug 'simnalamburt/vim-mundo', {'on': 'MundoToggle'}
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
 Plug 'majutsushi/tagbar'                " Display tags

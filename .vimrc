@@ -1,45 +1,10 @@
 " STARTUP
-runtime! debian.vim
-filetype off
-syntax enable
-
 " Open file from previous buffer position
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 
-" PLUGINS
-set rtp+=~/.vim/bundle/Vundle.vim       " Add Vundle to runtime path and initialize
-call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'              " let Vundle manage Vundle, required
-
-" Functional
-Plugin 'christoomey/vim-tmux-navigator' " Navigate between tmux/vim panes
-Plugin 'scrooloose/nerdtree'            " File navigator
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'simnalamburt/vim-mundo'         " Vim undo tree graphical navigator
-Plugin 'wellle/targets.vim'             " Expands text object actions/gestures
-Plugin 'tpope/vim-repeat'               " Expands repeatable actions/gestures
-Plugin 'tpope/vim-fugitive'             " Git wrapper for vim
-Plugin 'vim-scripts/VisIncr'            " Expands autoincrement functions
-Plugin 'Valloric/YouCompleteMe'         " Auto-completion for various languages
-Plugin 'majutsushi/tagbar'              " Code tags for C/C++ languages
-Plugin 'chrisbra/csv.vim'               " CSV support
-
-" Visual
-Plugin 'Yggdroot/indentLine'            " Custom char at indentation levels
-Plugin 'vim-airline/vim-airline'        " Custom status line
-Plugin 'vim-airline/vim-airline-themes' " Airline themes
-Plugin 'edkolev/tmuxline.vim'           " Vim status line as tmux status line
-Plugin 'chriskempson/base16-vim'        " base16 colors for vim
-Plugin 'luochen1990/rainbow'            " Assign colors to matching brackets
-
-call vundle#end()                       " Plugins must be added before this line
-filetype plugin indent on
-
-
-" EDITOR/CODE/NAVIGATION SETTINGS
-" Vim settings
+" VIM SETTINGS
+" General settings
 set showcmd                             " Show (partial) command in status line
 set showmatch                           " Show matching brackets
 set ignorecase                          " Do case insensitive matching
@@ -56,7 +21,7 @@ set timeoutlen=250                      " Fixes slow mode changes
 set undofile                            " Saves undo tree to file
 let mapleader=" "                       " Set leader key
 
-" Vim Autocommands
+" Autocommands
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
@@ -67,6 +32,32 @@ if has('nvim')
   let g:python_host_prog='/usr/bin/python2'
   let g:python3_host_prog='/usr/bin/python3'
 endif
+
+
+" PLUGINS & SETTINGS
+call plug#begin('~/.vim/plugs')
+" Functional
+" Navigate between tmux/vim panes
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeTabsToggle'}
+Plug 'jistr/vim-nerdtree-tabs', {'on': 'NERDTreeTabsToggle'}
+Plug 'simnalamburt/vim-mundo', {'on': 'MundoToggle'}
+Plug 'wellle/targets.vim'               " Expands text object actions/gestures
+Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
+Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
+Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
+Plug 'majutsushi/tagbar'                " Display tags
+Plug 'chrisbra/csv.vim'                 " CSV support
+
+" Visual
+Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
+Plug 'vim-airline/vim-airline'          " Custom status line
+Plug 'vim-airline/vim-airline-themes'   " Airline themes
+Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
+Plug 'chriskempson/base16-vim'          " base16 colors for vim
+Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
+call plug#end()
 
 " Syntastic settings
 let g:syntastic_enable_signs = 1

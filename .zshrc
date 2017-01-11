@@ -25,9 +25,9 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.sh"
     elif [ "$ws" = 3 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-onedark.sh"
-    elif [ "$ws" = 4 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
+    elif [ "$ws" = 4 ];then
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-paraiso.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session

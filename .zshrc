@@ -3,7 +3,7 @@ export HOME=/home/cilsat
 export ZSH=$HOME/.oh-my-zsh
 
 # oh-my-zsh settings
-ZSH_THEME=ys
+ZSH_THEME="ys"
 DEFAULT_USER="cilsat"
 ENABLE_CORRECTION="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
@@ -17,7 +17,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets root line)
 # Check for Display
 if [ -n "$DISPLAY" ]; then
     # Uses special symbols
-    ZSH_THEME=agnoster
+    #ZSH_THEME="agnoster"
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
@@ -25,9 +25,9 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.sh"
     elif [ "$ws" = 3 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-unikitty-dark.sh"
     elif [ "$ws" = 4 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-paraiso.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session
@@ -54,7 +54,7 @@ export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
-export PASSWORD_STORE_DIR="$HOME/dot/.password-store"
+export PASSWORD_STORE_DIR="$HOME/.config/dotfiles/.password-store"
 
 # User Path
 export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"

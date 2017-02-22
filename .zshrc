@@ -47,7 +47,6 @@ fi
 fortune -e fortunes | cowsay
 
 # System environment
-export OMP_THREAD_LIMIT=4
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys

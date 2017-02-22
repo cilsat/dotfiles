@@ -53,7 +53,7 @@ export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
-export PASSWORD_STORE_DIR="$HOME/dot/.password-store"
+export PASSWORD_STORE_DIR="$HOME/.config/dotfiles/.password-store"
 
 # User Path
 export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"

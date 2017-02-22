@@ -5,7 +5,7 @@ xcursor*theme:  Bluecurve
 Xft.antialias:          1
 Xft.hinting:            1
 Xft.autohint:           0
-Xft.hintstyle:          hintslight
+Xft.hintstyle:          hintfull
 Xft.dpi:                96
 Xft.rgba:               rgb 
 Xft.lcdfilter:          lcddefault
@@ -42,8 +42,8 @@ URxvt.cursorBlink:      true
 URxvt.letterSpace:      -1
 
 !TrueType fonts
-URxvt.font:             xft:DejaVu Sans Mono:pixelsize=10.5:book,xft:Hack:pixelsize=10.5
-!URxvt.font:             xft:Droid Sans Mono Slashed for Powerline:size=9,xft:Hack:size=9
+!URxvt.font:             xft:DejaVu Sans Mono:pixelsize=10.5:book,xft:Hack:pixelsize=10.5
+URxvt.font:             xft:Liberation Mono:size=9,xft:Roboto Mono:size=9
 !URxvt.font:             xft:Source Code Pro:pixelsize=10.5,xft:DejaVu Sans Mono:pixelsize=10.5
 
 !Bitmap fonts

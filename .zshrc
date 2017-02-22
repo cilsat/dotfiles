@@ -33,7 +33,7 @@ if [ -n "$DISPLAY" ]; then
     # Attach shell to workspace tmux session
     a=": .*attached"
     if [[ -z $(tmux ls | egrep $ws$a) ]]; then
-        systemd-run --scope --user tmux new -A -s "$ws"
+        systemd-run --scope --user tmux new -As "$ws"
     fi
 fi
 

@@ -111,7 +111,6 @@ hi NonText      ctermfg=236 ctermbg=NONE
 hi SpecialKey   ctermfg=239 ctermbg=NONE
 hi CursorLineNr ctermfg=172 ctermbg=NONE cterm=bold
 hi Normal       ctermbg=NONE
-hi LineNr       cterm=bold
 hi Comment      cterm=italic
 hi Statement    cterm=bold
 hi Conditional  cterm=bold

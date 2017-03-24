@@ -17,7 +17,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets root line)
 # Check for Display
 if [ -n "$DISPLAY" ]; then
     # Uses special symbols
-    #ZSH_THEME="agnoster"
+    ZSH_THEME="agnoster"
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
@@ -25,14 +25,13 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.sh"
     elif [ "$ws" = 3 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-unikitty-dark.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-paraiso.sh"
     elif [ "$ws" = 4 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session
-    a=": .*attached"
-    if [[ -z $(tmux ls | egrep $ws$a) ]]; then
+    if [[ -z $(tmux ls | egrep $ws": .*attached") ]]; then
         systemd-run --scope --user tmux new -As "$ws"
     fi
 fi
@@ -58,9 +57,13 @@ export PASSWORD_STORE_DIR="$HOME/.config/dotfiles/.password-store"
 # User Path
 export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"
 
+# Misc variables
+export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
+
 # Aliases
 alias nv="nvim"
-alias loc="locate"
+alias vim="nvim"
 alias pac="pacaur"
 
 source "$ZSH/oh-my-zsh.sh"

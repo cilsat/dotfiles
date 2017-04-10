@@ -17,7 +17,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets root line)
 # Check for Display
 if [ -n "$DISPLAY" ]; then
     # Uses special symbols
-    ZSH_THEME="agnoster"
+    #ZSH_THEME="agnoster"
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then

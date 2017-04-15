@@ -67,3 +67,9 @@ alias vim="nvim"
 alias pac="pacaur"
 
 source "$ZSH/oh-my-zsh.sh"
+
+# FZF settings and key bindings
+if [ -d /usr/share/fzf ]; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
+fi

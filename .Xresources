@@ -7,7 +7,7 @@ Xft.hinting:            1
 Xft.autohint:           0
 Xft.hintstyle:          hintfull
 Xft.dpi:                96
-Xft.rgba:               rgb 
+Xft.rgba:               rgb
 Xft.lcdfilter:          lcddefault
 
 !xterm settings
@@ -39,13 +39,14 @@ URxvt.cursorBlink:      true
 !URxvt*depth:            32
 !URxvt*background:       rgba:0000/0000/0200/c800
 
-URxvt.letterSpace:      -1
+URxvt.letterSpace:      0
 
 !TrueType fonts
 !URxvt.font:             xft:DejaVu Sans Mono:pixelsize=10.5:book,xft:Hack:pixelsize=10.5
-URxvt.font:             xft:Liberation Mono:size=9,xft:Roboto Mono:size=9
-!URxvt.font:             xft:Source Code Pro:pixelsize=10.5,xft:DejaVu Sans Mono:pixelsize=10.5
+!URxvt.font:             xft:Liberation Mono:size=9,xft:Roboto Mono:size=9
+URxvt.font:             xft:Source Code Pro:Semibold:size=8,xft:Hack:pixelsize=10.5
 
 !Bitmap fonts
-!URxvt.font:             xft:envypn-9
+!URxvt.font:             xft:ypn envypn-9,xft:xos4 Terminess Powerline-10
+
 

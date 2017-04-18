@@ -21,7 +21,7 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-materia.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.sh"
     elif [ "$ws" = 3 ];then
@@ -71,6 +71,7 @@ source "$ZSH/oh-my-zsh.sh"
 
 # FZF settings and key bindings
 if [ -d /usr/share/fzf ]; then
-    source /usr/share/fzf/key-bindings.zsh
-    source /usr/share/fzf/completion.zsh
+    source "/usr/share/fzf/key-bindings.zsh"
+    source "/usr/share/fzf/completion.zsh"
+    export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
 fi

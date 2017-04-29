@@ -77,7 +77,7 @@ if [ -d /usr/share/fzf ]; then
     [ ! -d $FZF_CACHE ] && mkdir -p $FZF_CACHE
     export FZF_DEFAULT_COMMAND='ag --hidden --silent \
       -p $HOME/.config/dotfiles/ignore -fg "" / | tee $FZF_CACHE/db'
-    export FZF_CTRL_T_COMMAND='cat $FZF_CACHE/db'
+    export FZF_CTRL_T_COMMAND='<$FZF_CACHE/db'
     export FZF_COMPLETION_TRIGGER='*'
     _fzf_compgen_path() {
       ag --hidden --silent --ignore .git -fg "" "$1"

@@ -23,11 +23,11 @@ if [ -n "$DISPLAY" ]; then
     if [ "$ws" = 1 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
     elif [ "$ws" = 2 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-dracula.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-oceanicnext.sh"
     elif [ "$ws" = 3 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-paraiso.sh"
     elif [ "$ws" = 4 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-railscasts.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session
@@ -69,9 +69,13 @@ alias pac="pacaur"
 
 source "$ZSH/oh-my-zsh.sh"
 
-# FZF settings and key bindings
+# FZF settings and key bindings. Must be sourced *after* oh-my-zsh
 if [ -d /usr/share/fzf ]; then
     source "/usr/share/fzf/key-bindings.zsh"
     source "/usr/share/fzf/completion.zsh"
     export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+    export FZF_COMPLETION_TRIGGER='*'
+    _fzf_compgen_path() {
+      ag -fg "" "$1"
+    }
 fi

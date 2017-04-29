@@ -80,6 +80,6 @@ if [ -d /usr/share/fzf ]; then
     export FZF_CTRL_T_COMMAND='<$FZF_CACHE/db'
     export FZF_COMPLETION_TRIGGER='*'
     _fzf_compgen_path() {
-      ag --hidden --silent --ignore .git -fg "" "$1"
+      ag --nobreak --nonumbers "^$(pwd)/$1" $FZF_CACHE/db
     }
 fi

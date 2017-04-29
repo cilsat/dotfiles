@@ -1,0 +1,15 @@
+.git
+*.d
+lost+found
+/root/*
+/sys/*
+/boot/*
+/dev/*
+/proc/*
+/var/*
+/run/*
+/media/*
+/bin/*
+/sbin/*
+/lib/*
+/lib64/*

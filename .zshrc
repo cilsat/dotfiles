@@ -73,9 +73,13 @@ source "$ZSH/oh-my-zsh.sh"
 if [ -d /usr/share/fzf ]; then
     source "/usr/share/fzf/key-bindings.zsh"
     source "/usr/share/fzf/completion.zsh"
-    export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+    export FZF_CACHE=$HOME/.config/fzf
+    [ ! -d $FZF_CACHE ] && mkdir -p $FZF_CACHE
+    export FZF_DEFAULT_COMMAND='ag --hidden --silent \
+      -p $HOME/.config/dotfiles/ignore -fg "" / | tee $FZF_CACHE/db'
+    export FZF_CTRL_T_COMMAND='cat $FZF_CACHE/db'
     export FZF_COMPLETION_TRIGGER='*'
     _fzf_compgen_path() {
-      ag -fg "" "$1"
+      ag --hidden --silent --ignore .git -fg "" "$1"
     }
 fi

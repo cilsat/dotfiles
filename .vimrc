@@ -22,9 +22,9 @@ set undofile                            " Saves undo tree to file
 let mapleader=" "                     " Set leader key
 
 " Indentation settings
-set softtabstop=2
-set tabstop=2
-set shiftwidth=2
+set softtabstop=8
+set tabstop=4
+set shiftwidth=4
 set expandtab
 set autoindent
 set cindent

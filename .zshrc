@@ -1,5 +1,6 @@
 # Path to oh-my-zsh installation.
 export HOME=/home/cilsat
+export DOT=$HOME/.config/dotfiles
 export ZSH=$HOME/.oh-my-zsh
 
 # oh-my-zsh settings
@@ -53,7 +54,7 @@ export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:$HOME/.local/lib:$LD_LIBRARY_PATH"
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
-export PASSWORD_STORE_DIR="$HOME/.config/dotfiles/.password-store"
+export PASSWORD_STORE_DIR="$DOT/.password-store"
 
 # User Path
 export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"
@@ -66,20 +67,24 @@ export LESS=' -R '
 alias nv="nvim"
 alias vim="nvim"
 alias pac="pacaur"
+alias op="xdg-open"
 
 source "$ZSH/oh-my-zsh.sh"
 
 # FZF settings and key bindings. Must be sourced *after* oh-my-zsh
 if [ -d /usr/share/fzf ]; then
+    export FZF_DIR=$HOME/.config/fzf
     source "/usr/share/fzf/key-bindings.zsh"
-    source "/usr/share/fzf/completion.zsh"
-    export FZF_CACHE=$HOME/.config/fzf
-    [ ! -d $FZF_CACHE ] && mkdir -p $FZF_CACHE
+    source $FZF_DIR/completion.zsh
+
+    [ ! -d $FZF_DIR ] && mkdir -p $FZF_CACHE
     export FZF_DEFAULT_COMMAND='ag --hidden --silent \
-      -p $HOME/.config/dotfiles/ignore -fg "" / | tee $FZF_CACHE/db'
-    export FZF_CTRL_T_COMMAND='<$FZF_CACHE/db'
+      -p $FZF_DIR/ignore -fg "" / | tee $FZF_DIR/db'
+    export FZF_DEFAULT_OPTS='--reverse --border --bind=ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-f:page-down,ctrl-b:page-up'
+    export FZF_CTRL_T_COMMAND='<$FZF_DIR/db'
     export FZF_COMPLETION_TRIGGER='*'
+
     _fzf_compgen_path() {
-      ag --nobreak --nonumbers "^$(pwd)/$1" $FZF_CACHE/db
+        ag --nobreak --nonumbers "$1" $FZF_DIR/db
     }
 fi

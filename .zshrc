@@ -22,7 +22,7 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-materia.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-oceanicnext.sh"
     elif [ "$ws" = 3 ];then

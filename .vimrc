@@ -125,7 +125,7 @@ hi SpecialKey   ctermfg=239 ctermbg=NONE
 hi CursorLineNr ctermfg=172 ctermbg=NONE cterm=bold
 hi Normal       ctermbg=NONE
 hi Comment      cterm=italic
-hi Statement    cterm=bold
+hi Statement    cterm=bold cterm=italic
 hi Conditional  cterm=bold
 hi Repeat       cterm=bold
 hi Function     cterm=bold

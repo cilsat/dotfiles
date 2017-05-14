@@ -37,7 +37,6 @@ au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
 
 " Neovim settings
 if has('nvim')
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1   " Change cursor shape in insert mode
   let g:python_host_prog='/usr/bin/python2'
   let g:python3_host_prog='/usr/bin/python3'
 endif

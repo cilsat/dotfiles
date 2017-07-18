@@ -19,6 +19,8 @@ set cursorline                          " Highlight current cursor line
 set scrolloff=2                       " Keep 2 lines around cursorline
 set timeoutlen=250                    " Fixes slow mode changes
 set undofile                            " Saves undo tree to file
+set path+=**                            " Recursive 'fuzzy' find
+set wildmenu                            " Display all matching files on tab
 let mapleader=" "                     " Set leader key
 
 " Indentation settings
@@ -67,13 +69,13 @@ Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
-Plug 'vim-syntastic/syntastic'
-  let b:syntastic_mode='passive'
-  let g:syntastic_enable_signs=1
-  let g:syntastic_error_symbol='✗'
-  let g:syntastic_style_error_symbol='✗'
-  let g:syntastic_warning_symbol='⚠'
-  let g:syntastic_style_warning_symbol='⚠'
+"Plug 'vim-syntastic/syntastic'
+"  let b:syntastic_mode='passive'
+"  let g:syntastic_enable_signs=1
+"  let g:syntastic_error_symbol='✗'
+"  let g:syntastic_style_error_symbol='✗'
+"  let g:syntastic_warning_symbol='⚠'
+"  let g:syntastic_style_warning_symbol='⚠'
 Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
   let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
   let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
@@ -83,6 +85,7 @@ Plug 'majutsushi/tagbar'                " Display tags
   let g:tagbar_autofocus=1
   let g:tagbar_sort=0
 Plug 'chrisbra/csv.vim'                 " CSV support
+Plug 'xuhdev/vim-latex-live-preview'    " Live latex pdf support
 
 " Visual
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
@@ -153,4 +156,6 @@ nnoremap <leader>pp "+P
 
 " Vim key mappings
 nnoremap <esc> :noh<return><esc>
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
 

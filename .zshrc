@@ -22,18 +22,18 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-materia.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-oceanicnext.sh"
     elif [ "$ws" = 3 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-paraiso.sh"
     elif [ "$ws" = 4 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-railscasts.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session
     if [[ -z $(tmux ls | egrep $ws": .*attached") ]]; then
-        systemd-run --scope --user tmux new -As "$ws"
+        tmux new -As "$ws"
     fi
 fi
 
@@ -65,7 +65,6 @@ export LESS=' -R '
 
 # Aliases
 alias nv="nvim"
-alias vim="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
 

@@ -83,6 +83,8 @@ Plug 'majutsushi/tagbar'                " Display tags
   let g:tagbar_autofocus=1
   let g:tagbar_sort=0
 Plug 'chrisbra/csv.vim'                 " CSV support
+Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
+Plug 'xuhdev/vim-latex-live-preview', {'on': 'LLPStartPreview'}
 
 " Visual
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels

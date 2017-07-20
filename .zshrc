@@ -28,7 +28,7 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 3 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-rebecca.sh"
     elif [ "$ws" = 4 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-railscasts.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session
@@ -65,7 +65,6 @@ export LESS=' -R '
 
 # Aliases
 alias nv="nvim"
-alias vim="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
 

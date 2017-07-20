@@ -1,0 +1,21 @@
+# 
+# /etc/fstab: static file system information
+#
+# <file system>	<dir>	<type>	<options>	<dump>	<pass>
+# /dev/sda3
+UUID=eb86038a-6a48-495f-96c5-ac6e33edd53a	/         	ext4      	rw,relatime,data=ordered	0 1
+
+# /dev/sdd6
+UUID=9640f45a-fab2-495b-bace-8a8acc59b044	/home     	ext4      	rw,relatime,data=ordered	0 2
+
+# /dev/sda5 swap
+UUID=3d0101db-193d-4dce-bb7a-d04348c2260c	none		swap		sw	0	0 
+
+# ntfs partitons
+UUID=D880FB0A80FAEE3E	/media/cilsat/windows   ntfs-3g defaults,uid=1000,gid=100,dmask=0002,fmask=0133	0	0
+UUID=889229F39229E702   /media/cilsat/thinkpad 	ntfs-3g users,uid=1000,gid=100,dmask=0002,fmask=0133	0	0
+UUID=01CC5A9104E70AF0   /media/cilsat/bandung  	ntfs-3g users,uid=1000,gid=100,dmask=0002,fmask=0133	0	0
+UUID=01CC5A9108426AF0   /media/cilsat/montreal 	ntfs-3g defaults,uid=1000,gid=100,dmask=0002,fmask=0133	0	0
+UUID=01CC5A910B9DA3E0   /media/cilsat/newyork  	ntfs-3g defaults,uid=1000,gid=100,dmask=0002,fmask=0133	0	0
+UUID=01CC5A910EF1D7F0   /media/cilsat/london   	ntfs-3g defaults,uid=1000,gid=100,dmask=0002,fmask=0133	0	0
+UUID=1EAB054150D875E5   /media/cilsat/seattle  	ntfs-3g defaults,uid=1000,gid=100,dmask=0002,fmask=0133	0	0

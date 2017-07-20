@@ -150,7 +150,7 @@ vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
 nnoremap <leader>yy "+yy
 
-vnoremap <leader>p "+p
+nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 nnoremap <leader>pp "+P
 

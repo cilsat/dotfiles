@@ -1,52 +1,34 @@
-!cursor
-xcursor*theme:  Bluecurve
+! xft settings
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.autohint: 0
+Xft.hintstyle: hintfull
+Xft.dpi: 96
+Xft.rgba: rgb
+Xft.lcdfilter: lcddefault
 
-!font rendering settings
-Xft.antialias:          1
-Xft.hinting:            1
-Xft.autohint:           0
-Xft.hintstyle:          hintfull
-Xft.dpi:                96
-Xft.rgba:               rgb
-Xft.lcdfilter:          lcddefault
+! genereal urxvt settings
+URxvt.depth: 32
+URxvt.loginShell: true
+URxvt.saveLines: 9999
 
-!xterm settings
-xterm.termName:         xterm-256color
-xterm.dynamicColors:    true
-xterm.utf8:             2
-xterm.faceName:         Ubuntu Mono derivative Powerline:size=9
+! font settings
+URxvt.letterSpace: -1
+URxvt.font: xft:ypn envypn:size=9, xft:noto mono:size=8.5
 
-!URxvt settings
-!URxvt*termName:         tmux-256color
-URxvt.depth:            32
-URxvt.loginShell:       true
-URxvt.iconFile:         /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
-URxvt.saveLines:        9999
+! window settings
+URxvt.geometry: 80x57+900+0
+URxvt.internalBorder: 0
+!URxv.*externalBorder: 0
+URxvt.borderLess: false
+URxvt.borderColor: 00
+URxvt.scrollBar: false
+!URxvt*transparent: false
+!URxvt*shading: 30
+!URxvt*depth: 32
+!URxvt*background: rgba:0000/0000/0200/c800
 
-URxvt.geometry:         80x57+900+0
-URxvt.internalBorder:   0
-!URxv.*externalBorder:   0
-URxvt.borderLess:       false
-URxvt.borderColor:      00
-URxvt.scrollBar:        false
-
-URxvt.skipBuiltinGlyphs: true
-URxvt.cursorBar:        false
-URxvt.cursorBlink:      true
-
-!URxvt*transparent:      true
-!URxvt*shading:          30
-!URxvt*depth:            32
-!URxvt*background:       rgba:0000/0000/0200/c800
-
-URxvt.letterSpace:      -1
-
-!TrueType fonts
-!URxvt.font:             xft:DejaVu Sans Mono:pixelsize=10.5:book,xft:Hack:pixelsize=10.5
-!URxvt.font:             xft:Liberation Mono:size=9,xft:Roboto Mono:size=9
-URxvt.font:             xft:Source Code Pro:Semibold:size=8.5,xft:Hack:pixelsize=10.5
-
-!Bitmap fonts
-!URxvt.font:             xft:ypn envypn-9,xft:xos4 Terminess Powerline-10
-
-
+! perl extensions
+URxvt.perl-ext-common: default,url-select,keyboard-select
+URxvt.url-select.launcher: /usr/bin/xdg-open
+URxvt.url-select.underline: true

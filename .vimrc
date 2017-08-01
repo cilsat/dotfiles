@@ -5,38 +5,48 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 " VIM SETTINGS
 " General settings
+let mapleader=" "                       " Set leader key
+set hidden                              " Hide buffers when they are abandoned
+set laststatus=2                        " Always show status line
+set mouse=a                             " Enable mouse usage (all modes)
+set lazyredraw                          " Stop unnecessary rendering
+" Line numbering and scrolling
+set number                              " Show line number
+set relativenumber                      " Use relative line number
+set cursorline                          " Highlight current cursor line
+set scrolloff=2                         " Keep 2 lines around cursorline
+set timeoutlen=250                      " Fixes slow mode changes
+" Undo tree
+set undofile                            " Saves undo tree to file
+set undodir=~/.config/nvim              " Directory to save undo file
+set noswapfile
+" Matching
 set showcmd                             " Show (partial) command in status line
 set showmatch                           " Show matching brackets
 set ignorecase                          " Do case insensitive matching
 set smartcase                           " Do smart case matching
+set infercase
+" Searching
+set hlsearch
 set incsearch                           " Incremental search
-set hidden                              " Hide buffers when they are abandoned
-set laststatus=2                      " Always show status line
-set mouse=a                           " Enable mouse usage (all modes)
-set number                              " Show line number
-set relativenumber                      " Use relative line number
-set cursorline                          " Highlight current cursor line
-set scrolloff=2                       " Keep 2 lines around cursorline
-set timeoutlen=250                    " Fixes slow mode changes
-set undofile                            " Saves undo tree to file
+set gdefault                            " Add /g flag on :s by default
 set path+=**                            " Recursive 'fuzzy' find
+set wildmode=longest,list,full          " Lazy file name tabe completion
 set wildmenu                            " Display all matching files on tab
-let mapleader=" "                     " Set leader key
-
+set wildignorecase
 " Indentation settings
-set softtabstop=8
+set backspace=indent,eol,start
+set softtabstop=4
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set autoindent
 set cindent
 set colorcolumn=80
-
 " Autocommands
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
-
 " Neovim settings
 if has('nvim')
   let g:python_host_prog='/usr/bin/python2'
@@ -99,17 +109,17 @@ Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_theme='base16'
   let g:airline#extensions#tmuxline#enabled=0
   let g:airline#extensions#tabline#enabled=1
-  let g:airline_left_sep='▌'
-  let g:airline_left_alt_sep='│'
-  let g:airline_right_sep='▐'
-  let g:airline_right_alt_sep='│'
+  "let g:airline_left_sep='▌'
+  "let g:airline_left_alt_sep='│'
+  "let g:airline_right_sep='▐'
+  "let g:airline_right_alt_sep='│'
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
-  let g:tmuxline_separators={
-    \ 'left' : '▌',
-    \ 'left_alt': '│',
-    \ 'right': '▐',
-    \ 'right_alt' : '│'}
+  "let g:tmuxline_separators={
+  "  \ 'left' : '▌',
+  "  \ 'left_alt': '│',
+  "  \ 'right': '▐',
+  "  \ 'right_alt' : '│'}
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
@@ -145,8 +155,9 @@ nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F1> :NERDTreeTabsToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
 nnoremap <F3> :MundoToggle<CR>
-nnoremap <F7> :SyntasticCheck<CR>
+"nnoremap <F7> :SyntasticCheck<CR>
 
+" Vim mappings
 vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
 nnoremap <leader>yy "+yy
@@ -155,7 +166,6 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 nnoremap <leader>pp "+P
 
-" Vim key mappings
 nnoremap <esc> :noh<return><esc>
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>

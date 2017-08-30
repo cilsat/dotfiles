@@ -10,13 +10,15 @@ Xft.lcdfilter: lcddefault
 ! genereal urxvt settings
 URxvt.depth: 32
 URxvt.loginShell: true
-URxvt.saveLines: 9999
+URxvt.saveLines: 9999terminal.svg
 
 ! font settings
-URxvt.letterSpace: -1
-URxvt.font: xft:ypn envypn:size=9, xft:noto mono:size=8.5
+URxvt.letterSpace: 0
+!URxvt.font: xft:ypn envypn:size=9, xft:noto mono:size=8.5
+URxvt.font: xft:roboto mono for powerline:size=8, xft:ypn envypn:size=9
 
 ! window settings
+URxvt.iconFile: /usr/share/icons/Papirus-Dark/32x32/apps/utilities-terminal.svg
 URxvt.geometry: 80x57+900+0
 URxvt.internalBorder: 0
 !URxv.*externalBorder: 0

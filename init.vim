@@ -53,12 +53,15 @@ au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
 au FileType cc setlocal shiftwidth=2 tabstop=2
+" Neovim specific settings
+let g:python_host_prog='/usr/bin/python2'
+let g:python3_host_prog='/usr/bin/python3'
 
 
 " PLUGINS & SETTINGS
 " Auto install plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup PLUG
     au!
@@ -66,7 +69,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   augroup END
 endif
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeTabsToggle'}

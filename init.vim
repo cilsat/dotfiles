@@ -53,6 +53,8 @@ au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
 au FileType cc setlocal shiftwidth=2 tabstop=2
+au FileType c setlocal shiftwidth=2 tabstop=2
+au FileType h setlocal shiftwidth=2 tabstop=2
 " Neovim specific settings
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'

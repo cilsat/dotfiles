@@ -32,6 +32,7 @@ fi
 fortune | cowsay
 
 # System environment
+export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH"
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys
@@ -41,7 +42,7 @@ export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$DOT/.password-store"
 
 # User Path
-export PATH="$PATH:$HOME/.local/bin:$HOME/.conda/bin"
+export PATH="$HOME/.local/bin:$PATH:$HOME/.conda/bin"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
@@ -52,6 +53,7 @@ alias nv="nvim"
 alias vim="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
+alias php="php56"
 
 # Source zim
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then

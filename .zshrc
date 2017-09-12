@@ -32,7 +32,7 @@ fi
 fortune | cowsay
 
 # System environment
-export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
@@ -52,6 +52,7 @@ alias nv="nvim"
 alias vim="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
+alias php="php56"
 
 # Source zim
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then

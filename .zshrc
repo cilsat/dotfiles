@@ -32,7 +32,6 @@ fi
 fortune | cowsay
 
 # System environment
-export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH"
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys

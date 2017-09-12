@@ -85,10 +85,17 @@ Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
-Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
-  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
-  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-  let g:ycm_python_binary_path='python'   " Enables completion inside env
+" Auto-completion
+"Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
+"  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
+"  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+"  let g:ycm_python_binary_path='python'   " Enables completion inside env
+Plug 'shougo/deoplete.nvim'
+  let g:deoplete#enable_at_startup=1
+  autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+Plug 'zchee/deoplete-jedi'
+  let g:deoplete#sources#jedi#server_timeout=20
+  let g:deoplete#sources#jedi#statement_length=240
 Plug 'majutsushi/tagbar'                " Display tags
   let g:tagbar_width=25
   let g:tagbar_autofocus=1

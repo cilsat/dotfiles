@@ -92,11 +92,15 @@ Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 "  let g:ycm_python_binary_path='python'   " Enables completion inside env
 Plug 'shougo/deoplete.nvim'
   let g:deoplete#enable_at_startup=1
-  autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+  set completeopt-=preview
 Plug 'zchee/deoplete-jedi'
   let g:deoplete#sources#jedi#server_timeout=20
   let g:deoplete#sources#jedi#statement_length=240
 Plug 'padawan-php/deoplete-padawan'
+  let g:deoplete#sources#padawan#server_autostart=1
+Plug 'shougo/echodoc.vim'
+  set noshowmode
+  let g:echodoc_enable_at_startup=1
 Plug 'majutsushi/tagbar'                " Display tags
   let g:tagbar_width=25
   let g:tagbar_autofocus=1

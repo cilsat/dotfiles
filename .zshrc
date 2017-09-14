@@ -41,6 +41,8 @@ export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$DOT/.password-store"
 
 # User Path
+# Path to composer bin needed for vim php completion: composer global require 
+# mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:$HOME/.conda/bin"
 
 # Misc variables
@@ -52,7 +54,6 @@ alias nv="nvim"
 alias vim="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
-alias php="php56"
 
 # Source zim
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then

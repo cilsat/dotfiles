@@ -41,7 +41,7 @@ export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$DOT/.password-store"
 
 # User Path
-export PATH="$HOME/.local/bin:$PATH:$HOME/.conda/bin"
+export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:$HOME/.conda/bin"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"

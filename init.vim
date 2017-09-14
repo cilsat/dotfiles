@@ -96,6 +96,7 @@ Plug 'shougo/deoplete.nvim'
 Plug 'zchee/deoplete-jedi'
   let g:deoplete#sources#jedi#server_timeout=20
   let g:deoplete#sources#jedi#statement_length=240
+Plug 'padawan-php/deoplete-padawan'
 Plug 'majutsushi/tagbar'                " Display tags
   let g:tagbar_width=25
   let g:tagbar_autofocus=1

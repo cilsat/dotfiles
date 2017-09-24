@@ -10,6 +10,7 @@ set hidden                              " Hide buffers when they are abandoned
 set laststatus=2                        " Always show status line
 set mouse=a                             " Enable mouse usage (all modes)
 set lazyredraw                          " Stop unnecessary rendering
+set noshowmode                          " Hide mode in status line
 " Line numbering and scrolling
 set number                              " Show line number
 set relativenumber                      " Use relative line number
@@ -36,9 +37,9 @@ set wildmenu                            " Display all matching files on tab
 set wildignorecase
 " Indentation settings
 set backspace=indent,eol,start          " allow bs over autoindent, eol, start
-set softtabstop=4
-set tabstop=4
-set shiftwidth=4
+set softtabstop=2
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 set cindent
@@ -52,9 +53,8 @@ set foldlevel=2
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
-au FileType cc setlocal shiftwidth=2 tabstop=2
-au FileType c setlocal shiftwidth=2 tabstop=2
-au FileType h setlocal shiftwidth=2 tabstop=2
+au FileType php setlocal shiftwidth=4 tabstop=4
+au FileType python setlocal shiftwidth=4 tabstop=4
 " Neovim specific settings
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
@@ -74,40 +74,64 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeTabsToggle'}
+Plug 'scrooloose/nerdtree',             " Filesystem navigator
+  \{'on': 'NERDTreeTabsToggle'}
   let NERDTreeWinSize=25
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeHijackNetrw=1
   let NERDTreeChDirMode=2
-Plug 'jistr/vim-nerdtree-tabs', {'on': 'NERDTreeTabsToggle'}
-Plug 'simnalamburt/vim-mundo', {'on': 'MundoToggle'}
+Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
+  \{'on': 'NERDTreeTabsToggle'}
+Plug 'simnalamburt/vim-mundo',          " Undo tree window
+  \{'on': 'MundoToggle'}
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
-" Auto-completion
-"Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
-"  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
-"  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-"  let g:ycm_python_binary_path='python'   " Enables completion inside env
-Plug 'shougo/deoplete.nvim'
-  let g:deoplete#enable_at_startup=1
-  set completeopt-=preview
-Plug 'zchee/deoplete-jedi'
-  let g:deoplete#sources#jedi#server_timeout=20
-  let g:deoplete#sources#jedi#statement_length=240
-Plug 'padawan-php/deoplete-padawan'
-  let g:deoplete#sources#padawan#server_autostart=1
-Plug 'shougo/echodoc.vim'
-  set noshowmode
-  let g:echodoc_enable_at_startup=1
-Plug 'majutsushi/tagbar'                " Display tags
-  let g:tagbar_width=25
-  let g:tagbar_autofocus=1
-  let g:tagbar_sort=0
 Plug 'chrisbra/csv.vim'                 " CSV support
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
-Plug 'xuhdev/vim-latex-live-preview', {'on': 'LLPStartPreview'}
+Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
+  \{'on': 'LLPStartPreview'}
+
+" Coding
+" Deoplete
+Plug 'shougo/deoplete.nvim',            " Autocompletion for various languages
+  \{'do': ':UpdateRemotePlugins'}
+  let g:deoplete#enable_at_startup=1
+  set completeopt-=preview              " Disable preview window
+Plug 'zchee/deoplete-jedi'              " Deoplete for Python
+  let g:deoplete#sources#jedi#server_timeout=20
+  let g:deoplete#sources#jedi#statement_length=240
+Plug 'padawan-php/deoplete-padawan'     " Deoplete for PHP
+  let g:deoplete#sources#padawan#server_autostart=1
+Plug 'rip-rip/clang_complete'           " Deoplete for C/C++
+Plug 'shougo/echodoc.vim'               " Show doc in status line
+  let g:echodoc_enable_at_startup=1
+" Tagbar
+Plug 'majutsushi/tagbar'                " Display tags for various languages
+  let g:tagbar_width=25
+  let g:tagbar_autofocus=1
+  let g:tagbar_compact=1
+  let g:tagbar_sort=0
+  let g:tagbar_iconchars = ['▸', '▾']
+Plug 'vim-php/tagbar-phpctags.vim'      " Display PHP ctags
+" Ale
+Plug 'w0rp/ale'                         " Linting for various languages
+  let g:ale_lint_on_text_changed=0
+  let g:ale_lint_on_insert_leave=1
+  let g:ale_linters = {
+  \  'c': ['clangtidy'],
+  \  'cpp': ['clangtidy'],
+  \  'javascript': ['eslint'],
+  \  'php': ['phpcs'],
+  \  'python': ['autopep8']}
+  let g:ale_fixers = {
+  \  'c': ['clang-format'],
+  \  'cpp': ['clang-format'],
+  \  'javascript': ['prettier'],
+  \  'php': ['phpcbf'],
+  \  'python': ['autopep8']}
+  let g:ale_fix_on_save=1
 
 " Visual
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
@@ -118,8 +142,9 @@ Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
 Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_powerline_fonts=1
   let g:airline_theme='base16'
-  let g:airline#extensions#tmuxline#enabled=0
+  let g:airline#extensions#tmuxline#enabled=1
   let g:airline#extensions#tabline#enabled=1
+  let g:airline#extensions#ale#enabled=1
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
@@ -134,7 +159,6 @@ let base16colorspace=256              " Set base16-colorspace
 colorscheme base16-default-dark         " Use base16 shell colorscheme
 
 " Custom highlight settings
-set listchars=tab:··,trail:·
 hi NonText      ctermfg=236 ctermbg=NONE
 hi SpecialKey   ctermfg=239 ctermbg=NONE
 hi CursorLineNr ctermfg=172 cterm=bold
@@ -150,6 +174,7 @@ hi Structure    cterm=bold
 hi Macro        cterm=bold
 hi Keyword      cterm=bold
 hi Type         cterm=bold
+hi ALEErrorSign ctermfg=01 ctermbg=18
 
 
 " CUSTOM KEY MAPPINGS
@@ -158,9 +183,10 @@ nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F1> :NERDTreeTabsToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
 nnoremap <F3> :MundoToggle<CR>
-"nnoremap <F7> :SyntasticCheck<CR>
+nnoremap <F4> :ALEFix<CR>
 
 " Vim mappings
+nnoremap <leader>r :%s/\s\+$//e<CR>
 vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
 nnoremap <leader>yy "+yy

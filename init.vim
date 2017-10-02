@@ -90,6 +90,7 @@ Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'chrisbra/csv.vim'                 " CSV support
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
+Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \{'on': 'LLPStartPreview'}
 
@@ -98,7 +99,7 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
 Plug 'valloric/youcompleteme'           " Autocompletion for C/C++
   let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
   let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-  let g:ycm_python_binary_path='python'
+  let g:ycm_python_binary_path='python'   " Enables completion inside env
 " Deoplete
 "Plug 'shougo/deoplete.nvim',            " Autocompletion for various languages
 "  \{'do': ':UpdateRemotePlugins'}
@@ -109,7 +110,6 @@ Plug 'valloric/youcompleteme'           " Autocompletion for C/C++
 "  let g:deoplete#sources#jedi#statement_length=240
 "Plug 'padawan-php/deoplete-padawan'     " Deoplete for PHP
 "  let g:deoplete#sources#padawan#server_autostart=1
-"Plug 'zchee/deoplete-clang'             " Deoplete for C/C++: requires compile
 "Plug 'shougo/echodoc.vim'               " Show doc in status line
 "  let g:echodoc_enable_at_startup=1
 " Tagbar
@@ -126,15 +126,23 @@ Plug 'w0rp/ale',                        " Linting for various languages
   let g:ale_lint_on_enter=0
   let g:ale_lint_on_text_changed=0
   let g:ale_lint_on_insert_leave=1
-  let g:ale_fix_on_save=1
 " Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
 " Requires squizlabs/php_codesniffer through composer and prettier through npm
-  let g:ale_linters = {'c': ['clangtidy'], 'cpp': ['clangtidy'],
-  \  'javascript': ['eslint'], 'php': ['phpcs'], 'python': ['pycodestyle']}
-  let g:ale_fixers = { 'c': ['clang-format'], 'cpp': ['clang-format'],
-  \  'javascript': ['prettier'], 'php': ['phpcbf'], 'python': ['autopep8']}
-  let g:ale_sign_error = '▸'
-  let g:ale_sign_warning = '-'
+  let g:ale_linters = {
+  \  'c': ['clangtidy'],
+  \  'cpp': ['clangtidy'],
+  \  'javascript': ['eslint'],
+  \  'php': ['phpcs'],
+  \  'python': ['pycodestyle']}
+  let g:ale_fixers = {
+  \  'c': ['clang-format'],
+  \  'cpp': ['clang-format'],
+  \  'javascript': ['prettier'],
+  \  'php': ['phpcbf'],
+  \  'python': ['autopep8']}
+  let g:ale_fix_on_save=1
+  let g:ale_sign_error='▸'
+  let g:ale_sign_warning='-'
 
 " Visual
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
@@ -162,22 +170,23 @@ let base16colorspace=256              " Set base16-colorspace
 colorscheme base16-default-dark         " Use base16 shell colorscheme
 
 " Custom highlight settings
-hi NonText      ctermfg=236 ctermbg=NONE
-hi SpecialKey   ctermfg=239 ctermbg=NONE
-hi CursorLineNr ctermfg=172 cterm=bold
-hi LineNr       ctermbg=NONE
-hi Normal       ctermbg=NONE
-hi Comment      cterm=italic
-hi Statement    cterm=bold cterm=italic
-hi Conditional  cterm=bold
-hi Repeat       cterm=bold
-hi Function     cterm=bold
-hi StorageClass cterm=bold
-hi Structure    cterm=bold
-hi Macro        cterm=bold
-hi Keyword      cterm=bold
-hi Type         cterm=bold
-hi ALEErrorSign ctermfg=01 ctermbg=18
+hi nontext      ctermfg=236 ctermbg=NONE
+hi specialkey   ctermfg=239 ctermbg=NONE
+hi cursorlinenr ctermfg=172 cterm=bold
+hi linenr       ctermbg=NONE
+hi normal       ctermbg=NONE
+hi comment      cterm=italic
+hi statement    cterm=bold cterm=italic
+hi conditional  cterm=bold
+hi repeat       cterm=bold
+hi function     cterm=bold
+hi storageclass cterm=bold
+hi structure    cterm=bold
+hi macro        cterm=bold
+hi keyword      cterm=bold
+hi type         cterm=bold
+hi aleerrorsign ctermfg=01 ctermbg=18
+hi tagbarfoldicon ctermfg=04
 
 
 " CUSTOM KEY MAPPINGS

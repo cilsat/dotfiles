@@ -49,7 +49,6 @@ export LESS=' -R '
 
 # Aliases
 alias nv="nvim"
-alias vim="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
 

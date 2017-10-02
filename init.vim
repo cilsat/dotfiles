@@ -94,19 +94,24 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \{'on': 'LLPStartPreview'}
 
 " Coding
+" YouCompleteMe
+Plug 'valloric/youcompleteme'           " Autocompletion for C/C++
+  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
+  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+  let g:ycm_python_binary_path='python'
 " Deoplete
-Plug 'shougo/deoplete.nvim',            " Autocompletion for various languages
-  \{'do': ':UpdateRemotePlugins'}
-  let g:deoplete#enable_at_startup=1
-  set completeopt-=preview              " Disable preview window
-Plug 'zchee/deoplete-jedi'              " Deoplete for Python
-  let g:deoplete#sources#jedi#server_timeout=20
-  let g:deoplete#sources#jedi#statement_length=240
-Plug 'padawan-php/deoplete-padawan'     " Deoplete for PHP
-  let g:deoplete#sources#padawan#server_autostart=1
-Plug 'rip-rip/clang_complete'           " Deoplete for C/C++
-Plug 'shougo/echodoc.vim'               " Show doc in status line
-  let g:echodoc_enable_at_startup=1
+"Plug 'shougo/deoplete.nvim',            " Autocompletion for various languages
+"  \{'do': ':UpdateRemotePlugins'}
+"  let g:deoplete#enable_at_startup=1
+"  set completeopt-=preview              " Disable preview window
+"Plug 'zchee/deoplete-jedi'              " Deoplete for Python
+"  let g:deoplete#sources#jedi#server_timeout=20
+"  let g:deoplete#sources#jedi#statement_length=240
+"Plug 'padawan-php/deoplete-padawan'     " Deoplete for PHP
+"  let g:deoplete#sources#padawan#server_autostart=1
+"Plug 'zchee/deoplete-clang'             " Deoplete for C/C++: requires compile
+"Plug 'shougo/echodoc.vim'               " Show doc in status line
+"  let g:echodoc_enable_at_startup=1
 " Tagbar
 Plug 'majutsushi/tagbar'                " Display tags for various languages
   let g:tagbar_width=25
@@ -114,24 +119,22 @@ Plug 'majutsushi/tagbar'                " Display tags for various languages
   let g:tagbar_compact=1
   let g:tagbar_sort=0
   let g:tagbar_iconchars = ['▸', '▾']
-Plug 'vim-php/tagbar-phpctags.vim'      " Display PHP ctags
+Plug 'vim-php/tagbar-phpctags.vim'      " Display PHP ctags with phpctags
 " Ale
-Plug 'w0rp/ale'                         " Linting for various languages
+Plug 'w0rp/ale',                        " Linting for various languages
+  \{'on': 'ALEToggle'}
+  let g:ale_lint_on_enter=0
   let g:ale_lint_on_text_changed=0
   let g:ale_lint_on_insert_leave=1
-  let g:ale_linters = {
-  \  'c': ['clangtidy'],
-  \  'cpp': ['clangtidy'],
-  \  'javascript': ['eslint'],
-  \  'php': ['phpcs'],
-  \  'python': ['autopep8']}
-  let g:ale_fixers = {
-  \  'c': ['clang-format'],
-  \  'cpp': ['clang-format'],
-  \  'javascript': ['prettier'],
-  \  'php': ['phpcbf'],
-  \  'python': ['autopep8']}
   let g:ale_fix_on_save=1
+" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
+" Requires squizlabs/php_codesniffer through composer and prettier through npm
+  let g:ale_linters = {'c': ['clangtidy'], 'cpp': ['clangtidy'],
+  \  'javascript': ['eslint'], 'php': ['phpcs'], 'python': ['pycodestyle']}
+  let g:ale_fixers = { 'c': ['clang-format'], 'cpp': ['clang-format'],
+  \  'javascript': ['prettier'], 'php': ['phpcbf'], 'python': ['autopep8']}
+  let g:ale_sign_error = '▸'
+  let g:ale_sign_warning = '-'
 
 " Visual
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
@@ -183,7 +186,8 @@ nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F1> :NERDTreeTabsToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
 nnoremap <F3> :MundoToggle<CR>
-nnoremap <F4> :ALEFix<CR>
+nnoremap <F4> :ALEToggle<CR>
+nnoremap <F5> :ALEFix<CR>
 
 " Vim mappings
 nnoremap <leader>r :%s/\s\+$//e<CR>

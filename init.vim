@@ -58,7 +58,7 @@ au FileType python setlocal shiftwidth=4 tabstop=4
 " Neovim specific settings
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
-
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 
 " PLUGINS & SETTINGS
 " Auto install plug if not found
@@ -82,6 +82,7 @@ Plug 'scrooloose/nerdtree',             " Filesystem navigator
   let NERDTreeChDirMode=2
 Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
   \{'on': 'NERDTreeTabsToggle'}
+Plug 'scrooloose/nerdcommenter'         " Comment lines
 Plug 'simnalamburt/vim-mundo',          " Undo tree window
   \{'on': 'MundoToggle'}
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures

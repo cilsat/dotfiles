@@ -17,10 +17,10 @@ set relativenumber                      " Use relative line number
 set cursorline                          " Highlight current cursor line
 set scrolloff=2                         " Keep 2 lines around cursorline
 set timeoutlen=250                      " Fixes slow mode changes
-" Undo tree
+" Undo
 set undofile                            " Saves undo tree to file
 set undodir=~/.config/nvim/undo         " Directory to save undo file
-set noswapfile
+set noswapfile                          " Swap file become unnecessary
 " Matching
 set showcmd                             " Show (partial) command in status line
 set showmatch                           " Show matching brackets
@@ -55,7 +55,6 @@ au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
 au FileType php setlocal shiftwidth=4 tabstop=4
 au FileType python setlocal shiftwidth=4 tabstop=4
-"
 " Neovim specific settings
 if has('nvim')
   let g:python_host_prog='/usr/bin/python2'
@@ -66,7 +65,7 @@ endif
 " PLUGINS & SETTINGS
 " Auto install plug if not found
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup PLUG
     au!
@@ -74,23 +73,22 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
   augroup END
 endif
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.vim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
-  \{'on': 'NERDTreeTabsToggle'}
+  \ {'on': 'NERDTreeTabsToggle'}
   let NERDTreeWinSize=25
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
-  let NERDTreeHijackNetrw=1
   let NERDTreeChDirMode=2
   let NERDTreeMinimalUI=1
 Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
-  \{'on': 'NERDTreeTabsToggle'}
-Plug 'scrooloose/nerdcommenter'         " Comment lines
-Plug 'wellle/targets.vim'               " Expands text object actions/gestures
+  \ {'on': 'NERDTreeTabsToggle'}
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
+Plug 'scrooloose/nerdcommenter'         " Comment lines
+Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
@@ -98,67 +96,77 @@ Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
-  \{'on': 'LLPStartPreview'}
-Plug 'romainl/vim-qf'
+  \ {'on': 'LLPStartPreview'}
 
-" Coding
+" Completion & Coding
 " YouCompleteMe
-Plug 'valloric/youcompleteme',          " Autocompletion for C/C++
-  \ {'frozen': 1,
-  \ 'for': ['python', 'c', 'cpp', 'java', 'sh'],
-  \ 'on': ['YcmCompleter', 'YcmDiags']}
+Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
+  \{'for': ['c', 'cpp', 'objc', 'objcpp'], 'on': ['YouCompleter']}
   let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
   let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
   let g:ycm_python_binary_path='python' " Enables completion inside env
-" Deoplete
-"Plug 'shougo/deoplete.nvim',            " Autocompletion for various languages
-"  \{'do': ':UpdateRemotePlugins'}
-"  let g:deoplete#enable_at_startup=1
-"  set completeopt-=preview              " Disable preview window
-"Plug 'zchee/deoplete-jedi'              " Deoplete for Python
-"  let g:deoplete#sources#jedi#server_timeout=20
-"  let g:deoplete#sources#jedi#statement_length=240
-"Plug 'padawan-php/deoplete-padawan'     " Deoplete for PHP
-"  let g:deoplete#sources#padawan#server_autostart=1
-"Plug 'shougo/echodoc.vim'               " Show doc in status line
-"  let g:echodoc_enable_at_startup=1
+" Language server protocol
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" Python language server
+if executable('pyls')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'pyls', 'cmd': {server_info->['pyls']}, 'whitelist': ['python']})
+endif
+" Type/Javascript language server
+if executable('typescript-language-server')
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'typescript-language-server',
+    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+    \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+    \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
+    \ })
+endif
+" Clangd language server
+if executable('clangd')
+  au User lsp_setup call lsp#register_server({'name': 'clangd',
+    \ 'cmd': {server_info->['clangd']},
+    \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],})
+endif
+" PHP language server
+"Plug 'felixfbecker/php-language-server',
+  "\{'do': 'composer install && composer run-script parse-stubs'}
+  "au User lsp_setup call lsp#register_server({
+       "\ 'name': 'php-language-server',
+       "\ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
+       "\ 'whitelist': ['php'],
+       "\ })
 " Tagbar
 Plug 'majutsushi/tagbar',               " Display tags for various languages
-  \{'on': 'TagbarToggle'}
+  \ {'on': 'TagbarToggle'}
   let g:tagbar_width=25
   let g:tagbar_autofocus=1
   let g:tagbar_compact=1
   let g:tagbar_sort=0
   let g:tagbar_iconchars = ['▸', '▾']
 Plug 'vim-php/tagbar-phpctags.vim',     " Display PHP ctags with phpctags
-  \{'on': 'TagbarToggle'}
+  \ {'on': 'TagbarToggle'}
 " Ale
 Plug 'w0rp/ale',                        " Linting for various languages
-  \{'on': 'ALEToggle'}
-  let g:ale_lint_on_enter=0
+  \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
   let g:ale_lint_on_text_changed=0
   let g:ale_lint_on_insert_leave=1
 " Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
 " Requires squizlabs/php_codesniffer through composer and prettier through npm
   let g:ale_linters = {
-  \  'c': ['clangtidy'],
-  \  'cpp': ['clangtidy'],
-  \  'javascript': ['eslint'],
-  \  'php': ['phpcs'],
-  \  'python': ['pycodestyle']}
+  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
+  \ 'php': ['phpcs'], 'python': ['pycodestyle']}
   let g:ale_fixers = {
-  \  'c': ['clang-format'],
-  \  'cpp': ['clang-format'],
-  \  'javascript': ['prettier'],
-  \  'php': ['phpcbf'],
-  \  'python': ['autopep8']}
+  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
+  \ 'php': ['phpcbf'], 'python': ['autopep8']}
   let g:ale_fix_on_save=1
   let g:ale_sign_error='▸'
   let g:ale_sign_warning='-'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
-  let g:base16_shell_path='~/src/base16-shell/scripts'
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
   "let g:indentLine_char='┊'
   let g:indentLine_char='│'

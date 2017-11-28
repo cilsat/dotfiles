@@ -1,6 +1,6 @@
 # This is Git's per-user configuration file.
 [user]
-	name = cilsat
+	name = Cil Satriawan
 	email = cil.satriawan@gmail.com
 [core]
 	autocrlf = input

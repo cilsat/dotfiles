@@ -10,6 +10,7 @@ set hidden                              " Hide buffers when they are abandoned
 set laststatus=2                        " Always show status line
 set mouse=a                             " Enable mouse usage (all modes)
 set lazyredraw                          " Stop unnecessary rendering
+set noshowmode                          " Hide mode in status line
 " Line numbering and scrolling
 set number                              " Show line number
 set relativenumber                      " Use relative line number
@@ -36,9 +37,9 @@ set wildmenu                            " Display all matching files on tab
 set wildignorecase
 " Indentation settings
 set backspace=indent,eol,start          " allow bs over autoindent, eol, start
-set softtabstop=4
-set tabstop=4
-set shiftwidth=4
+set softtabstop=2
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 set cindent
@@ -52,13 +53,20 @@ set foldlevel=2
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
-au FileType cc setlocal shiftwidth=2 tabstop=2
-
+au FileType php setlocal shiftwidth=4 tabstop=4
+au FileType python setlocal shiftwidth=4 tabstop=4
+"
+" Neovim specific settings
+if has('nvim')
+  let g:python_host_prog='/usr/bin/python2'
+  let g:python3_host_prog='/usr/bin/python3'
+  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+endif
 
 " PLUGINS & SETTINGS
 " Auto install plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   augroup PLUG
     au!
@@ -66,73 +74,137 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   augroup END
 endif
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
-Plug 'scrooloose/nerdtree', {'on': 'NERDTreeTabsToggle'}
+Plug 'scrooloose/nerdtree',             " Filesystem navigator
+  \{'on': 'NERDTreeTabsToggle'}
   let NERDTreeWinSize=25
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeHijackNetrw=1
   let NERDTreeChDirMode=2
-Plug 'jistr/vim-nerdtree-tabs', {'on': 'NERDTreeTabsToggle'}
-Plug 'simnalamburt/vim-mundo', {'on': 'MundoToggle'}
+  let NERDTreeMinimalUI=1
+Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
+  \{'on': 'NERDTreeTabsToggle'}
+Plug 'scrooloose/nerdcommenter'         " Comment lines
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
+Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
-Plug 'Valloric/YouCompleteMe'           " Auto-completion for various languages
+Plug 'junegunn/vim-easy-align'          " Align text around characters
+Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
+Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
+Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
+Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
+Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
+  \{'on': 'LLPStartPreview'}
+Plug 'romainl/vim-qf'
+
+" Coding
+" YouCompleteMe
+Plug 'valloric/youcompleteme',          " Autocompletion for C/C++
+  \ {'frozen': 1,
+  \ 'for': ['python', 'c', 'cpp', 'java', 'sh'],
+  \ 'on': ['YcmCompleter', 'YcmDiags']}
   let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
   let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-  let g:ycm_python_binary_path='python'   " Enables completion inside env
-Plug 'majutsushi/tagbar'                " Display tags
+  let g:ycm_python_binary_path='python' " Enables completion inside env
+" Deoplete
+"Plug 'shougo/deoplete.nvim',            " Autocompletion for various languages
+"  \{'do': ':UpdateRemotePlugins'}
+"  let g:deoplete#enable_at_startup=1
+"  set completeopt-=preview              " Disable preview window
+"Plug 'zchee/deoplete-jedi'              " Deoplete for Python
+"  let g:deoplete#sources#jedi#server_timeout=20
+"  let g:deoplete#sources#jedi#statement_length=240
+"Plug 'padawan-php/deoplete-padawan'     " Deoplete for PHP
+"  let g:deoplete#sources#padawan#server_autostart=1
+"Plug 'shougo/echodoc.vim'               " Show doc in status line
+"  let g:echodoc_enable_at_startup=1
+" Tagbar
+Plug 'majutsushi/tagbar',               " Display tags for various languages
+  \{'on': 'TagbarToggle'}
   let g:tagbar_width=25
   let g:tagbar_autofocus=1
+  let g:tagbar_compact=1
   let g:tagbar_sort=0
-Plug 'chrisbra/csv.vim'                 " CSV support
-Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
-Plug 'xuhdev/vim-latex-live-preview', {'on': 'LLPStartPreview'}
+  let g:tagbar_iconchars = ['▸', '▾']
+Plug 'vim-php/tagbar-phpctags.vim',     " Display PHP ctags with phpctags
+  \{'on': 'TagbarToggle'}
+" Ale
+Plug 'w0rp/ale',                        " Linting for various languages
+  \{'on': 'ALEToggle'}
+  let g:ale_lint_on_enter=0
+  let g:ale_lint_on_text_changed=0
+  let g:ale_lint_on_insert_leave=1
+" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
+" Requires squizlabs/php_codesniffer through composer and prettier through npm
+  let g:ale_linters = {
+  \  'c': ['clangtidy'],
+  \  'cpp': ['clangtidy'],
+  \  'javascript': ['eslint'],
+  \  'php': ['phpcs'],
+  \  'python': ['pycodestyle']}
+  let g:ale_fixers = {
+  \  'c': ['clang-format'],
+  \  'cpp': ['clang-format'],
+  \  'javascript': ['prettier'],
+  \  'php': ['phpcbf'],
+  \  'python': ['autopep8']}
+  let g:ale_fix_on_save=1
+  let g:ale_sign_error='▸'
+  let g:ale_sign_warning='-'
 
 " Visual
+Plug 'chriskempson/base16-vim'          " base16 colors for vim
+  let g:base16_shell_path='~/src/base16-shell/scripts'
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
-  let g:indentLine_char='┊'
+  "let g:indentLine_char='┊'
+  let g:indentLine_char='│'
   let g:indentLine_enabled=1
-  let g:indentLine_LeadingSpaceEnabled=1
-  let g:indentLine_LeadingSpaceChar='·'
+  let g:indentLine_concealcursor=''
+  let g:indentLine_faster=1
 Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_powerline_fonts=1
   let g:airline_theme='base16'
-  let g:airline#extensions#tmuxline#enabled=0
+  let g:airline#extensions#tmuxline#enabled=1
   let g:airline#extensions#tabline#enabled=1
+  let g:airline#extensions#ale#enabled=1
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
-Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
+Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
+  let g:WebDevIconsUnicodeDecorateFolderNodes=1
+  let g:DevIconsEnableFoldersOpenClose=1
 call plug#end()
 
 
 " INTERFACE/COLORS
 set background=dark
-let base16colorspace=256              " Set base16-colorspace
+let base16colorspace=256                " Set base16-colorspace
 colorscheme base16-default-dark         " Use base16 shell colorscheme
+let g:indentLine_color_term=18
 
 " Custom highlight settings
-set listchars=tab:··,trail:·
-hi NonText      ctermfg=236 ctermbg=NONE
-hi SpecialKey   ctermfg=239 ctermbg=NONE
-hi CursorLineNr ctermfg=172 cterm=bold
-hi LineNr       ctermbg=NONE
-hi Normal       ctermbg=NONE
-hi Comment      cterm=italic
-hi Statement    cterm=bold cterm=italic
-hi Conditional  cterm=bold
-hi Repeat       cterm=bold
-hi Function     cterm=bold
-hi StorageClass cterm=bold
-hi Structure    cterm=bold
-hi Macro        cterm=bold
-hi Keyword      cterm=bold
-hi Type         cterm=bold
+hi nontext      ctermfg=236 ctermbg=NONE
+hi specialkey   ctermfg=239 ctermbg=NONE
+hi cursorlinenr ctermfg=172 cterm=bold
+hi linenr       ctermbg=NONE
+hi normal       ctermbg=NONE
+hi comment      cterm=italic
+hi statement    cterm=bold cterm=italic
+hi conditional  cterm=bold
+hi repeat       cterm=bold
+hi function     cterm=bold
+hi storageclass cterm=bold
+hi structure    cterm=bold
+hi macro        cterm=bold
+hi keyword      cterm=bold
+hi type         cterm=bold
+hi aleerrorsign ctermfg=01 ctermbg=18
+hi tagbarfoldicon ctermfg=04
 
 
 " CUSTOM KEY MAPPINGS
@@ -141,9 +213,14 @@ nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F1> :NERDTreeTabsToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
 nnoremap <F3> :MundoToggle<CR>
-"nnoremap <F7> :SyntasticCheck<CR>
+nnoremap <F4> :ALEToggle<CR>
+nnoremap <F5> :ALEFix<CR>
+
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Vim mappings
+nnoremap <leader>r :%s/\s\+$//e<CR>
 vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
 nnoremap <leader>yy "+yy

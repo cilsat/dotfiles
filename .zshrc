@@ -6,7 +6,7 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$DOT/base16-materiana.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-material-darker.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-nord.sh"
     elif [ "$ws" = 3 ];then
@@ -39,7 +39,7 @@ export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$DOT/.password-store"
 
 # User Path
-# Path to composer bin needed for vim php completion: composer global require 
+# Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:$HOME/.conda/bin"
 

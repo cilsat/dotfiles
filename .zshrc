@@ -10,7 +10,7 @@ if [ -n "$DISPLAY" ]; then
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-nord.sh"
     elif [ "$ws" = 3 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-rebecca.sh"
+        BASE16_THEME="$DOT/base16-rebecca.sh"
     elif [ "$ws" = 4 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
     fi
@@ -30,7 +30,9 @@ fi
 fortune | cowsay
 
 # System environment
-export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:/opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64: \
+  /opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
+export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:$HOME/.conda/bin"
 
 # Keys
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"

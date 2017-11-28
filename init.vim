@@ -11,6 +11,7 @@ set laststatus=2                        " Always show status line
 set mouse=a                             " Enable mouse usage (all modes)
 set lazyredraw                          " Stop unnecessary rendering
 set noshowmode                          " Hide mode in status line
+set encoding=utf8
 " Line numbering and scrolling
 set number                              " Show line number
 set relativenumber                      " Use relative line number
@@ -59,6 +60,13 @@ au FileType python setlocal shiftwidth=4 tabstop=4
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
 set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+" Netrw settings
+let g:netrw_banner=0
+let g:netrw_preview=1
+let g:netrw_liststyle=3
+let g:netrw_winsize=25
+let g:netrw_browse_split=2
+
 
 " PLUGINS & SETTINGS
 " Auto install plug if not found
@@ -74,17 +82,20 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
+Plug 'tpope/vim-vinegar'
+"Plug 'justinmk/vim-dirvish'
+"Plug 'jeetsukumaran/vim-buffergator',   " Buffer navigation
+  "\{'on': 'BuffergatorToggle'}
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
   \{'on': 'NERDTreeTabsToggle'}
-  let NERDTreeWinSize=25
+  let NERDTreeWinSize=30
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeHijackNetrw=1
   let NERDTreeChDirMode=2
+  let NERDTreeMinimalUI=1
 Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
   \{'on': 'NERDTreeTabsToggle'}
 Plug 'scrooloose/nerdcommenter'         " Comment lines
-Plug 'simnalamburt/vim-mundo',          " Undo tree window
-  \{'on': 'MundoToggle'}
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
@@ -92,6 +103,8 @@ Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'chrisbra/csv.vim'                 " CSV support
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
 Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \{'on': 'LLPStartPreview'}
 
@@ -115,7 +128,7 @@ Plug 'valloric/youcompleteme'           " Autocompletion for C/C++
 "  let g:echodoc_enable_at_startup=1
 " Tagbar
 Plug 'majutsushi/tagbar'                " Display tags for various languages
-  let g:tagbar_width=25
+  let g:tagbar_width=30
   let g:tagbar_autofocus=1
   let g:tagbar_compact=1
   let g:tagbar_sort=0
@@ -162,11 +175,15 @@ Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
+Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
+  let g:WebDevIconsUnicodeDecorateFolderNodes=1
+  let g:DevIconsEnableFoldersOpenClose=1
 call plug#end()
 
 
 " INTERFACE/COLORS
 set background=dark
+set guifont="RobotoMono Nerd Font"
 let base16colorspace=256              " Set base16-colorspace
 colorscheme base16-default-dark         " Use base16 shell colorscheme
 
@@ -195,7 +212,7 @@ hi tagbarfoldicon ctermfg=04
 nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F1> :NERDTreeTabsToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
-nnoremap <F3> :MundoToggle<CR>
+nnoremap <F3> :BuffergatorToggle<CR>
 nnoremap <F4> :ALEToggle<CR>
 nnoremap <F5> :ALEFix<CR>
 
@@ -213,3 +230,5 @@ nnoremap <esc> :noh<return><esc>
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
+nnoremap <C-n> :bnext<CR>
+nnoremap <C-p> :bprevious<CR>

@@ -77,10 +77,6 @@ endif
 call plug#begin('~/.vim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
-Plug 'tpope/vim-vinegar'
-"Plug 'justinmk/vim-dirvish'
-"Plug 'jeetsukumaran/vim-buffergator',   " Buffer navigation
-  "\{'on': 'BuffergatorToggle'}
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
   \ {'on': 'NERDTreeTabsToggle'}
   let NERDTreeWinSize=30

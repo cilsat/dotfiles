@@ -27,7 +27,7 @@ if [[ -n "$SSH_CONNECTION" ]]; then
     export DISPLAY=:0
 fi
 
-fortune | cowsay
+fortune -s | cowsay
 
 # System environment
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64: \

@@ -6,7 +6,7 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-material-darker.sh"
+        BASE16_THEME="$DOT/base16-materiana.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-nord.sh"
     elif [ "$ws" = 3 ];then

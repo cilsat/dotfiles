@@ -82,13 +82,14 @@ Plug 'tpope/vim-vinegar'
 "Plug 'jeetsukumaran/vim-buffergator',   " Buffer navigation
   "\{'on': 'BuffergatorToggle'}
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
-  \{'on': 'NERDTreeTabsToggle'}
+  \ {'on': 'NERDTreeTabsToggle'}
   let NERDTreeWinSize=30
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeChDirMode=2
   let NERDTreeMinimalUI=1
 Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
   \ {'on': 'NERDTreeTabsToggle'}
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
@@ -102,12 +103,11 @@ Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \ {'on': 'LLPStartPreview'}
-Plug 'romainl/vim-qf'
 
 " Completion & Coding
 " YouCompleteMe
 "Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
-  "\{'for': ['python', 'c', 'cpp', 'go'], 'on': ['YouCompleter']}
+  "\ {'for': ['c', 'cpp', 'bash'], 'on': ['YouCompleter']}
   "let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
   "let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
   "let g:ycm_python_binary_path='python' " Enables completion inside env
@@ -170,6 +170,9 @@ Plug 'w0rp/ale',                        " Linting for various languages
   let g:ale_fix_on_save=1
   let g:ale_sign_error='▸'
   let g:ale_sign_warning='-'
+Plug 'hkupty/iron.nvim',
+  \ {'do': 'UpdateRemotePlugins'}
+  let g:iron_repl_open_cmd='vsplit'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim

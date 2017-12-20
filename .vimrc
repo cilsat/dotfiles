@@ -158,9 +158,7 @@ Plug 'w0rp/ale',                        " Linting for various languages
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
-  let g:base16_shell_path='~/src/base16-shell/scripts'
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
-  "let g:indentLine_char='┊'
   let g:indentLine_char='│'
   let g:indentLine_enabled=1
   let g:indentLine_concealcursor=''

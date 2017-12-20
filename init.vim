@@ -77,18 +77,15 @@ endif
 call plug#begin('~/.vim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
-Plug 'tpope/vim-vinegar'
-"Plug 'justinmk/vim-dirvish'
-"Plug 'jeetsukumaran/vim-buffergator',   " Buffer navigation
-  "\{'on': 'BuffergatorToggle'}
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
   \{'on': 'NERDTreeTabsToggle'}
-  let NERDTreeWinSize=30
+  let NERDTreeWinSize=25
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeChDirMode=2
   let NERDTreeMinimalUI=1
 Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
   \ {'on': 'NERDTreeTabsToggle'}
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim

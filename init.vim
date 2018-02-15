@@ -97,22 +97,25 @@ Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
 Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
+Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \ {'on': 'LLPStartPreview'}
-Plug 'romainl/vim-qf'
 
 " Completion & Coding
 " YouCompleteMe
-"Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
-  "\{'for': ['python', 'c', 'cpp', 'go'], 'on': ['YouCompleter']}
-  "let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
-  "let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-  "let g:ycm_python_binary_path='python' " Enables completion inside env
+Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
+  \{'for': ['python', 'c', 'cpp', 'go'], 'on': ['YouCompleter']}
+  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
+  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+  let g:ycm_python_binary_path='python' " Enables completion inside env
+Plug 'ervandew/supertab'                " Supertab to prevent CTS
+  let g:SuperTabMappingForward='<s-tab>'
+  let g:SuperTabMappingBackward='<tab>'
 " Language server protocol
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Python language server
 if executable('pyls')
   au User lsp_setup call lsp#register_server({
@@ -134,13 +137,13 @@ if executable('clangd')
     \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],})
 endif
 " PHP language server
-"Plug 'felixfbecker/php-language-server',
-  "\{'do': 'composer install && composer run-script parse-stubs'}
-  "au User lsp_setup call lsp#register_server({
-       "\ 'name': 'php-language-server',
-       "\ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
-       "\ 'whitelist': ['php'],
-       "\ })
+Plug 'felixfbecker/php-language-server',
+  \{'do': 'composer install && composer run-script parse-stubs'}
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'php-language-server',
+    \ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
+    \ 'whitelist': ['php'],
+    \ })
 " Tagbar
 Plug 'majutsushi/tagbar',               " Display tags for various languages
   \ {'on': 'TagbarToggle'}
@@ -167,6 +170,9 @@ Plug 'w0rp/ale',                        " Linting for various languages
   let g:ale_fix_on_save=1
   let g:ale_sign_error='▸'
   let g:ale_sign_warning='-'
+Plug 'sirver/ultisnips'                 " Snippet engine
+  let g:UltiSnipsExpandTrigger='<tab>'
+Plug 'honza/vim-snippets'               " Useful snippets for various langs
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim

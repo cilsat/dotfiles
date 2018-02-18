@@ -116,7 +116,9 @@ Plug 'shougo/deoplete.nvim',
   let g:deoplete#num_processes=2
   let g:deoplete#auto_complete_delay=50
   let g:deoplete#auto_refresh_delay=50
-  "au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+  au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+Plug 'shougo/echodoc.vim'
+  let g:echodoc_enable_at_startup=1
 " Language server protocol
 " The required servers must be installed manually through OS; cquery,
 " typescript-language-server, php-language-server, pyls, and rls.
@@ -125,7 +127,7 @@ Plug 'autozimu/languageclient-neovim',
   let g:LanguageClient_serverCommands = {
   \ 'c': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
-  \ 'javascript': ['typescript-language-server', '--stdio'],
+  \ 'javascript': ['node', '/usr/lib/node_modules/javascript-typescript-langserver/language-server-stdio'],
   \ 'php': ['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')],
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
@@ -221,10 +223,9 @@ hi tagbarfoldicon ctermfg=04
 
 " CUSTOM KEY MAPPINGS
 " Plugin key mappings
-nnoremap <leader>jj :YcmCompleter GoTo<CR>
-nnoremap <F1> :NERDTreeTabsToggle<CR>
-nnoremap <F2> :TagbarToggle<CR>
-nnoremap <F3> :Gblame<CR>
+nmap <F1> :NERDTreeTabsToggle<CR>
+nmap <F2> :TagbarToggle<CR>
+nmap <F3> :Gblame<CR>
 
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -235,23 +236,24 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> <F4> :call LanguageClient_textDocument_rename()<CR>
+nmap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nmap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nmap <silent> <F4> :call LanguageClient_textDocument_rename()<CR>
 
 " Vim mappings
-nnoremap <leader>r :%s/\s\+$//e<CR>
-vnoremap <leader>y "+y
-nnoremap <leader>Y "+yg_
-nnoremap <leader>yy "+yy
+nmap <leader>r :%s/\s\+$//e<CR>
+vmap <leader>y "+y
+nmap <leader>Y "+yg_
+nmap <leader>yy "+yy
 
-nnoremap <leader>p "+p
-nnoremap <leader>P "+P
-nnoremap <leader>pp "+P
+nmap <leader>p "+p
+nmap <leader>P "+P
+nmap <leader>pp "+P
 
-nnoremap <esc> :noh<return><esc>
-nnoremap <C-e> 2<C-e>
-nnoremap <C-y> 2<C-y>
+nmap <leader>0 ^
+nmap <esc> :noh<CR>
+nmap <C-e> 2<C-e>
+nmap <C-y> 2<C-y>
 
-nnoremap <C-n> :bnext<CR>
-nnoremap <C-p> :bprevious<CR>
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprevious<CR>

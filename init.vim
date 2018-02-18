@@ -41,10 +41,12 @@ set backspace=indent,eol,start          " allow bs over autoindent, eol, start
 set softtabstop=2
 set tabstop=2
 set shiftwidth=2
+set shiftround                          " rounds number of spaces to indent
 set expandtab
 set autoindent
 set cindent
 set colorcolumn=80
+set textwidth=79
 " Fold settings
 set foldmethod=indent
 set nofoldenable
@@ -86,10 +88,10 @@ Plug 'scrooloose/nerdtree',             " Filesystem navigator
 Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
   \ {'on': 'NERDTreeTabsToggle'}
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'jiangmiao/auto-pairs'             " Automatic brackets
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
-Plug 'scrooloose/nerdcommenter'         " Comment lines
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
@@ -97,53 +99,47 @@ Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
 Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
+Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \ {'on': 'LLPStartPreview'}
 
 " Completion & Coding
-" YouCompleteMe
-Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
-  \ {'for': ['c', 'cpp', 'bash'], 'on': ['YouCompleter']}
-  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
-  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-  let g:ycm_python_binary_path='python' " Enables completion inside env
 " Supertab to prevent CTS
 Plug 'ervandew/supertab'
+  let g:SuperTabMappingForward='<s-tab>'
+  let g:SuperTabMappingBackward='<tab>'
+" Deoplete Async completion
+Plug 'shougo/deoplete.nvim',
+  \ {'do': ':UpdateRemotePlugins'}
+  let g:deoplete#enable_at_startup=1
+  let g:deoplete#enable_camel_case=1
+  let g:deoplete#num_processes=2
+  let g:deoplete#auto_complete_delay=50
+  let g:deoplete#auto_refresh_delay=50
+  "au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 " Language server protocol
-"Plug 'prabirshrestha/async.vim'
-"Plug 'prabirshrestha/asyncomplete.vim'
-"Plug 'prabirshrestha/vim-lsp'
-"Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" Python language server
-if executable('pyls')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'pyls', 'cmd': {server_info->['pyls']}, 'whitelist': ['python']})
-endif
-" Typescript/Javascript language server
-if executable('typescript-language-server')
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'typescript-language-server',
-    \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
-    \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
-    \ 'whitelist': ['typescript', 'javascript', 'javascript.jsx']
-    \ })
-endif
-" Clangd language server
-if executable('clangd')
-  au User lsp_setup call lsp#register_server({'name': 'clangd',
-    \ 'cmd': {server_info->['clangd']},
-    \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],})
-endif
+" The required servers (installed via package manager) are cquery,
+" typescript-language-server, php-language-server, pyls, and rls.
+Plug 'autozimu/languageclient-neovim',
+  \ {'branch': 'next', 'do': 'bash install.sh'}
+  let g:LanguageClient_serverCommands = {
+  \ 'c': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
+  \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
+  \ 'javascript': ['typescript-language-server', '--stdio'],
+  \ 'php': ['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')],
+  \ 'python': ['pyls'],
+  \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+  \ }
+  "set omnifunc=LanguageClient#complete
+  let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
+  let g:LanguageClient_loadSettings=1
+  let g:LanguageClient_diagnosticsEnable=0
+  let g:LanguageClient_changeThrottle=0.05
 " PHP language server
 Plug 'felixfbecker/php-language-server',
-  \{'do': 'composer install && composer run-script parse-stubs'}
-  au User lsp_setup call lsp#register_server({
-    \ 'name': 'php-language-server',
-    \ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
-    \ 'whitelist': ['php'],
-    \ })
-" Tagbar
-Plug 'majutsushi/tagbar',               " Display tags for various languages
+  \ {'do': 'composer install && composer run-script parse-stubs'}
+" Tagbar displays tags for various languages
+Plug 'majutsushi/tagbar',
   \ {'on': 'TagbarToggle'}
   let g:tagbar_width=25
   let g:tagbar_autofocus=1
@@ -165,16 +161,15 @@ Plug 'w0rp/ale',                        " Linting for various languages
 " Requires squizlabs/php_codesniffer through composer and prettier through npm
   let g:ale_linters = {
   \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
-  \ 'php': ['phpcs'], 'python': ['pycodestyle']}
+  \ 'php': ['phpcs'], 'python': ['autopep8']}
   let g:ale_fixers = {
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
   \ 'php': ['phpcbf'], 'python': ['autopep8']}
   let g:ale_fix_on_save=1
   let g:ale_sign_error='▸'
   let g:ale_sign_warning='-'
-Plug 'hkupty/iron.nvim',
-  \ {'do': 'UpdateRemotePlugins'}
-  let g:iron_repl_open_cmd='vsplit'
+Plug 'shougo/neosnippet'                " Snippet engine
+Plug 'shougo/neosnippet-snippets'       " Basic snippets
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
@@ -231,12 +226,20 @@ hi tagbarfoldicon ctermfg=04
 nnoremap <leader>jj :YcmCompleter GoTo<CR>
 nnoremap <F1> :NERDTreeTabsToggle<CR>
 nnoremap <F2> :TagbarToggle<CR>
-nnoremap <F3> :BuffergatorToggle<CR>
-nnoremap <F4> :ALEToggle<CR>
-nnoremap <F5> :ALEFix<CR>
+nnoremap <F3> :Gblame<CR>
 
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F4> :call LanguageClient_textDocument_rename()<CR>
 
 " Vim mappings
 nnoremap <leader>r :%s/\s\+$//e<CR>

@@ -40,7 +40,7 @@ export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$DOT/.password-store"
 
-# User Path
+# User environment
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:$HOME/.conda/bin"

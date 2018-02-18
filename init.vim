@@ -118,7 +118,7 @@ Plug 'shougo/deoplete.nvim',
   let g:deoplete#auto_refresh_delay=50
   "au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 " Language server protocol
-" The required servers (installed via package manager) are cquery,
+" The required servers must be installed manually through OS; cquery,
 " typescript-language-server, php-language-server, pyls, and rls.
 Plug 'autozimu/languageclient-neovim',
   \ {'branch': 'next', 'do': 'bash install.sh'}
@@ -129,6 +129,7 @@ Plug 'autozimu/languageclient-neovim',
   \ 'php': ['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')],
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+  \ 'zsh': ['shell']
   \ }
   "set omnifunc=LanguageClient#complete
   let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
@@ -149,9 +150,8 @@ Plug 'majutsushi/tagbar',
 Plug 'vim-php/tagbar-phpctags.vim',     " Display PHP ctags with phpctags
   \ {'on': 'TagbarToggle'}
 " Snippets
-Plug 'sirver/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+Plug 'shougo/neosnippet'                " Snippet engine
+Plug 'shougo/neosnippet-snippets'       " Basic snippets
 " Ale
 Plug 'w0rp/ale',                        " Linting for various languages
   \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
@@ -168,8 +168,6 @@ Plug 'w0rp/ale',                        " Linting for various languages
   let g:ale_fix_on_save=1
   let g:ale_sign_error='▸'
   let g:ale_sign_warning='-'
-Plug 'shougo/neosnippet'                " Snippet engine
-Plug 'shougo/neosnippet-snippets'       " Basic snippets
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim

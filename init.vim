@@ -67,7 +67,7 @@ endif
 " Auto install plug if not found
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   augroup PLUG
     au!
     autocmd VimEnter * PlugInstall
@@ -102,22 +102,24 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
 
 " Completion & Coding
 " YouCompleteMe
-"Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
-  "\ {'for': ['c', 'cpp', 'bash'], 'on': ['YouCompleter']}
-  "let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
-  "let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
-  "let g:ycm_python_binary_path='python' " Enables completion inside env
+Plug 'Valloric/YouCompleteMe',          " Autocompletion for C/C++
+  \ {'for': ['c', 'cpp', 'bash'], 'on': ['YouCompleter']}
+  let g:ycm_extra_conf_globlist=['~/dev/*', '~/src/*', '~/.vim', '!~/*']
+  let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+  let g:ycm_python_binary_path='python' " Enables completion inside env
+" Supertab to prevent CTS
+Plug 'ervandew/supertab'
 " Language server protocol
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " Python language server
 if executable('pyls')
   au User lsp_setup call lsp#register_server({
     \ 'name': 'pyls', 'cmd': {server_info->['pyls']}, 'whitelist': ['python']})
 endif
-" Type/Javascript language server
+" Typescript/Javascript language server
 if executable('typescript-language-server')
   au User lsp_setup call lsp#register_server({
     \ 'name': 'typescript-language-server',
@@ -133,13 +135,13 @@ if executable('clangd')
     \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],})
 endif
 " PHP language server
-"Plug 'felixfbecker/php-language-server',
-  "\{'do': 'composer install && composer run-script parse-stubs'}
-  "au User lsp_setup call lsp#register_server({
-       "\ 'name': 'php-language-server',
-       "\ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
-       "\ 'whitelist': ['php'],
-       "\ })
+Plug 'felixfbecker/php-language-server',
+  \{'do': 'composer install && composer run-script parse-stubs'}
+  au User lsp_setup call lsp#register_server({
+    \ 'name': 'php-language-server',
+    \ 'cmd': {server_info->['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')]},
+    \ 'whitelist': ['php'],
+    \ })
 " Tagbar
 Plug 'majutsushi/tagbar',               " Display tags for various languages
   \ {'on': 'TagbarToggle'}
@@ -150,6 +152,10 @@ Plug 'majutsushi/tagbar',               " Display tags for various languages
   let g:tagbar_iconchars = ['▸', '▾']
 Plug 'vim-php/tagbar-phpctags.vim',     " Display PHP ctags with phpctags
   \ {'on': 'TagbarToggle'}
+" Snippets
+Plug 'sirver/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 " Ale
 Plug 'w0rp/ale',                        " Linting for various languages
   \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}

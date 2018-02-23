@@ -95,6 +95,8 @@ Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
+Plug '2072/php-indenting-for-vim'       " Better PHP indenting support
+Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
 Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
@@ -108,18 +110,18 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
 Plug 'ervandew/supertab'
   let g:SuperTabMappingForward='<s-tab>'
   let g:SuperTabMappingBackward='<tab>'
-" Deoplete Async completion
+" Deoplete Asynchronous completion
 Plug 'shougo/deoplete.nvim',
   \ {'do': ':UpdateRemotePlugins'}
   let g:deoplete#enable_at_startup=1
   let g:deoplete#enable_camel_case=1
   let g:deoplete#num_processes=2
-  let g:deoplete#auto_complete_delay=50
-  let g:deoplete#auto_refresh_delay=50
+  let g:deoplete#auto_complete_delay=250
+  let g:deoplete#auto_refresh_delay=250
   au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 Plug 'shougo/echodoc.vim'
   let g:echodoc_enable_at_startup=1
-" Language server protocol
+" Language Server Protocol
 " The required servers must be installed manually through OS; cquery,
 " typescript-language-server, php-language-server, pyls, and rls.
 Plug 'autozimu/languageclient-neovim',
@@ -133,11 +135,11 @@ Plug 'autozimu/languageclient-neovim',
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
   \ 'zsh': ['shell']
   \ }
-  "set omnifunc=LanguageClient#complete
+  set omnifunc=LanguageClient#complete
   let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
   let g:LanguageClient_loadSettings=1
   let g:LanguageClient_diagnosticsEnable=0
-  let g:LanguageClient_changeThrottle=0.05
+  let g:LanguageClient_changeThrottle=0.25
 " PHP language server
 Plug 'felixfbecker/php-language-server',
   \ {'do': 'composer install && composer run-script parse-stubs'}
@@ -153,6 +155,7 @@ Plug 'vim-php/tagbar-phpctags.vim',     " Display PHP ctags with phpctags
   \ {'on': 'TagbarToggle'}
 " Snippets
 Plug 'shougo/neosnippet'                " Snippet engine
+  let g:neosnippet#expand_word_boundary=1
 Plug 'shougo/neosnippet-snippets'       " Basic snippets
 " Ale
 Plug 'w0rp/ale',                        " Linting for various languages
@@ -175,18 +178,19 @@ Plug 'w0rp/ale',                        " Linting for various languages
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
   "let g:indentLine_char='┊'
-  let g:indentLine_char='│'
   let g:indentLine_enabled=1
-  let g:indentLine_concealcursor=''
   let g:indentLine_faster=1
+  let g:indentLine_char='│'
+  let g:indentLine_concealcursor=''
+Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
+Plug 'mkitt/tabline.vim'                " Formatting for tabs
 Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_powerline_fonts=1
   let g:airline_theme='base16'
-  let g:airline#extensions#tmuxline#enabled=1
   let g:airline#extensions#tabline#enabled=1
-  let g:airline#extensions#ale#enabled=1
+  let g:airline#extensions#tabline#tab_nr_type=1
+  let g:airline#extensions#tabline#buffer_idx_mode=1
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
-Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
 Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
@@ -230,17 +234,26 @@ nmap <F3> :Gblame<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+imap <C-l> <Plug>(neosnippet_expand_or_jump)
+smap <C-l> <Plug>(neosnippet_expand_or_jump)
+xmap <C-l> <Plug>(neosnippet_expand_target)
 
 nmap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nmap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nmap <silent> <F4> :call LanguageClient_textDocument_rename()<CR>
 
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+
 " Vim mappings
+nnoremap <F10> :buffers<CR>:buffer<Space>
 nmap <leader>r :%s/\s\+$//e<CR>
 vmap <leader>y "+y
 nmap <leader>Y "+yg_
@@ -252,8 +265,10 @@ nmap <leader>pp "+P
 
 nmap <leader>0 ^
 nmap <esc> :noh<CR>
-nmap <C-e> 2<C-e>
-nmap <C-y> 2<C-y>
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
 
+" Buffer navigation
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprevious<CR>
+nmap <C-i> :b #<CR>

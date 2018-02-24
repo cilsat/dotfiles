@@ -80,14 +80,13 @@ call plug#begin('~/.vim/plugged')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
-  \ {'on': 'NERDTreeTabsToggle'}
+  \ {'on': 'NERDTreeToggle'}
   let NERDTreeWinSize=30
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeChDirMode=2
   let NERDTreeMinimalUI=1
-Plug 'jistr/vim-nerdtree-tabs',         " Use same nerdtree between tabs
-  \ {'on': 'NERDTreeTabsToggle'}
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'xuyuanp/nerdtree-git-plugin',     " Git status in nerdtree
+  \ {'on': 'NERDTreeToggle'}
 Plug 'jiangmiao/auto-pairs'             " Automatic brackets
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
@@ -122,8 +121,7 @@ Plug 'shougo/deoplete.nvim',
 Plug 'shougo/echodoc.vim'
   let g:echodoc_enable_at_startup=1
 " Language Server Protocol
-" The required servers must be installed manually through OS; cquery,
-" typescript-language-server, php-language-server, pyls, and rls.
+" The required servers must be installed separately!
 Plug 'autozimu/languageclient-neovim',
   \ {'branch': 'next', 'do': 'bash install.sh'}
   let g:LanguageClient_serverCommands = {
@@ -138,7 +136,7 @@ Plug 'autozimu/languageclient-neovim',
   set omnifunc=LanguageClient#complete
   let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
   let g:LanguageClient_loadSettings=1
-  let g:LanguageClient_diagnosticsEnable=0
+  let g:LanguageClient_diagnosticsEnable=1
   let g:LanguageClient_changeThrottle=0.25
 " PHP language server
 Plug 'felixfbecker/php-language-server',
@@ -158,21 +156,21 @@ Plug 'shougo/neosnippet'                " Snippet engine
   let g:neosnippet#expand_word_boundary=1
 Plug 'shougo/neosnippet-snippets'       " Basic snippets
 " Ale
-Plug 'w0rp/ale',                        " Linting for various languages
-  \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
-  let g:ale_lint_on_text_changed=0
-  let g:ale_lint_on_insert_leave=1
-" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
-" Requires squizlabs/php_codesniffer through composer and prettier through npm
-  let g:ale_linters = {
-  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
-  \ 'php': ['phpcs'], 'python': ['autopep8']}
-  let g:ale_fixers = {
-  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
-  \ 'php': ['phpcbf'], 'python': ['autopep8']}
-  let g:ale_fix_on_save=1
-  let g:ale_sign_error='▸'
-  let g:ale_sign_warning='-'
+"Plug 'w0rp/ale',                        " Linting for various languages
+"  \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
+"  let g:ale_lint_on_text_changed=0
+"  let g:ale_lint_on_insert_leave=1
+"" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
+"" Requires squizlabs/php_codesniffer through composer and prettier through npm
+"  let g:ale_linters = {
+"  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
+"  \ 'php': ['phpcs'], 'python': ['pyls']}
+"  let g:ale_fixers = {
+"  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
+"  \ 'php': ['phpcbf'], 'python': ['autopep8']}
+"  let g:ale_fix_on_save=1
+"  let g:ale_sign_error='▸'
+"  let g:ale_sign_warning='-'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
@@ -184,7 +182,7 @@ Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
   let g:indentLine_concealcursor=''
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
 Plug 'mkitt/tabline.vim',               " Formatting for tabs
-  \ {'do': ':Tmuxline airline full'}
+  \ {'do': ':Tmuxline airline tmux'}
 let g:tmuxline_separators = {
   \ 'left': '',
   \ 'left_alt': '│',
@@ -204,6 +202,7 @@ Plug 'vim-airline/vim-airline'          " Custom status line
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
   let g:WebDevIconsUnicodeDecorateFolderNodes=1
   let g:DevIconsEnableFoldersOpenClose=1
@@ -238,7 +237,7 @@ hi tagbarfoldicon ctermfg=04
 
 " CUSTOM KEY MAPPINGS
 " Plugin key mappings
-nmap <F1> :NERDTreeTabsToggle<CR>
+nmap <F1> :NERDTreeToggle<CR>
 nmap <F2> :TagbarToggle<CR>
 nmap <F3> :Gblame<CR>
 
@@ -251,7 +250,8 @@ xmap <C-l> <Plug>(neosnippet_expand_target)
 
 nmap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nmap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nmap <silent> <F4> :call LanguageClient_textDocument_rename()<CR>
+nmap <silent> <F4> :call LanguageClient_textDocument_formatting()<CR>
+nmap <silent> <F5> :call LanguageClient_textDocument_rename()<CR>
 
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2

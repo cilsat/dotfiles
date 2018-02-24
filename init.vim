@@ -34,7 +34,7 @@ set incsearch                           " Incremental search
 set gdefault                            " Add /g flag on :s by default
 set path+=**                            " Recursive 'fuzzy' find
 set wildmode=longest,list,full          " Lazy file name tabe completion
-set wildmenu                            " Display all matching files on tab
+"set wildmenu                            " Display all matching files on tab
 set wildignorecase
 " Indentation settings
 set backspace=indent,eol,start          " allow bs over autoindent, eol, start
@@ -183,13 +183,24 @@ Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
   let g:indentLine_char='│'
   let g:indentLine_concealcursor=''
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
-Plug 'mkitt/tabline.vim'                " Formatting for tabs
+Plug 'mkitt/tabline.vim',               " Formatting for tabs
+  \ {'do': ':Tmuxline airline full'}
+let g:tmuxline_separators = {
+  \ 'left': '',
+  \ 'left_alt': '│',
+  \ 'right': '',
+  \ 'right_alt': '│',
+  \ }
 Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_powerline_fonts=1
   let g:airline_theme='base16'
   let g:airline#extensions#tabline#enabled=1
   let g:airline#extensions#tabline#tab_nr_type=1
   let g:airline#extensions#tabline#buffer_idx_mode=1
+  let g:airline_left_sep=''
+  let g:airline_left_alt_sep='│'
+  let g:airline_right_sep=''
+  let g:airline_right_alt_sep='│'
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
@@ -271,4 +282,3 @@ nnoremap <C-y> 2<C-y>
 " Buffer navigation
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprevious<CR>
-nmap <C-i> :b #<CR>

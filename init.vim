@@ -88,9 +88,9 @@ Plug 'scrooloose/nerdtree',             " Filesystem navigator
 Plug 'xuyuanp/nerdtree-git-plugin',     " Git status in nerdtree
   \ {'on': 'NERDTreeToggle'}
 Plug 'jiangmiao/auto-pairs'             " Automatic brackets
+Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
-Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
@@ -127,16 +127,15 @@ Plug 'autozimu/languageclient-neovim',
   let g:LanguageClient_serverCommands = {
   \ 'c': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
-  \ 'javascript': ['node', '/usr/lib/node_modules/javascript-typescript-langserver/language-server-stdio'],
+  \ 'javascript': ['javascript-typescript-stdio'],
   \ 'php': ['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')],
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-  \ 'zsh': ['shell']
   \ }
   set omnifunc=LanguageClient#complete
   let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
   let g:LanguageClient_loadSettings=1
-  let g:LanguageClient_diagnosticsEnable=1
+  let g:LanguageClient_diagnosticsEnable=0
   let g:LanguageClient_changeThrottle=0.25
 " PHP language server
 Plug 'felixfbecker/php-language-server',
@@ -156,21 +155,21 @@ Plug 'shougo/neosnippet'                " Snippet engine
   let g:neosnippet#expand_word_boundary=1
 Plug 'shougo/neosnippet-snippets'       " Basic snippets
 " Ale
-"Plug 'w0rp/ale',                        " Linting for various languages
-"  \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
-"  let g:ale_lint_on_text_changed=0
-"  let g:ale_lint_on_insert_leave=1
-"" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
-"" Requires squizlabs/php_codesniffer through composer and prettier through npm
-"  let g:ale_linters = {
-"  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
-"  \ 'php': ['phpcs'], 'python': ['pyls']}
-"  let g:ale_fixers = {
-"  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
-"  \ 'php': ['phpcbf'], 'python': ['autopep8']}
-"  let g:ale_fix_on_save=1
-"  let g:ale_sign_error='▸'
-"  let g:ale_sign_warning='-'
+Plug 'w0rp/ale',                        " Linting for various languages
+  \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
+  let g:ale_lint_on_text_changed=0
+  let g:ale_lint_on_insert_leave=1
+" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
+" Requires squizlabs/php_codesniffer through composer and prettier through npm
+  let g:ale_linters = {
+  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
+  \ 'php': ['phpcs'], 'python': ['pycodestyle']}
+  let g:ale_fixers = {
+  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
+  \ 'php': ['phpcbf'], 'python': ['autopep8']}
+  let g:ale_fix_on_save=1
+  let g:ale_sign_error='▸'
+  let g:ale_sign_warning='-'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
@@ -180,8 +179,8 @@ Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
   let g:indentLine_faster=1
   let g:indentLine_char='│'
   let g:indentLine_concealcursor=''
-Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
 Plug 'mkitt/tabline.vim',               " Formatting for tabs
+Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
   \ {'do': ':Tmuxline airline tmux'}
 let g:tmuxline_separators = {
   \ 'left': '',

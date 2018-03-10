@@ -99,6 +99,7 @@ Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
 Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
+  let g:pandoc#spell#default_langs=['id']
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
@@ -221,7 +222,6 @@ hi cursorlinenr ctermfg=172 cterm=bold
 hi linenr       ctermbg=NONE
 hi normal       ctermbg=NONE
 hi comment      cterm=italic
-hi statement    cterm=bold cterm=italic
 hi conditional  cterm=bold
 hi repeat       cterm=bold
 hi function     cterm=bold

@@ -110,17 +110,6 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
 Plug 'ervandew/supertab'
   let g:SuperTabMappingForward='<s-tab>'
   let g:SuperTabMappingBackward='<tab>'
-" Deoplete Asynchronous completion
-Plug 'shougo/deoplete.nvim',
-  \ {'do': ':UpdateRemotePlugins'}
-  let g:deoplete#enable_at_startup=1
-  let g:deoplete#enable_camel_case=1
-  let g:deoplete#num_processes=2
-  let g:deoplete#auto_complete_delay=250
-  let g:deoplete#auto_refresh_delay=250
-  au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-Plug 'shougo/echodoc.vim'
-  let g:echodoc_enable_at_startup=1
 " Language Server Protocol
 " The required servers must be installed separately!
 Plug 'autozimu/languageclient-neovim',
@@ -137,7 +126,18 @@ Plug 'autozimu/languageclient-neovim',
   let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
   let g:LanguageClient_loadSettings=1
   let g:LanguageClient_diagnosticsEnable=0
-  let g:LanguageClient_changeThrottle=0.25
+  "let g:LanguageClient_changeThrottle=0.25
+" Deoplete Asynchronous completion
+Plug 'shougo/deoplete.nvim',
+  \ {'do': ':UpdateRemotePlugins'}
+  let g:deoplete#enable_at_startup=1
+  let g:deoplete#enable_camel_case=1
+  let g:deoplete#num_processes=2
+  "let g:deoplete#auto_complete_delay=250
+  "let g:deoplete#auto_refresh_delay=250
+  au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+Plug 'shougo/echodoc.vim'
+  let g:echodoc_enable_at_startup=1
 " Tagbar displays tags for various languages
 Plug 'majutsushi/tagbar',
   \ {'on': 'TagbarToggle'}
@@ -166,16 +166,16 @@ Plug 'w0rp/ale',                        " Linting for various languages
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
   \ 'php': ['phpcbf'], 'python': ['autopep8']}
   let g:ale_fix_on_save=1
-  let g:ale_sign_error='▸'
-  let g:ale_sign_warning='-'
+  let g:ale_sign_error='⚫'
+  let g:ale_sign_warning='⯅'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
-  "let g:indentLine_char='┊'
+  let g:indentLine_char='┊'
   let g:indentLine_enabled=1
   let g:indentLine_faster=1
-  let g:indentLine_char='│'
+  "let g:indentLine_char='│'
   let g:indentLine_concealcursor=''
 Plug 'mkitt/tabline.vim',               " Formatting for tabs
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
@@ -197,6 +197,7 @@ Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_right_sep=''
   let g:airline_right_alt_sep='│'
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
+Plug 'morhetz/gruvbox'
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -228,6 +229,7 @@ hi macro        cterm=bold
 hi keyword      cterm=bold
 hi type         cterm=bold
 hi aleerrorsign ctermfg=01 ctermbg=18
+hi alewarningsign ctermfg=03 ctermbg=18 cterm=bold
 hi tagbarfoldicon ctermfg=04
 
 

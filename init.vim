@@ -99,7 +99,7 @@ Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
 Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
 Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
-  let g:pandoc#spell#default_langs=['id']
+  let g:pandoc#spell#default_langs=['en', 'id']
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
@@ -129,7 +129,7 @@ Plug 'autozimu/languageclient-neovim',
   \ 'c': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'javascript': ['javascript-typescript-stdio'],
-  \ 'php': ['php', expand('~/.vim/plugged/php-language-server/bin/php-language-server.php')],
+  \ 'php': ['php', expand('~/.config/composer/vendor/felixfbecker/language-server/bin/php-language-server.php')],
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
   \ }
@@ -138,9 +138,6 @@ Plug 'autozimu/languageclient-neovim',
   let g:LanguageClient_loadSettings=1
   let g:LanguageClient_diagnosticsEnable=0
   let g:LanguageClient_changeThrottle=0.25
-" PHP language server
-Plug 'felixfbecker/php-language-server',
-  \ {'do': 'composer install && composer run-script parse-stubs'}
 " Tagbar displays tags for various languages
 Plug 'majutsushi/tagbar',
   \ {'on': 'TagbarToggle'}

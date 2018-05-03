@@ -7,7 +7,7 @@ if [ -n "$DISPLAY" ]; then
     xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-gruvbox-dark-pale.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-material-darker.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
     elif [ "$ws" = 3 ];then
@@ -33,7 +33,6 @@ fortune -s | cowsay
 # System environment
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\
 /opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
-export QT_QPA_PLATFORMTHEME=qt5ct
 
 # Keys
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
@@ -44,7 +43,8 @@ export PASSWORD_STORE_DIR="$DOT/.password-store"
 # User environment
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
-export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:$HOME/.conda/bin"
+export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
+$HOME/.conda/bin"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
@@ -54,6 +54,7 @@ export LESS=' -R '
 alias nv="nvim"
 alias pac="pacaur"
 alias op="xdg-open"
+alias sc="sudo systemctl"
 
 # Source zim
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then

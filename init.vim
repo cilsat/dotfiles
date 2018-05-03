@@ -11,6 +11,7 @@ set laststatus=2                        " Always show status line
 set mouse=a                             " Enable mouse usage (all modes)
 set lazyredraw                          " Stop unnecessary rendering
 set noshowmode                          " Hide mode in status line
+set linebreak                           " Break lines on word end
 set encoding=utf8
 " Line numbering and scrolling
 set number                              " Show line number
@@ -81,7 +82,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
   \ {'on': 'NERDTreeToggle'}
-  let NERDTreeWinSize=30
+  let NERDTreeWinSize=25
   let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
   let NERDTreeChDirMode=2
   let NERDTreeMinimalUI=1
@@ -96,8 +97,7 @@ Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug '2072/php-indenting-for-vim'       " Better PHP indenting support
 Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
-Plug 'leafgarland/typescript-vim'       " Typescript syntax highlighting
-Plug 'rust-lang/rust.vim'               " Rust syntax highlighting
+Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
@@ -111,7 +111,7 @@ Plug 'ervandew/supertab'
   let g:SuperTabMappingForward='<s-tab>'
   let g:SuperTabMappingBackward='<tab>'
 " Language Server Protocol
-" The required servers must be installed separately!
+" The required servers must be installed separately
 Plug 'autozimu/languageclient-neovim',
   \ {'branch': 'next', 'do': 'bash install.sh'}
   let g:LanguageClient_serverCommands = {
@@ -131,10 +131,6 @@ Plug 'autozimu/languageclient-neovim',
 Plug 'shougo/deoplete.nvim',
   \ {'do': ':UpdateRemotePlugins'}
   let g:deoplete#enable_at_startup=1
-  let g:deoplete#enable_camel_case=1
-  let g:deoplete#num_processes=2
-  "let g:deoplete#auto_complete_delay=250
-  "let g:deoplete#auto_refresh_delay=250
   au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 Plug 'shougo/echodoc.vim'
   let g:echodoc_enable_at_startup=1
@@ -163,7 +159,7 @@ Plug 'w0rp/ale',                        " Linting for various languages
   \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
   \ 'php': ['phpcs'], 'python': ['pycodestyle']}
   let g:ale_fixers = {
-  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['prettier'],
+  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['eslint'],
   \ 'php': ['phpcbf'], 'python': ['autopep8']}
   let g:ale_fix_on_save=1
   let g:ale_sign_error='⚫'

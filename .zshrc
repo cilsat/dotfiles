@@ -7,13 +7,13 @@ if [ -n "$DISPLAY" ]; then
     xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-material-darker.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-gruvbox-dark-hard.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
     elif [ "$ws" = 3 ];then
         BASE16_THEME="$DOT/base16-rebecca.sh"
     elif [ "$ws" = 4 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-spacemacs.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-materia.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
     # Attach shell to workspace tmux session
@@ -38,13 +38,14 @@ export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
-export PASSWORD_STORE_DIR="$DOT/.password-store"
+export PASSWORD_STORE_DIR="$HOME/.password-store"
 
 # User environment
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
 $HOME/.conda/bin"
+eval "$(pipenv --completion)"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"

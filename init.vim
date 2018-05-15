@@ -118,6 +118,7 @@ Plug 'autozimu/languageclient-neovim',
   \ 'c': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'javascript': ['javascript-typescript-stdio'],
+  \ 'javascript.jsx': ['javascript-typescript-stdio'],
   \ 'php': ['php', expand('~/.config/composer/vendor/felixfbecker/language-server/bin/php-language-server.php')],
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
@@ -126,11 +127,13 @@ Plug 'autozimu/languageclient-neovim',
   let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
   let g:LanguageClient_loadSettings=1
   let g:LanguageClient_diagnosticsEnable=0
-  "let g:LanguageClient_changeThrottle=0.25
+  let g:LanguageClient_changeThrottle=0.1
 " Deoplete Asynchronous completion
 Plug 'shougo/deoplete.nvim',
   \ {'do': ':UpdateRemotePlugins'}
   let g:deoplete#enable_at_startup=1
+  let g:deoplete#num_processes=2
+  let g:deoplete#auto_complete_delay=100
   au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 Plug 'shougo/echodoc.vim'
   let g:echodoc_enable_at_startup=1

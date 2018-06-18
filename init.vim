@@ -12,7 +12,7 @@ set mouse=a                             " Enable mouse usage (all modes)
 set lazyredraw                          " Stop unnecessary rendering
 set noshowmode                          " Hide mode in status line
 set linebreak                           " Break lines on word end
-set encoding=utf8
+set encoding=utf8                       " Character encoding
 " Line numbering and scrolling
 set number                              " Show line number
 set relativenumber                      " Use relative line number
@@ -45,6 +45,7 @@ set shiftwidth=2
 set shiftround                          " rounds number of spaces to indent
 set expandtab
 set autoindent
+set smartindent
 set cindent
 set colorcolumn=80
 set textwidth=79
@@ -90,14 +91,20 @@ Plug 'xuyuanp/nerdtree-git-plugin',     " Git status in nerdtree
   \ {'on': 'NERDTreeToggle'}
 Plug 'jiangmiao/auto-pairs'             " Automatic brackets
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
+Plug 'airblade/vim-gitgutter'           " Git diff in sign column
+  let g:gitgutter_override_sign_column_highlight=0
+  let g:gitgutter_sign_added='▎'
+  let g:gitgutter_sign_removed='▎'
+  let g:gitgutter_sign_modified='▎'
+  let g:gitgutter_sign_modified_removed='▎'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
-Plug '2072/php-indenting-for-vim'       " Better PHP indenting support
 Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
-Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
+"Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
+Plug '2072/vim-syntax-for-php'
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
@@ -119,7 +126,7 @@ Plug 'autozimu/languageclient-neovim',
   \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
   \ 'javascript': ['javascript-typescript-stdio'],
   \ 'javascript.jsx': ['javascript-typescript-stdio'],
-  \ 'php': ['php', expand('~/.config/composer/vendor/felixfbecker/language-server/bin/php-language-server.php')],
+  \ 'php': ['phpls'],
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
   \ }
@@ -129,8 +136,14 @@ Plug 'autozimu/languageclient-neovim',
   let g:LanguageClient_diagnosticsEnable=0
   let g:LanguageClient_changeThrottle=0.1
 " Deoplete Asynchronous completion
-Plug 'shougo/deoplete.nvim',
-  \ {'do': ':UpdateRemotePlugins'}
+if has('nvim')
+  Plug 'shougo/deoplete.nvim',
+    \ {'do': ':UpdateRemotePlugins'}
+else
+  Plug 'shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
   let g:deoplete#enable_at_startup=1
   let g:deoplete#num_processes=2
   let g:deoplete#auto_complete_delay=100
@@ -165,16 +178,17 @@ Plug 'w0rp/ale',                        " Linting for various languages
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['eslint'],
   \ 'php': ['phpcbf'], 'python': ['autopep8']}
   let g:ale_fix_on_save=1
-  let g:ale_sign_error='⚫'
-  let g:ale_sign_warning='⯅'
+  let g:ale_set_highlights=0
+  let g:ale_sign_offset=1
+  let g:ale_sign_error='▎'
+  let g:ale_sign_warning='▎'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
-  let g:indentLine_char='┊'
+  "let g:indentLine_char='┊'
   let g:indentLine_enabled=1
   let g:indentLine_faster=1
-  "let g:indentLine_char='│'
   let g:indentLine_concealcursor=''
 Plug 'mkitt/tabline.vim',               " Formatting for tabs
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
@@ -189,14 +203,13 @@ Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_powerline_fonts=1
   let g:airline_theme='base16'
   let g:airline#extensions#tabline#enabled=1
-  let g:airline#extensions#tabline#tab_nr_type=1
+  "let g:airline#extensions#tabline#tab_nr_type=1
   let g:airline#extensions#tabline#buffer_idx_mode=1
   let g:airline_left_sep=''
   let g:airline_left_alt_sep='│'
   let g:airline_right_sep=''
   let g:airline_right_alt_sep='│'
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
-Plug 'morhetz/gruvbox'
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -215,7 +228,7 @@ let g:indentLine_color_term=18
 " Custom highlight settings
 hi nontext      ctermfg=236 ctermbg=NONE
 hi specialkey   ctermfg=239 ctermbg=NONE
-hi cursorlinenr ctermfg=172 cterm=bold
+hi cursorlinenr ctermfg=172 ctermbg=NONE cterm=bold
 hi linenr       ctermbg=NONE
 hi normal       ctermbg=NONE
 hi comment      cterm=italic
@@ -227,8 +240,13 @@ hi structure    cterm=bold
 hi macro        cterm=bold
 hi keyword      cterm=bold
 hi type         cterm=bold
-hi aleerrorsign ctermfg=01 ctermbg=18
-hi alewarningsign ctermfg=03 ctermbg=18 cterm=bold
+hi signcolumn   ctermbg=NONE
+hi gitgutteradd ctermbg=NONE
+hi gitgutterchange ctermbg=NONE
+hi gitgutterdelete ctermbg=NONE
+hi gitgutterchangedelete ctermbg=NONE
+hi aleerrorsign ctermfg=01
+hi alewarningsign ctermfg=03 cterm=bold
 hi tagbarfoldicon ctermfg=04
 
 
@@ -250,6 +268,11 @@ nmap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nmap <silent> <F4> :call LanguageClient_textDocument_formatting()<CR>
 nmap <silent> <F5> :call LanguageClient_textDocument_rename()<CR>
 
+" Buffer navigation
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprevious<CR>
+nnoremap <leader>ls :buffers<CR>:buffer<Space>
+
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3
@@ -261,7 +284,6 @@ nmap <leader>8 <Plug>AirlineSelectTab8
 nmap <leader>9 <Plug>AirlineSelectTab9
 
 " Vim mappings
-nnoremap <F10> :buffers<CR>:buffer<Space>
 nmap <leader>r :%s/\s\+$//e<CR>
 vmap <leader>y "+y
 nmap <leader>Y "+yg_
@@ -275,7 +297,3 @@ nmap <leader>0 ^
 nmap <esc> :noh<CR>
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
-
-" Buffer navigation
-nmap <C-n> :bnext<CR>
-nmap <C-p> :bprevious<CR>

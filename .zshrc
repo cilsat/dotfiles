@@ -7,7 +7,7 @@ if [ -n "$DISPLAY" ]; then
     xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-gruvbox-dark-hard.sh"
+        BASE16_THEME="$HOME/src/base16-shell/scripts/base16-oceanicnext.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$HOME/src/base16-shell/scripts/base16-ocean.sh"
     elif [ "$ws" = 3 ];then

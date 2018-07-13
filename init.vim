@@ -33,9 +33,9 @@ set infercase
 set hlsearch
 set incsearch                           " Incremental search
 set gdefault                            " Add /g flag on :s by default
-set path+=**                            " Recursive 'fuzzy' find
-set wildmode=longest,list,full          " Lazy file name tabe completion
-"set wildmenu                            " Display all matching files on tab
+set path+=.,**                            " Recursive 'fuzzy' find
+set wildmode=list:longest,list:full     " Lazy file name tabe completion
+set wildmenu                            " Display all matching files on tab
 set wildignorecase
 " Indentation settings
 set backspace=indent,eol,start          " allow bs over autoindent, eol, start
@@ -103,10 +103,10 @@ Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
-"Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
-Plug '2072/vim-syntax-for-php'
+Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
+  let g:pandoc#formatting#mode='hA'
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
@@ -177,7 +177,7 @@ Plug 'w0rp/ale',                        " Linting for various languages
   let g:ale_fixers = {
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['eslint'],
   \ 'php': ['phpcbf'], 'python': ['autopep8']}
-  let g:ale_fix_on_save=1
+  let g:ale_fix_on_save=0
   let g:ale_set_highlights=0
   let g:ale_sign_offset=1
   let g:ale_sign_error='▎'
@@ -221,8 +221,10 @@ call plug#end()
 
 " INTERFACE/COLORS
 set background=dark
-let base16colorspace=256                " Set base16-colorspace
-colorscheme base16-default-dark         " Use base16 shell colorscheme
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 let g:indentLine_color_term=18
 
 " Custom highlight settings
@@ -255,6 +257,7 @@ hi tagbarfoldicon ctermfg=04
 nmap <F1> :NERDTreeToggle<CR>
 nmap <F2> :TagbarToggle<CR>
 nmap <F3> :Gblame<CR>
+nmap <F4> :ALEFix<CR>
 
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -265,7 +268,6 @@ xmap <C-l> <Plug>(neosnippet_expand_target)
 
 nmap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nmap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nmap <silent> <F4> :call LanguageClient_textDocument_formatting()<CR>
 nmap <silent> <F5> :call LanguageClient_textDocument_rename()<CR>
 
 " Buffer navigation
@@ -292,6 +294,9 @@ nmap <leader>yy "+yy
 nmap <leader>p "+p
 nmap <leader>P "+P
 nmap <leader>pp "+P
+
+nnoremap <leader>e :e **/*
+nnoremap <leader>v :vs **/*
 
 nmap <leader>0 ^
 nmap <esc> :noh<CR>

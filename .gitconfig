@@ -1,9 +1,9 @@
 # This is Git's per-user configuration file.
 [user]
-	name = Cil Satriawan
-	email = cil.satriawan@gmail.com
+  name = Cil Satriawan
+  email = cil.satriawan@gmail.com
 [core]
-	autocrlf = input
+  autocrlf = input
 [alias]
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
@@ -13,7 +13,7 @@
   interactive = auto
   status = auto
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f

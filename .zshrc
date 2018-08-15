@@ -57,7 +57,7 @@ export LESS=' -R '
 
 # Aliases
 alias nv="nvim"
-alias pac="pacaur"
+alias pac="yay"
 alias op="xdg-open"
 alias sc="sudo systemctl"
 

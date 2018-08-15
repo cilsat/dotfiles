@@ -122,8 +122,12 @@ Plug 'ervandew/supertab'
 Plug 'autozimu/languageclient-neovim',
   \ {'branch': 'next', 'do': 'bash install.sh'}
   let g:LanguageClient_serverCommands = {
-  \ 'c': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
-  \ 'cpp': ['cquery', '--language-server', '--log-file=/tmp/cq.log'],
+  \ 'c': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
+  \  '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
+  \  "cacheFormat": "msgpack"}'],
+  \ 'cpp': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
+  \  '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
+  \  "cacheFormat": "msgpack"}'],
   \ 'javascript': ['javascript-typescript-stdio'],
   \ 'javascript.jsx': ['javascript-typescript-stdio'],
   \ 'php': ['phpls'],

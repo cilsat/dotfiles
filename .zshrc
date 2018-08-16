@@ -1,6 +1,11 @@
+# Change default zim location
+export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+
+# Start zim
+[[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
 export HOME=/home/cilsat
 export DOT=$HOME/.config/dotfiles
-export BASE16_SHELL="$HOME/src/base16/base16-shell/"
+export BASE16_SHELL="$HOME/src/base16/base16-shell"
 
 # Check for Display
 if [ -n "$DISPLAY" ]; then
@@ -11,7 +16,7 @@ if [ -n "$DISPLAY" ]; then
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
             eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-ocean.sh"
     elif [ "$ws" = 3 ];then
@@ -57,7 +62,7 @@ export LESS=' -R '
 
 # Aliases
 alias nv="nvim"
-alias pac="yay"
+alias pac="pikaur"
 alias op="xdg-open"
 alias sc="sudo systemctl"
 

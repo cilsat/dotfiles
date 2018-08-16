@@ -70,7 +70,7 @@ endif
 " PLUGINS & SETTINGS
 " Auto install plug if not found
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
         \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   augroup PLUG
     au!
@@ -78,7 +78,7 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
   augroup END
 endif
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugs')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'scrooloose/nerdtree',             " Filesystem navigator
@@ -123,11 +123,11 @@ Plug 'autozimu/languageclient-neovim',
   \ {'branch': 'next', 'do': 'bash install.sh'}
   let g:LanguageClient_serverCommands = {
   \ 'c': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
-  \  '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
-  \  "cacheFormat": "msgpack"}'],
+  \   '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
+  \   "cacheFormat": "msgpack"}'],
   \ 'cpp': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
-  \  '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
-  \  "cacheFormat": "msgpack"}'],
+  \   '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
+  \   "cacheFormat": "msgpack"}'],
   \ 'javascript': ['javascript-typescript-stdio'],
   \ 'javascript.jsx': ['javascript-typescript-stdio'],
   \ 'php': ['phpls'],
@@ -225,9 +225,11 @@ call plug#end()
 
 " INTERFACE/COLORS
 set background=dark
+let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
   source ~/.vimrc_background
+else
+  colorscheme base16-default-dark
 endif
 let g:indentLine_color_term=18
 

@@ -10,7 +10,7 @@ export BASE16_SHELL="$HOME/src/base16/base16-shell"
 # Check for Display
 if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
-    xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
+    # xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     [ -n "$PS1" ] && \
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
@@ -53,8 +53,10 @@ export PASSWORD_STORE_DIR="$HOME/.password-store"
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.conda/bin"
+$HOME/.local/share/conda/bin"
 eval "$(pipenv --completion)"
+# GTK Qt theme integration
+export QT_QPA_PLATFORMTHEME="gnome"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"

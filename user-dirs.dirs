@@ -1,0 +1,24 @@
+# This file is written by xdg-user-dirs-update
+# If you want to change or add directories, just edit the line you're
+# interested in. All local changes will be retained on the next run.
+# Format is XDG_xxx_DIR="$HOME/yyy", where yyy is a shell-escaped
+# homedir-relative path, or XDG_xxx_DIR="/yyy", where /yyy is an
+# absolute path. No other format is supported.
+#
+# dunno what this is going to be used for yet
+XDG_DESKTOP_DIR="$HOME/Desktop"
+
+# etc is for disposable downloads
+# non-disposable documents should be stored elsewhere
+XDG_DOWNLOAD_DIR="$HOME/tmp"
+
+# etc is for more permanent files
+XDG_DOCUMENTS_DIR="$HOME/etc/docs"
+XDG_PICTURES_DIR="$HOME/etc/pics"
+XDG_VIDEOS_DIR="$HOME/etc/vids"
+XDG_MUSIC_DIR="$HOME/etc/music"
+
+XDG_TEMPLATES_DIR="$HOME/"
+
+# share is for cloud-synced storage, google drive in this case
+XDG_PUBLICSHARE_DIR="$HOME/share"

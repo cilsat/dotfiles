@@ -106,7 +106,7 @@ Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
 Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
-  let g:pandoc#formatting#mode='hA'
+  let g:pandoc#formatting#mode='ha'
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview

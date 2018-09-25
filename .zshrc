@@ -18,7 +18,7 @@ if [ -n "$DISPLAY" ]; then
     if [ "$ws" = 1 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
     elif [ "$ws" = 2 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-ocean.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-material-palenight.sh"
     elif [ "$ws" = 3 ];then
         BASE16_THEME="$DOT/base16-rebecca.sh"
     elif [ "$ws" = 4 ];then
@@ -48,6 +48,8 @@ export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$HOME/.password-store"
+# For kwallet ssh integration
+export SSH_ASKPASS="ksshaskpass"
 
 # User environment
 # Path to composer bin needed for vim php completion: composer global require
@@ -56,7 +58,7 @@ export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
 $HOME/.local/share/conda/bin"
 eval "$(pipenv --completion)"
 # GTK Qt theme integration
-export QT_QPA_PLATFORMTHEME="gnome"
+#export QT_QPA_PLATFORMTHEME="gnome"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"

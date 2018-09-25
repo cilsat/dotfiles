@@ -99,6 +99,7 @@ Plug 'airblade/vim-gitgutter'           " Git diff in sign column
   let g:gitgutter_sign_modified_removed='▎'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
+Plug 'tpope/vim-obsession'              " Save session buffers and panes
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
@@ -130,8 +131,8 @@ Plug 'autozimu/languageclient-neovim',
   \   "cacheFormat": "msgpack"}'],
   \ 'javascript': ['javascript-typescript-stdio'],
   \ 'javascript.jsx': ['javascript-typescript-stdio'],
-  \ 'php': ['phpls'],
-  \ 'python': ['pyls'],
+  \ 'php': ['php', '/home/cilsat/.config/composer/vendor/bin/php-language-server.php'],
+  \ 'python': ['pyls', '--log-file', '/tmp/pyls.log'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
   \ }
   set omnifunc=LanguageClient#complete
@@ -162,8 +163,6 @@ Plug 'majutsushi/tagbar',
   let g:tagbar_compact=1
   let g:tagbar_sort=0
   let g:tagbar_iconchars = ['▸', '▾']
-Plug 'vim-php/tagbar-phpctags.vim',     " Display PHP ctags with phpctags
-  \ {'on': 'TagbarToggle'}
 " Snippets
 Plug 'shougo/neosnippet'                " Snippet engine
   let g:neosnippet#expand_word_boundary=1
@@ -180,7 +179,7 @@ Plug 'w0rp/ale',                        " Linting for various languages
   \ 'php': ['phpcs'], 'python': ['pycodestyle']}
   let g:ale_fixers = {
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['eslint'],
-  \ 'php': ['phpcbf'], 'python': ['autopep8']}
+  \ 'php': ['phpcbf'], 'python': ['yapf']}
   let g:ale_fix_on_save=0
   let g:ale_set_highlights=0
   let g:ale_sign_offset=1
@@ -209,6 +208,7 @@ Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline#extensions#tabline#enabled=1
   "let g:airline#extensions#tabline#tab_nr_type=1
   let g:airline#extensions#tabline#buffer_idx_mode=1
+  let g:airline#extensions#tagbar#enabled=1
   let g:airline_left_sep=''
   let g:airline_left_alt_sep='│'
   let g:airline_right_sep=''
@@ -272,8 +272,9 @@ imap <C-l> <Plug>(neosnippet_expand_or_jump)
 smap <C-l> <Plug>(neosnippet_expand_or_jump)
 xmap <C-l> <Plug>(neosnippet_expand_target)
 
-nmap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nmap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nmap <leader>jj :call LanguageClient_textDocument_hover()<CR>
+nmap <leader>dd :call LanguageClient_textDocument_definition()<CR>
+nmap <leader>ii :call LanguageClient_textDocument_implementation()<CR>
 nmap <silent> <F5> :call LanguageClient_textDocument_rename()<CR>
 
 " Buffer navigation
@@ -303,6 +304,7 @@ nmap <leader>pp "+P
 
 nnoremap <leader>e :e **/*
 nnoremap <leader>v :vs **/*
+nnoremap <leader>d :bp\|bd #<CR>
 
 nmap <leader>0 ^
 nmap <esc> :noh<CR>

@@ -13,12 +13,15 @@ set lazyredraw                          " Stop unnecessary rendering
 set noshowmode                          " Hide mode in status line
 set linebreak                           " Break lines on word end
 set encoding=utf8                       " Character encoding
+set iskeyword-=_                        " Set _ as word separator
 " Line numbering and scrolling
 set number                              " Show line number
-set relativenumber                      " Use relative line number
+set relativenumber                    " Use relative line number
 set cursorline                          " Highlight current cursor line
 set scrolloff=2                         " Keep 2 lines around cursorline
-set timeoutlen=250                      " Fixes slow mode changes
+set timeoutlen=300                      " Fixes slow mode changes
+syntax sync minlines=300
+
 " Undo
 set undofile                            " Saves undo tree to file
 set undodir=~/.config/nvim/undo         " Directory to save undo file
@@ -93,10 +96,10 @@ Plug 'jiangmiao/auto-pairs'             " Automatic brackets
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'airblade/vim-gitgutter'           " Git diff in sign column
   let g:gitgutter_override_sign_column_highlight=0
-  let g:gitgutter_sign_added='▎'
-  let g:gitgutter_sign_removed='▎'
-  let g:gitgutter_sign_modified='▎'
-  let g:gitgutter_sign_modified_removed='▎'
+  let g:gitgutter_sign_added='▍'
+  let g:gitgutter_sign_removed='▍'
+  let g:gitgutter_sign_modified='▍'
+  let g:gitgutter_sign_modified_removed='▍'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-obsession'              " Save session buffers and panes
@@ -104,7 +107,8 @@ Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
-Plug 'sheerun/vim-polyglot'             " Syntax hihglihting for most langs
+Plug 'sheerun/vim-polyglot'             " Syntax highlihting for most langs
+  let g:polyglot_disable=['php']
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
   let g:pandoc#formatting#mode='ha'
@@ -122,6 +126,11 @@ Plug 'ervandew/supertab'
 " The required servers must be installed separately
 Plug 'autozimu/languageclient-neovim',
   \ {'branch': 'next', 'do': 'bash install.sh'}
+  set omnifunc=LanguageClient#complete
+  let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
+  let g:LanguageClient_loadSettings=1
+  let g:LanguageClient_diagnosticsEnable=0
+  let g:LanguageClient_changeThrottle=0.25
   let g:LanguageClient_serverCommands = {
   \ 'c': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
   \   '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
@@ -134,12 +143,8 @@ Plug 'autozimu/languageclient-neovim',
   \ 'php': ['php', '/home/cilsat/.config/composer/vendor/bin/php-language-server.php'],
   \ 'python': ['pyls', '--log-file', '/tmp/pyls.log'],
   \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+  \ 'go': ['go-langserver']
   \ }
-  set omnifunc=LanguageClient#complete
-  let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
-  let g:LanguageClient_loadSettings=1
-  let g:LanguageClient_diagnosticsEnable=0
-  let g:LanguageClient_changeThrottle=0.1
 " Deoplete Asynchronous completion
 if has('nvim')
   Plug 'shougo/deoplete.nvim',
@@ -151,7 +156,7 @@ else
 endif
   let g:deoplete#enable_at_startup=1
   let g:deoplete#num_processes=2
-  let g:deoplete#auto_complete_delay=100
+  let g:deoplete#auto_complete_delay=250
   au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 Plug 'shougo/echodoc.vim'
   let g:echodoc_enable_at_startup=1
@@ -164,7 +169,7 @@ Plug 'majutsushi/tagbar',
   let g:tagbar_sort=0
   let g:tagbar_iconchars = ['▸', '▾']
 " Snippets
-Plug 'shougo/neosnippet'                " Snippet engine
+Plug 'shougo/neosnippet.vim'                " Snippet engine
   let g:neosnippet#expand_word_boundary=1
 Plug 'shougo/neosnippet-snippets'       " Basic snippets
 " Ale
@@ -175,16 +180,16 @@ Plug 'w0rp/ale',                        " Linting for various languages
 " Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
 " Requires squizlabs/php_codesniffer through composer and prettier through npm
   let g:ale_linters = {
-  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'javascript': ['eslint'],
-  \ 'php': ['phpcs'], 'python': ['pycodestyle']}
+  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'go': ['gofmt'],
+  \ 'javascript': ['eslint'], 'php': ['phpcs'], 'python': ['pycodestyle']}
   let g:ale_fixers = {
-  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'javascript': ['eslint'],
-  \ 'php': ['phpcbf'], 'python': ['yapf']}
+  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'go': ['gofmt', 'goimports'],
+  \ 'javascript': ['eslint'], 'php': ['phpcbf'], 'python': ['yapf']}
   let g:ale_fix_on_save=0
   let g:ale_set_highlights=0
   let g:ale_sign_offset=1
-  let g:ale_sign_error='▎'
-  let g:ale_sign_warning='▎'
+  let g:ale_sign_error='▍'
+  let g:ale_sign_warning='▍'
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
@@ -268,9 +273,9 @@ nmap <F4> :ALEFix<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-imap <C-l> <Plug>(neosnippet_expand_or_jump)
-smap <C-l> <Plug>(neosnippet_expand_or_jump)
-xmap <C-l> <Plug>(neosnippet_expand_target)
+imap <C-;> <Plug>(neosnippet_expand_or_jump)
+smap <C-;> <Plug>(neosnippet_expand_or_jump)
+xmap <C-;> <Plug>(neosnippet_expand_target)
 
 nmap <leader>jj :call LanguageClient_textDocument_hover()<CR>
 nmap <leader>dd :call LanguageClient_textDocument_definition()<CR>

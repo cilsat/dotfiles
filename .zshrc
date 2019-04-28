@@ -16,11 +16,11 @@ if [ -n "$DISPLAY" ]; then
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
             eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-dusk.sh"
     elif [ "$ws" = 2 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-material-palenight.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
-        BASE16_THEME="$DOT/base16-rebecca.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-ocean.sh"
     elif [ "$ws" = 4 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-materia.sh"
     fi
@@ -52,11 +52,14 @@ export PASSWORD_STORE_DIR="$HOME/.password-store"
 export SSH_ASKPASS="ksshaskpass"
 
 # User environment
+# Go path
+export GOPATH="$HOME/.local/share/go"
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.local/share/conda/bin"
-eval "$(pipenv --completion)"
+$HOME/.local/share/conda/bin:$HOME/.local/share/go/bin"
+# Pipenv completions: this is slow!
+#eval "$(pipenv --completion)"
 # GTK Qt theme integration
 #export QT_QPA_PLATFORMTHEME="gnome"
 
@@ -66,7 +69,7 @@ export LESS=' -R '
 
 # Aliases
 alias nv="nvim"
-alias pac="pikaur"
+alias pac="yay"
 alias op="xdg-open"
 alias sc="sudo systemctl"
 
@@ -74,3 +77,19 @@ alias sc="sudo systemctl"
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
   source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
 fi
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/cilsat/.local/share/conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh" ]; then
+        . "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/cilsat/.local/share/conda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

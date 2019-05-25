@@ -13,10 +13,10 @@ set lazyredraw                          " Stop unnecessary rendering
 set noshowmode                          " Hide mode in status line
 set linebreak                           " Break lines on word end
 set encoding=utf8                       " Character encoding
-set iskeyword-=_                        " Set _ as word separator
+"set iskeyword-=_                        " Set _ as word separator
 " Line numbering and scrolling
 set number                              " Show line number
-set relativenumber                    " Use relative line number
+set relativenumber                      " Use relative line number
 set cursorline                          " Highlight current cursor line
 set scrolloff=2                         " Keep 2 lines around cursorline
 set timeoutlen=300                      " Fixes slow mode changes
@@ -36,7 +36,7 @@ set infercase
 set hlsearch
 set incsearch                           " Incremental search
 set gdefault                            " Add /g flag on :s by default
-set path+=.,**                            " Recursive 'fuzzy' find
+set path+=.,**                          " Recursive 'fuzzy' find
 set wildmode=list:longest,list:full     " Lazy file name tabe completion
 set wildmenu                            " Display all matching files on tab
 set wildignorecase
@@ -71,7 +71,7 @@ if has('nvim')
 endif
 
 " PLUGINS & SETTINGS
-" Auto install plug if not found
+" Auto install Plug if not found
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
         \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -84,17 +84,11 @@ endif
 call plug#begin('~/.local/share/nvim/plugs')
 " Functional
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
-Plug 'scrooloose/nerdtree',             " Filesystem navigator
-  \ {'on': 'NERDTreeToggle'}
-  let NERDTreeWinSize=25
-  let NERDTreeSortOrder=['\/$', '\.c$', '\.cc$', '\.h', '*', '\.*$']
-  let NERDTreeChDirMode=2
-  let NERDTreeMinimalUI=1
-Plug 'xuyuanp/nerdtree-git-plugin',     " Git status in nerdtree
-  \ {'on': 'NERDTreeToggle'}
 Plug 'jiangmiao/auto-pairs'             " Automatic brackets
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'airblade/vim-gitgutter'           " Git diff in sign column
+  let g:gitgutter_realtime=0
+  let g:gitgutter_eager=0
   let g:gitgutter_override_sign_column_highlight=0
   let g:gitgutter_sign_added='▍'
   let g:gitgutter_sign_removed='▍'
@@ -118,62 +112,25 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \ {'on': 'LLPStartPreview'}
 
 " Completion & Coding
-" Supertab to prevent CTS
-Plug 'ervandew/supertab'
-  let g:SuperTabMappingForward='<s-tab>'
-  let g:SuperTabMappingBackward='<tab>'
-" Language Server Protocol
-" The required servers must be installed separately
-Plug 'autozimu/languageclient-neovim',
-  \ {'branch': 'next', 'do': 'bash install.sh'}
-  set omnifunc=LanguageClient#complete
-  let g:LanguageClient_settingsPath=expand('~/.config/nvim/settings.json')
-  let g:LanguageClient_loadSettings=1
-  let g:LanguageClient_diagnosticsEnable=0
-  let g:LanguageClient_changeThrottle=0.25
-  let g:LanguageClient_serverCommands = {
-  \ 'c': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
-  \   '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
-  \   "cacheFormat": "msgpack"}'],
-  \ 'cpp': ['cquery', '--language-server', '--log-file=~/.cache/cquery/cq.log',
-  \   '--init={"cacheDirectory": "/home/cilsat/.cache/cquery",
-  \   "cacheFormat": "msgpack"}'],
-  \ 'javascript': ['javascript-typescript-stdio'],
-  \ 'javascript.jsx': ['javascript-typescript-stdio'],
-  \ 'php': ['php', '/home/cilsat/.config/composer/vendor/bin/php-language-server.php'],
-  \ 'python': ['pyls', '--log-file', '/tmp/pyls.log'],
-  \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-  \ 'go': ['go-langserver']
-  \ }
-" Deoplete Asynchronous completion
-if has('nvim')
-  Plug 'shougo/deoplete.nvim',
-    \ {'do': ':UpdateRemotePlugins'}
-else
-  Plug 'shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-  let g:deoplete#enable_at_startup=1
-  let g:deoplete#num_processes=2
-  let g:deoplete#auto_complete_delay=250
-  au InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+Plug 'neoclide/coc.nvim',               " Code completion and navigation
+  \ {'do': { -> coc#util#install() }}
+  let g:markdown_fenced_languages = [
+  \ 'html', 'vim', 'ruby', 'bash=sh', 'rust', 'go', 'c', 'cpp']
+  let g:coc_global_extensions = [
+  \ 'coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver','coc-tslint',
+  \ 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-python', 'coc-yaml',
+  \ 'coc-snippets']
+  set updatetime=300                    " Smaller updatetime for CursorHold
+  set shortmess+=c                      " Don't show |ins-completion-menu|
 Plug 'shougo/echodoc.vim'
   let g:echodoc_enable_at_startup=1
-" Tagbar displays tags for various languages
-Plug 'majutsushi/tagbar',
-  \ {'on': 'TagbarToggle'}
-  let g:tagbar_width=25
-  let g:tagbar_autofocus=1
-  let g:tagbar_compact=1
-  let g:tagbar_sort=0
-  let g:tagbar_iconchars = ['▸', '▾']
-" Snippets
-Plug 'shougo/neosnippet.vim'                " Snippet engine
-  let g:neosnippet#expand_word_boundary=1
-Plug 'shougo/neosnippet-snippets'       " Basic snippets
-" Ale
-Plug 'w0rp/ale',                        " Linting for various languages
+Plug 'liuchengxu/vista.vim',            " Visual LSP symbol viewer
+  \ {'on': 'Vista!!'}
+  let g:vista#renderer#enable_icon=1
+  let g:vista_sidebar_width=30
+  let g:vista_default_executive='coc'
+  let g:vista_finder_alternative_executives=['ctags']
+Plug 'w0rp/ale',                        " Code Linting and fixing
   \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
   let g:ale_lint_on_text_changed=0
   let g:ale_lint_on_insert_leave=1
@@ -201,18 +158,17 @@ Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
 Plug 'mkitt/tabline.vim',               " Formatting for tabs
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
   \ {'do': ':Tmuxline airline tmux'}
-let g:tmuxline_separators = {
-  \ 'left': '',
-  \ 'left_alt': '│',
-  \ 'right': '',
-  \ 'right_alt': '│',
-  \ }
+  let g:tmuxline_separators = {
+  \ 'left': '', 'left_alt': '│', 'right': '', 'right_alt': '│'}
 Plug 'vim-airline/vim-airline'          " Custom status line
   let g:airline_powerline_fonts=1
   let g:airline_theme='base16'
   let g:airline#extensions#tabline#enabled=1
-  "let g:airline#extensions#tabline#tab_nr_type=1
   let g:airline#extensions#tabline#buffer_idx_mode=1
+  let g:airline#extensions#tabline#buffers_label='b'
+  let g:airline#extensions#tabline#tabs_label = 't'
+  let g:airline#extensions#tabline#overflow_marker = '❯'
+  let g:airline#extensions#tabline#fnametruncate=15
   let g:airline#extensions#tagbar#enabled=1
   let g:airline_left_sep=''
   let g:airline_left_alt_sep='│'
@@ -221,10 +177,9 @@ Plug 'vim-airline/vim-airline'          " Custom status line
 Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
-  let g:WebDevIconsUnicodeDecorateFolderNodes=1
-  let g:DevIconsEnableFoldersOpenClose=1
+"Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
+"  let g:WebDevIconsUnicodeDecorateFolderNodes=1
+"  let g:DevIconsEnableFoldersOpenClose=1
 call plug#end()
 
 
@@ -256,8 +211,8 @@ hi type         cterm=bold
 hi signcolumn   ctermbg=NONE
 hi gitgutteradd ctermbg=NONE
 hi gitgutterchange ctermbg=NONE
-hi gitgutterdelete ctermbg=NONE
-hi gitgutterchangedelete ctermbg=NONE
+hi gitgutterdelete ctermfg=11 ctermbg=NONE
+hi gitgutterchangedelete ctermfg=11 ctermbg=NONE
 hi aleerrorsign ctermfg=01
 hi alewarningsign ctermfg=03 cterm=bold
 hi tagbarfoldicon ctermfg=04
@@ -266,7 +221,7 @@ hi tagbarfoldicon ctermfg=04
 " CUSTOM KEY MAPPINGS
 " Plugin key mappings
 nmap <F1> :NERDTreeToggle<CR>
-nmap <F2> :TagbarToggle<CR>
+nmap <F2> :Vista!!<CR>
 nmap <F3> :Gblame<CR>
 nmap <F4> :ALEFix<CR>
 
@@ -277,16 +232,43 @@ imap <C-;> <Plug>(neosnippet_expand_or_jump)
 smap <C-;> <Plug>(neosnippet_expand_or_jump)
 xmap <C-;> <Plug>(neosnippet_expand_target)
 
-nmap <leader>jj :call LanguageClient_textDocument_hover()<CR>
-nmap <leader>dd :call LanguageClient_textDocument_definition()<CR>
-nmap <leader>ii :call LanguageClient_textDocument_implementation()<CR>
-nmap <silent> <F5> :call LanguageClient_textDocument_rename()<CR>
+" coc.nvim functions and mappings
+" Use <Tab> and <S-Tab> to navigate completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Use `lp` and `ln` for navigate diagnostics
+nmap <silent> <leader>dp <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>dn <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> <leader>dd <Plug>(coc-definition)
+nmap <silent> <leader>dt <Plug>(coc-type-definition)
+nmap <silent> <leader>di <Plug>(coc-implementation)
+nmap <silent> <leader>df <Plug>(coc-references)
+
+" Remap for rename current word
+nmap <leader>lr <Plug>(coc-rename)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Buffer navigation
-nmap <C-n> :bnext<CR>
-nmap <C-p> :bprevious<CR>
-nnoremap <leader>ls :buffers<CR>:buffer<Space>
-
+nnoremap <leader>b :buffers<CR>:buffer<Space>
+nmap <C-n> <Plug>AirlineSelectNextTab
+nmap <C-p> <Plug>AirlineSelectPrevTab
 nmap <leader>1 <Plug>AirlineSelectTab1
 nmap <leader>2 <Plug>AirlineSelectTab2
 nmap <leader>3 <Plug>AirlineSelectTab3

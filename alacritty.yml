@@ -27,7 +27,7 @@ window:
   # by DPI and the specified value is always added at both opposing sides.
   padding:
     x: 0
-    y: 2
+    y: 0
 
   # Window decorations
   #
@@ -86,27 +86,27 @@ tabspaces: 4
 font:
   # Normal (roman) font face
   normal:
-    family: Input Mono Condensed
+    family: Input Mono Narrow
     # family: Roboto Mono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Medium
 
   # Bold font face
   bold:
-    family: Input Mono Condensed
+    family: Input Mono Narrow
     # family: Roboto Mono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Bold
 
   # Italic font face
   italic:
-    family: Input Mono Condensed
+    family: Input Mono Narrow
     # family: Roboto Mono Nerd Font
     # The `style` can be specified to pick a specific face.
     style: Medium Italic
 
   # Point size
-  size: 6.5
+  size: 6.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -125,10 +125,10 @@ font:
   # screens and make reading text a little easier.
   # On X11 it is possible to change the DPI for each instance of alacritty by using
   # `WINIT_HIDPI_FACTOR=1.0 alacritty` to scale the font.
-  #scale_with_dpi: true
+  #scale_with_dpi: false
 
 # Display the time it takes to redraw each frame.
-render_timer: false
+#render_timer: false
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
@@ -258,7 +258,7 @@ mouse:
   triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
-  hide_when_typing: false
+  hide_when_typing: true
 
   url:
     # URL launcher

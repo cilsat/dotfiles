@@ -54,14 +54,13 @@ export SSH_ASKPASS="ksshaskpass"
 # User environment
 # Go path
 export GOPATH="$HOME/.local/share/go"
+# PyEnv
+export PYENV_ROOT="$HOME/.local/share/pyenv"
+eval "$(pyenv init -)"
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
-export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.local/share/conda/bin:$HOME/.local/share/go/bin"
-# Pipenv completions: this is slow!
-#eval "$(pipenv --completion)"
-# GTK Qt theme integration
-#export QT_QPA_PLATFORMTHEME="gnome"
+export PATH="$HOME/.local/bin::$PATH:$HOME/.config/composer/vendor/bin:\
+  $HOME/.local/share/go/bin"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
@@ -80,16 +79,15 @@ fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/cilsat/.local/share/conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh" ]; then
-        . "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/cilsat/.local/share/conda/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+#__conda_setup="$('/home/cilsat/.local/share/conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+#else
+#    if [ -f "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh" ]; then
+#        . "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh"
+#    else
+#        export PATH="$PATH:/home/cilsat/.local/share/conda/bin"
+#    fi
+#fi
+#unset __conda_setup
 # <<< conda initialize <<<
-

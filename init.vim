@@ -1,8 +1,3 @@
-" STARTUP
-" Open file from previous buffer position
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-
 " VIM SETTINGS
 " General settings
 let mapleader=" "                       " Set leader key
@@ -13,6 +8,7 @@ set lazyredraw                          " Stop unnecessary rendering
 set noshowmode                          " Hide mode in status line
 set linebreak                           " Break lines on word end
 set encoding=utf8                       " Character encoding
+set showtabline=2
 "set iskeyword-=_                        " Set _ as word separator
 " Line numbering and scrolling
 set number                              " Show line number
@@ -58,11 +54,16 @@ set nofoldenable
 set foldnestmax=5
 set foldlevel=2
 " Autocommands
+augroup GENERAL
+au!
+" Open file from previous buffer position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
 au FileType php setlocal shiftwidth=4 tabstop=4
 au FileType python setlocal shiftwidth=4 tabstop=4
+augroup END
 " Neovim specific settings
 if has('nvim')
   let g:python_host_prog='/usr/bin/python2'
@@ -95,8 +96,9 @@ Plug 'airblade/vim-gitgutter'           " Git diff in sign column
   let g:gitgutter_sign_modified='▍'
   let g:gitgutter_sign_modified_removed='▍'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
-Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
+Plug 'tpope/vim-markdown'               " Fancy highlihting for markdown
 Plug 'tpope/vim-obsession'              " Save session buffers and panes
+Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
@@ -115,7 +117,7 @@ Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
 Plug 'neoclide/coc.nvim',               " Code completion and navigation
   \ {'do': { -> coc#util#install() }}
   let g:markdown_fenced_languages = [
-  \ 'html', 'vim', 'ruby', 'bash=sh', 'rust', 'go', 'c', 'cpp']
+  \ 'html', 'vim', 'ruby', 'bash=sh', 'rust', 'go', 'python', 'c', 'cpp']
   let g:coc_global_extensions = [
   \ 'coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver','coc-tslint',
   \ 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-python', 'coc-yaml',
@@ -131,14 +133,14 @@ Plug 'liuchengxu/vista.vim',            " Visual LSP symbol viewer
   let g:vista_default_executive='coc'
   let g:vista_finder_alternative_executives=['ctags']
 Plug 'w0rp/ale',                        " Code Linting and fixing
-  \ {'for': ['c', 'cpp', 'python', 'php', 'javascript']}
+  \ {'for': ['c', 'cpp', 'php', 'javascript']}
   let g:ale_lint_on_text_changed=0
-  let g:ale_lint_on_insert_leave=1
+  let g:ale_lint_on_insert_leave=0
 " Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
 " Requires squizlabs/php_codesniffer through composer and prettier through npm
-  let g:ale_linters = {
-  \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'go': ['gofmt'],
-  \ 'javascript': ['eslint'], 'php': ['phpcs'], 'python': ['pycodestyle']}
+" let g:ale_linters = {
+" \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'go': ['gofmt'],
+" \ 'javascript': ['eslint'], 'php': ['phpcs'], 'python': ['pycodestyle']}
   let g:ale_fixers = {
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'go': ['gofmt', 'goimports'],
   \ 'javascript': ['eslint'], 'php': ['phpcbf'], 'python': ['yapf']}
@@ -151,33 +153,60 @@ Plug 'w0rp/ale',                        " Code Linting and fixing
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
-  "let g:indentLine_char='┊'
+  let g:indentLine_char='┊'
   let g:indentLine_enabled=1
   let g:indentLine_faster=1
   let g:indentLine_concealcursor=''
-Plug 'mkitt/tabline.vim',               " Formatting for tabs
+Plug 'mike-hearn/base16-vim-lightline'
+Plug 'mengelbrecht/lightline-bufferline'
+  let g:lightline#bufferline#show_number=2
+  let g:lightline#bufferline#shorten_path=1
+  let g:lightline#bufferline#filename_modifier = ':~:.'
+  let g:lightline#bufferline#enable_devicons=1
+  let g:lightline#bufferline#number_map = {
+  \ 0: '🄌', 1: '➊', 2: '➋', 3: '➌', 4: '➍',
+  \ 5: '➎', 6: '➏', 7: '➐', 8: '➑', 9: '➒',
+  \ 10: '➓', 11: '⓫', 12: '⓬', 13: '⓭', 14: '⓮',
+  \ 15: '⓯', 16: '⓰', 17: '⓱', 18: '⓲', 19: '⓳'}
+  let g:lightline#bufferline#unicode_symbols=1
+Plug 'itchyny/lightline.vim'
+  let g:lightline = {
+  \ 'colorscheme': 'base16_default_dark',
+  \ 'active': {
+  \   'left': [['mode', 'paste'], ['readonly', 'fugitive'],
+  \       ['bufferinfo', 'filename']],
+  \   'right': [['colinfo', 'percent'], ['filetype'],
+  \       ['fileformat']]},
+  \ 'tabline': {
+  \   'left': [['buffers']],
+  \   'right': [['close']]},
+  \ 'tabline_subseparator': {'left': '', 'right': ''},
+  \ 'component_expand': {'buffers': 'lightline#bufferline#buffers'},
+  \ 'component_type': {'buffers': 'tabsel'},
+  \ 'component_function': {
+  \   'cocstatus': 'coc#status',
+  \   'readonly': 'LightlineReadonly',
+  \   'fugitive': 'LightlineFugitive'}
+  \ }
+	function! LightlineReadonly()
+		return &readonly ? '' : ''
+	endfunction
+	function! LightlineFugitive()
+		if exists('*fugitive#head')
+			let branch = fugitive#head()
+			return branch !=# '' ? ''.branch : ''
+		endif
+		return ''
+	endfunction
+  let g:lightline.enable={'statusline': 1, 'tabline': 1}
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
   \ {'do': ':Tmuxline airline tmux'}
   let g:tmuxline_separators = {
   \ 'left': '', 'left_alt': '│', 'right': '', 'right_alt': '│'}
-Plug 'vim-airline/vim-airline'          " Custom status line
-  let g:airline_powerline_fonts=1
-  let g:airline_theme='base16'
-  let g:airline#extensions#tabline#enabled=1
-  let g:airline#extensions#tabline#buffer_idx_mode=1
-  let g:airline#extensions#tabline#buffers_label='b'
-  let g:airline#extensions#tabline#tabs_label = 't'
-  let g:airline#extensions#tabline#overflow_marker = '❯'
-  let g:airline#extensions#tabline#fnametruncate=15
-  let g:airline#extensions#tagbar#enabled=1
-  let g:airline_left_sep=''
-  let g:airline_left_alt_sep='│'
-  let g:airline_right_sep=''
-  let g:airline_right_alt_sep='│'
-Plug 'vim-airline/vim-airline-themes'   " Airline themes
+"Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
-"Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
+Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
 "  let g:WebDevIconsUnicodeDecorateFolderNodes=1
 "  let g:DevIconsEnableFoldersOpenClose=1
 call plug#end()
@@ -236,7 +265,12 @@ xmap <C-;> <Plug>(neosnippet_expand_target)
 " Use <Tab> and <S-Tab> to navigate completion list
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+augroup COMPLETION
+au!
+au CompleteDone * if pumvisible() == 0 | pclose | endif
+" Highlight symbol under cursor on CursorHold
+au CursorHold * silent call CocActionAsync('highlight')
+augroup END
 
 " Use `lp` and `ln` for navigate diagnostics
 nmap <silent> <leader>dp <Plug>(coc-diagnostic-prev)
@@ -262,22 +296,30 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Buffer navigation
 nnoremap <leader>b :buffers<CR>:buffer<Space>
-nmap <C-n> <Plug>AirlineSelectNextTab
-nmap <C-p> <Plug>AirlineSelectPrevTab
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <C-n> :bn<CR>
+nmap <C-p> :bp<CR>
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+"nmap <leader>1 <Plug>AirlineSelectTab1
+"nmap <leader>2 <Plug>AirlineSelectTab2
+"nmap <leader>3 <Plug>AirlineSelectTab3
+"nmap <leader>4 <Plug>AirlineSelectTab4
+"nmap <leader>5 <Plug>AirlineSelectTab5
+"nmap <leader>6 <Plug>AirlineSelectTab6
+"nmap <leader>7 <Plug>AirlineSelectTab7
+"nmap <leader>8 <Plug>AirlineSelectTab8
+"nmap <leader>9 <Plug>AirlineSelectTab9
 
 " Vim mappings
 nmap <leader>r :%s/\s\+$//e<CR>

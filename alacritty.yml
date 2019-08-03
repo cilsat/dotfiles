@@ -86,40 +86,40 @@ tabspaces: 4
 font:
   # Normal (roman) font face
   normal:
-    family: Input Mono Narrow
-    # family: Roboto Mono Nerd Font
+    # family: Input Mono Narrow
+    family: Iosevka
     # The `style` can be specified to pick a specific face.
     style: Medium
 
   # Bold font face
   bold:
-    family: Input Mono Narrow
-    # family: Roboto Mono Nerd Font
+    # family: Input Mono Narrow
+    family: Iosevka
     # The `style` can be specified to pick a specific face.
     style: Bold
 
   # Italic font face
   italic:
-    family: Input Mono Narrow
-    # family: Roboto Mono Nerd Font
+    # family: Input Mono Narrow
+    family: Iosevka
     # The `style` can be specified to pick a specific face.
-    style: Medium Italic
+    style: Medium Oblique
 
   # Point size
-  size: 6.0
+  size: 7.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
   offset:
     x: -1
-    y: -1
+    y: -3
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
   # increasing `y` moves the glyph upwards.
   glyph_offset:
     x: 0
-    y: -1
+    y: -2
 
   # Scale the font size based on the monitor's DPI. This will lead to bigger text on HiDPI
   # screens and make reading text a little easier.

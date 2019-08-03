@@ -60,11 +60,13 @@ eval "$(pyenv init -)"
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin::$PATH:$HOME/.config/composer/vendor/bin:\
-  $HOME/.local/share/go/bin"
+$HOME/.local/share/go/bin"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=' -R '
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow \
+  --glob "!.git/*" --glob "!node_modules/*"'
 
 # Aliases
 alias nv="nvim"

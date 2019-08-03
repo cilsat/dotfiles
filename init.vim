@@ -53,6 +53,7 @@ set foldmethod=indent
 set nofoldenable
 set foldnestmax=5
 set foldlevel=2
+
 " Autocommands
 augroup GENERAL
 au!
@@ -61,9 +62,17 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 au FocusGained * :redraw!               " Redraw console on focus gain
 au InsertEnter * :set norelativenumber  " Set to absolute line number in Insert
 au InsertLeave * :set relativenumber    " Set to relative again on exit Insert
-au FileType php setlocal shiftwidth=4 tabstop=4
-au FileType python setlocal shiftwidth=4 tabstop=4
+" Trigger `autoread` when files changes on disk
+au FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" Notification after file change
+au FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+au FileType netrw setl bufhidden=wipe   " Wipe netrw buffer after usage
+au FileType php setl shiftwidth=4 tabstop=4
+au FileType python setl shiftwidth=4 tabstop=4
 augroup END
+
 " Neovim specific settings
 if has('nvim')
   let g:python_host_prog='/usr/bin/python2'
@@ -104,7 +113,7 @@ Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
 Plug 'sheerun/vim-polyglot'             " Syntax highlihting for most langs
-  let g:polyglot_disable=['php']
+  let g:polyglot_disabled=['php']
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
   let g:pandoc#formatting#mode='ha'
@@ -112,16 +121,34 @@ Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \ {'on': 'LLPStartPreview'}
+Plug 'junegunn/fzf',                    " path to fzf binary
+  \ {'dir': '~/.local/share/fzf', 'do': './install --all'}
+Plug 'junegunn/fzf.vim'                 " fzf vim integration
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+  let g:fzf_layout = {'down': '~15%'}
 
 " Completion & Coding
 Plug 'neoclide/coc.nvim',               " Code completion and navigation
-  \ {'do': { -> coc#util#install() }}
+  \ {'do': 'yarn install --frozen-lockfile'}
   let g:markdown_fenced_languages = [
   \ 'html', 'vim', 'ruby', 'bash=sh', 'rust', 'go', 'python', 'c', 'cpp']
   let g:coc_global_extensions = [
   \ 'coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver','coc-tslint',
   \ 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-python', 'coc-yaml',
-  \ 'coc-snippets']
+  \ 'coc-snippets', 'coc-java']
   set updatetime=300                    " Smaller updatetime for CursorHold
   set shortmess+=c                      " Don't show |ins-completion-menu|
 Plug 'shougo/echodoc.vim'
@@ -132,18 +159,12 @@ Plug 'liuchengxu/vista.vim',            " Visual LSP symbol viewer
   let g:vista_sidebar_width=30
   let g:vista_default_executive='coc'
   let g:vista_finder_alternative_executives=['ctags']
-Plug 'w0rp/ale',                        " Code Linting and fixing
-  \ {'for': ['c', 'cpp', 'php', 'javascript']}
-  let g:ale_lint_on_text_changed=0
-  let g:ale_lint_on_insert_leave=0
-" Requires clang-tools-extra, eslint, autopep8 and pycodestyle through pacman
-" Requires squizlabs/php_codesniffer through composer and prettier through npm
-" let g:ale_linters = {
-" \ 'c': ['clangtidy'], 'cpp': ['clangtidy'], 'go': ['gofmt'],
-" \ 'javascript': ['eslint'], 'php': ['phpcs'], 'python': ['pycodestyle']}
+Plug 'w0rp/ale'                         " Code Linting and fixing
+  let g:ale_enabled=0
   let g:ale_fixers = {
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'go': ['gofmt', 'goimports'],
-  \ 'javascript': ['eslint'], 'php': ['phpcbf'], 'python': ['yapf']}
+  \ 'java': ['google_java_format'], 'javascript': ['eslint'], 'php': ['phpcbf'],
+  \ 'python': ['yapf']}
   let g:ale_fix_on_save=0
   let g:ale_set_highlights=0
   let g:ale_sign_offset=1
@@ -194,7 +215,7 @@ Plug 'itchyny/lightline.vim'
 	function! LightlineFugitive()
 		if exists('*fugitive#head')
 			let branch = fugitive#head()
-			return branch !=# '' ? ''.branch : ''
+			return branch !=# '' ? ' '.branch : ''
 		endif
 		return ''
 	endfunction
@@ -257,10 +278,6 @@ nmap <F4> :ALEFix<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-imap <C-;> <Plug>(neosnippet_expand_or_jump)
-smap <C-;> <Plug>(neosnippet_expand_or_jump)
-xmap <C-;> <Plug>(neosnippet_expand_target)
-
 " coc.nvim functions and mappings
 " Use <Tab> and <S-Tab> to navigate completion list
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -270,23 +287,25 @@ au!
 au CompleteDone * if pumvisible() == 0 | pclose | endif
 " Highlight symbol under cursor on CursorHold
 au CursorHold * silent call CocActionAsync('highlight')
+" Search for string in current dir using rg/fzf
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
 augroup END
 
-" Use `lp` and `ln` for navigate diagnostics
+" Use `dp` and `dn` to navigate diagnostics
 nmap <silent> <leader>dp <Plug>(coc-diagnostic-prev)
 nmap <silent> <leader>dn <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> <leader>dd <Plug>(coc-definition)
-nmap <silent> <leader>dt <Plug>(coc-type-definition)
-nmap <silent> <leader>di <Plug>(coc-implementation)
-nmap <silent> <leader>df <Plug>(coc-references)
+nmap <silent> <leader>tt <Plug>(coc-type-definition)
+nmap <silent> <leader>ii <Plug>(coc-implementation)
+nmap <silent> <leader>ff <Plug>(coc-references)
 
 " Remap for rename current word
-nmap <leader>lr <Plug>(coc-rename)
+nmap <leader>rr <Plug>(coc-rename)
 
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Show documentation in preview window
+nnoremap <silent> <leader>hh :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if &filetype == 'vim'
@@ -311,15 +330,6 @@ nmap <Leader>7 <Plug>lightline#bufferline#go(7)
 nmap <Leader>8 <Plug>lightline#bufferline#go(8)
 nmap <Leader>9 <Plug>lightline#bufferline#go(9)
 nmap <Leader>0 <Plug>lightline#bufferline#go(10)
-"nmap <leader>1 <Plug>AirlineSelectTab1
-"nmap <leader>2 <Plug>AirlineSelectTab2
-"nmap <leader>3 <Plug>AirlineSelectTab3
-"nmap <leader>4 <Plug>AirlineSelectTab4
-"nmap <leader>5 <Plug>AirlineSelectTab5
-"nmap <leader>6 <Plug>AirlineSelectTab6
-"nmap <leader>7 <Plug>AirlineSelectTab7
-"nmap <leader>8 <Plug>AirlineSelectTab8
-"nmap <leader>9 <Plug>AirlineSelectTab9
 
 " Vim mappings
 nmap <leader>r :%s/\s\+$//e<CR>
@@ -331,9 +341,14 @@ nmap <leader>p "+p
 nmap <leader>P "+P
 nmap <leader>pp "+P
 
-nnoremap <leader>e :e **/*
-nnoremap <leader>v :vs **/*
+" Delete buffer
 nnoremap <leader>d :bp\|bd #<CR>
+" Search for file using rg/fzf
+nnoremap <leader>e :Files<CR>
+" Search for text using rg/fzf
+nnoremap <leader>f :Find 
+" Split pane vertically and search for file
+nnoremap <leader>v :vs<CR>:Files<CR>
 
 nmap <leader>0 ^
 nmap <esc> :noh<CR>

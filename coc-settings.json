@@ -3,11 +3,11 @@
   "suggest.detailMaxLength": 50,
   "suggest.detailField": "preview",
   "suggest.triggerAfterInsertEnter": true,
-  "suggest.timeout": 5000,
+  "suggest.timeout": 500,
   "suggest.minTriggerInputLength": 0,
-  "suggest.triggerCompletionWait": 100,
+  "suggest.triggerCompletionWait": 150,
   "suggest.acceptSuggestionOnCommitCharacter": true,
-  "suggest.maxCompleteItemCount": 25,
+  "suggest.maxCompleteItemCount": 30,
   "suggest.completionItemKindLabels": {
     "function": "\uf794",
     "method": "\uf6a6",
@@ -46,11 +46,14 @@
       "command": "ccls",
       "args": ["--log-file=/tmp/ccls.log"],
       "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/"],
+      "rootPatterns": ["compile_commands.json", ".ccls", ".vim/", ".git/"],
       "initializationOptions": {
         "cache": {
           "directory": "/home/cilsat/.cache/ccls",
-          "format": "msgpack"
+          "format": "binary"
+        },
+        "index": {
+          "initialBlacklist": [".o$"]
         }
       }
     },
@@ -72,6 +75,11 @@
       "command": "docker-langserver",
       "args": ["--stdio"],
       "filetypes": ["dockerfile"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/"],
+      "filetypes": ["go"]
     }
   },
   "python.jediEnabled": true,

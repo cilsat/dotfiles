@@ -113,12 +113,14 @@ Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug 'shougo/context_filetype.vim'      " detect multiple filetype in one file
 Plug 'sheerun/vim-polyglot'             " Syntax highlihting for most langs
-  let g:polyglot_disabled=['php']
+  let g:polyglot_disabled=['php', 'latex']
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
   let g:pandoc#spell#default_langs=['en', 'id']
   let g:pandoc#formatting#mode='ha'
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
+  let g:tex_flavor='latex'
+  let g:vimtex_view_method='zathura'
 Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
   \ {'on': 'LLPStartPreview'}
 Plug 'junegunn/fzf',                    " path to fzf binary
@@ -138,7 +140,7 @@ Plug 'junegunn/fzf.vim'                 " fzf vim integration
     \ 'marker':  ['fg', 'Keyword'],
     \ 'spinner': ['fg', 'Label'],
     \ 'header':  ['fg', 'Comment'] }
-  let g:fzf_layout = {'down': '~15%'}
+  let g:fzf_layout = {'down': '~20%'}
 
 " Completion & Coding
 Plug 'neoclide/coc.nvim',               " Code completion and navigation
@@ -185,10 +187,8 @@ Plug 'mengelbrecht/lightline-bufferline'
   let g:lightline#bufferline#filename_modifier = ':~:.'
   let g:lightline#bufferline#enable_devicons=1
   let g:lightline#bufferline#number_map = {
-  \ 0: '🄌', 1: '➊', 2: '➋', 3: '➌', 4: '➍',
-  \ 5: '➎', 6: '➏', 7: '➐', 8: '➑', 9: '➒',
-  \ 10: '➓', 11: '⓫', 12: '⓬', 13: '⓭', 14: '⓮',
-  \ 15: '⓯', 16: '⓰', 17: '⓱', 18: '⓲', 19: '⓳'}
+  \ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
+  \ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
   let g:lightline#bufferline#unicode_symbols=1
 Plug 'itchyny/lightline.vim'
   let g:lightline = {
@@ -224,7 +224,6 @@ Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
   \ {'do': ':Tmuxline airline tmux'}
   let g:tmuxline_separators = {
   \ 'left': '', 'left_alt': '│', 'right': '', 'right_alt': '│'}
-"Plug 'vim-airline/vim-airline-themes'   " Airline themes
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
 Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
@@ -246,7 +245,7 @@ let g:indentLine_color_term=18
 " Custom highlight settings
 hi nontext      ctermfg=236 ctermbg=NONE
 hi specialkey   ctermfg=239 ctermbg=NONE
-hi cursorlinenr ctermfg=172 ctermbg=NONE cterm=bold
+hi cursorlinenr ctermfg=172 cterm=bold
 hi linenr       ctermbg=NONE
 hi normal       ctermbg=NONE
 hi comment      cterm=italic
@@ -284,20 +283,19 @@ inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 augroup COMPLETION
 au!
+" Close completion preview window after completing
 au CompleteDone * if pumvisible() == 0 | pclose | endif
 " Highlight symbol under cursor on CursorHold
 au CursorHold * silent call CocActionAsync('highlight')
 " Search for string in current dir using rg/fzf
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, <bang>0)
+command! -bang -nargs=* Find
+  \ call fzf#vim#grep(
+  \   'rg --no-heading -F -i --hidden -L -g "!.git/*" '.shellescape(<q-args>),
+  \   1, <bang>0)
 augroup END
-
-" Use `dp` and `dn` to navigate diagnostics
-nmap <silent> <leader>dp <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>dn <Plug>(coc-diagnostic-next)
 
 " Remap keys for gotos
 nmap <silent> <leader>dd <Plug>(coc-definition)
-nmap <silent> <leader>tt <Plug>(coc-type-definition)
 nmap <silent> <leader>ii <Plug>(coc-implementation)
 nmap <silent> <leader>ff <Plug>(coc-references)
 
@@ -315,11 +313,16 @@ function! s:show_documentation()
   endif
 endfunction
 
+" Override mode completions using FZF
+nmap <leader>h :Helptags<CR>
+nmap <leader>c :Commands<CR>
 
-" Buffer navigation
-nnoremap <leader>b :buffers<CR>:buffer<Space>
+"" Buffer navigation
+" Next buffer
 nmap <C-n> :bn<CR>
+" Previous buffer
 nmap <C-p> :bp<CR>
+" Jump to buffers 1 - 9
 nmap <Leader>1 <Plug>lightline#bufferline#go(1)
 nmap <Leader>2 <Plug>lightline#bufferline#go(2)
 nmap <Leader>3 <Plug>lightline#bufferline#go(3)
@@ -329,24 +332,29 @@ nmap <Leader>6 <Plug>lightline#bufferline#go(6)
 nmap <Leader>7 <Plug>lightline#bufferline#go(7)
 nmap <Leader>8 <Plug>lightline#bufferline#go(8)
 nmap <Leader>9 <Plug>lightline#bufferline#go(9)
-nmap <Leader>0 <Plug>lightline#bufferline#go(10)
 
-" Vim mappings
+" Normal mode mappings
+" Right strip spaces
 nmap <leader>r :%s/\s\+$//e<CR>
+" Yank to system clipboard
 vmap <leader>y "+y
-nmap <leader>Y "+yg_
+" Yank line to system clipboard
 nmap <leader>yy "+yy
-
+" Paste from system clipboard
 nmap <leader>p "+p
+" Paste prepend from system clipboard
 nmap <leader>P "+P
-nmap <leader>pp "+P
 
 " Delete buffer
 nnoremap <leader>d :bp\|bd #<CR>
-" Search for file using rg/fzf
+" Fuzzy search for file
 nnoremap <leader>e :Files<CR>
-" Search for text using rg/fzf
-nnoremap <leader>f :Find 
+" Fuzzy search for text
+nnoremap <leader>f :Find<CR>
+" Fuzzy search for buffer
+nnoremap <leader>b :Buffers<CR>
+" Fuzzy search in history
+nnoremap <leader>r :History<CR>
 " Split pane vertically and search for file
 nnoremap <leader>v :vs<CR>:Files<CR>
 

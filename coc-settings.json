@@ -36,6 +36,7 @@
     "default": "\uf29c"
   },
   "suggest.snippetIndicator": "►",
+  "coc.preferences.formatOnSaveFiletypes": ["python"],
   "diagnostic.infoSign": "▍",
   "diagnostic.warningSign": "▍",
   "diagnostic.errorSign": "▍",
@@ -82,7 +83,7 @@
       "filetypes": ["go"]
     }
   },
-  "python.jediEnabled": true,
+  "python.jediEnabled": false,
   "python.jediPath": "/usr/lib/python3.7/site-packages/jedi",
   "python.venvFolders": [
     ".local/share/virtualenvs",
@@ -90,6 +91,7 @@
     ".local/share/conda/envs"
   ],
   "python.linting.pylintEnabled": false,
-  "python.linting.flake8Enabled": true,
-  "python.linting.flake8Path": "/usr/bin/flake8"
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "/usr/bin/black",
+  "python.formatting.blackArgs": ["--fast"]
 }

@@ -6,6 +6,7 @@ export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
 export HOME=/home/cilsat
 export DOT=$HOME/.config/dotfiles
 export BASE16_SHELL="$HOME/src/base16/base16-shell"
+export FZF="/usr/share/fzf"
 
 # Check for Display
 if [ -n "$DISPLAY" ]; then
@@ -64,15 +65,25 @@ $HOME/.local/share/go/bin"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
-export LESS=' -R '
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow \
-  --glob "!.git/*" --glob "!node_modules/*"'
+export LESS=" -R "
+source "$FZF/completion.zsh"
+source "$FZF/key-bindings.zsh"
+export FZF_COMPLETION_TRIGGER="**"
+export FZF_DEFAULT_OPTS="--height 50% --preview=\"less {}\" \
+  --preview-window=right:50%:hidden --cycle --multi \
+  --bind=?:toggle-preview --bind=tab:down --bind=btab:up --bind=space:toggle \
+  --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up"
+export FZF_DEFAULT_COMMAND="fd -i -H -F -L -E \".git\" -E \"node_modules\""
+
+_fzf_compgen_path() {
+  fd -i -H -F -L -E ".git" -E "node_modules" . "$1"
+}
 
 # Aliases
-alias nv="nvim"
 alias pac="yay"
-alias op="xdg-open"
+alias nv="nvim"
 alias sc="sudo systemctl"
+alias op="xdg-open"
 
 # Source zim
 if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then

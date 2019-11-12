@@ -67,7 +67,6 @@ au FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | 
 " Notification after file change
 au FileChangedShellPost *
   \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
-
 au FileType netrw setl bufhidden=wipe   " Wipe netrw buffer after usage
 au FileType php setl shiftwidth=4 tabstop=4
 au FileType python setl shiftwidth=4 tabstop=4
@@ -108,6 +107,8 @@ Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-markdown'               " Fancy highlihting for markdown
 Plug 'tpope/vim-obsession'              " Save session buffers and panes
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
+Plug 'justinmk/vim-sneak'               " incsearch as a motion
+  let g:sneak#label=1
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
 Plug 'junegunn/vim-easy-align'          " Align text around characters
@@ -121,8 +122,8 @@ Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
   let g:tex_flavor='latex'
   let g:vimtex_view_method='zathura'
-Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
-  \ {'on': 'LLPStartPreview'}
+"Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
+"  \ {'on': 'LLPStartPreview'}
 Plug 'junegunn/fzf',                    " path to fzf binary
   \ {'dir': '~/.local/share/fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'                 " fzf vim integration
@@ -290,8 +291,12 @@ au CursorHold * silent call CocActionAsync('highlight')
 " Search for string in current dir using rg/fzf
 command! -bang -nargs=* Find
   \ call fzf#vim#grep(
-  \   'rg --no-heading -F -i --hidden -L -g "!.git/*" '.shellescape(<q-args>),
-  \   1, <bang>0)
+  \   'rg --column -F -i -n --no-heading --hidden -L -g "!.git/*" '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(
+  \     {'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+  \   <bang>0)
+" Pritty print git graph
+command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
 augroup END
 
 " Remap keys for gotos
@@ -353,8 +358,6 @@ nnoremap <leader>e :Files<CR>
 nnoremap <leader>f :Find<CR>
 " Fuzzy search for buffer
 nnoremap <leader>b :Buffers<CR>
-" Fuzzy search in history
-nnoremap <leader>r :History<CR>
 " Split pane vertically and search for file
 nnoremap <leader>v :vs<CR>:Files<CR>
 

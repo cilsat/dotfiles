@@ -14,3 +14,6 @@
   - A workaround is needed for `bluez<=5.5.0` involving DBus, refer to 
     `https://github.com/liskin/dotfiles/blob/home/bin/bluetooth-fix-a2dp` and 
     `https://github.com/liskin/dotfiles/blob/home/.config/systemd/user/bluetooth-fix-a2dp.service`
+  - In order to switch/choose between A2DP profiles, modify the 
+    `bluetooth.service` file and append the `-E` flag to the line containing 
+    `bluetoothd`

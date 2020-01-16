@@ -83,9 +83,10 @@
       "filetypes": ["go"]
     }
   },
-  "python.jediEnabled": false,
+  "python.jediEnabled": true,
   "python.jediPath": "/usr/lib/python3.7/site-packages/jedi",
   "python.venvFolders": [
+    ".cache/pypoetry/virtualenvs",
     ".local/share/virtualenvs",
     ".local/share/conda",
     ".local/share/conda/envs"

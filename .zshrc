@@ -57,7 +57,7 @@ export SSH_ASKPASS="ksshaskpass"
 export GOPATH="$HOME/.local/share/go"
 # PyEnv
 export PYENV_ROOT="$HOME/.local/share/pyenv"
-#eval "$(pyenv init -)"
+eval "$(pyenv init -)"
 # Path to composer bin needed for vim php completion: composer global require
 # mkusher/padawan, padawan generate in project dir
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
@@ -81,6 +81,7 @@ _fzf_compgen_path() {
 
 # Aliases
 alias nv="nvim"
+alias pnv="poetry run nvim"
 alias sc="sudo systemctl"
 alias op="xdg-open"
 

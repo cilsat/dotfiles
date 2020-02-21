@@ -1,8 +1,53 @@
-# Change default zim location
-export ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+# -----------------
+# Zsh/ZIM configuration
+# -----------------
+# Remove older command from the history if a duplicate is to be added.
+setopt HIST_IGNORE_ALL_DUPS
+# Set editor default keymap to emacs (`-e`) or vi (`-v`)
+bindkey -v
+# Prompt for spelling correction of commands.
+setopt CORRECT
+# Remove path separator from WORDCHARS.
+WORDCHARS=${WORDCHARS//[\/]}
+# Append `../` to your input for each `.` you type after an initial `..`
+zstyle ':zim:input' double-dot-expand yes
+# Set a custom terminal title format using prompt expansion escape sequences.
+# See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Simple-Prompt-Escapes
+# If none is provided, the default '%n@%m: %~' is used.
+zstyle ':zim:termtitle' format '%1~'
+# Set what highlighters will be used.
+# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+# Set pac alias
+zstyle ':zim:pacman' frontend 'yay'
 
-# Start zim
-[[ -s ${ZIM_HOME}/init.zsh ]] && source ${ZIM_HOME}/init.zsh
+# Initalize
+if [[ ${ZIM_HOME}/init.zsh -ot ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  # Update static initialization script if it's outdated, before sourcing it
+  source ${ZIM_HOME}/zimfw.zsh init -q
+fi
+source ${ZIM_HOME}/init.zsh
+
+# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Bind up and down keys
+zmodload -F zsh/terminfo +p:terminfo
+if [[ -n ${terminfo[kcuu1]} && -n ${terminfo[kcud1]} ]]; then
+  bindkey ${terminfo[kcuu1]} history-substring-search-up
+  bindkey ${terminfo[kcud1]} history-substring-search-down
+fi
+
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+# -----------------
+# Home/User configuration
+# -----------------
+# Set base home paths
 export HOME=/home/cilsat
 export DOT=$HOME/.config/dotfiles
 export BASE16_SHELL="$HOME/src/base16-shell"
@@ -26,9 +71,9 @@ if [ -n "$DISPLAY" ]; then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-materia.sh"
     fi
     [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
-    # Attach shell to workspace tmux session
+    # Attach shell to workspace tmux session and force unicode
     if [[ -z $(tmux ls | egrep $ws": .*attached") ]]; then
-        tmux new -As "$ws"
+        tmux -u new -As "$ws"
     fi
 fi
 
@@ -84,23 +129,3 @@ alias nv="nvim"
 alias pnv="poetry run nvim"
 alias sc="sudo systemctl"
 alias op="xdg-open"
-
-# Source zim
-if [[ -s ${ZDOTDIR:-${HOME}}/.zim/init.zsh ]]; then
-  source ${ZDOTDIR:-${HOME}}/.zim/init.zsh
-fi
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-#__conda_setup="$('/home/cilsat/.local/share/conda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-#if [ $? -eq 0 ]; then
-#    eval "$__conda_setup"
-#else
-#    if [ -f "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh" ]; then
-#        . "/home/cilsat/.local/share/conda/etc/profile.d/conda.sh"
-#    else
-#        export PATH="$PATH:/home/cilsat/.local/share/conda/bin"
-#    fi
-#fi
-#unset __conda_setup
-# <<< conda initialize <<<

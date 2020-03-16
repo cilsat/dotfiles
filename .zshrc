@@ -50,7 +50,7 @@ bindkey -M vicmd 'j' history-substring-search-down
 # Set base home paths
 export HOME=/home/cilsat
 export DOT=$HOME/.config/dotfiles
-export BASE16_SHELL="$HOME/src/base16-shell"
+export BASE16_SHELL="$HOME/src/base16-builder-python/output/shell"
 export FZF="/usr/share/fzf"
 
 # Check for Display
@@ -62,7 +62,7 @@ if [ -n "$DISPLAY" ]; then
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
             eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-horizon-terminal-dark.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then

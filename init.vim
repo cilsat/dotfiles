@@ -166,8 +166,8 @@ Plug 'w0rp/ale'                         " Code Linting and fixing
   let g:ale_enabled=0
   let g:ale_fixers = {
   \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'go': ['gofmt', 'goimports'],
-  \ 'java': ['google_java_format'], 'javascript': ['eslint'], 'php': ['phpcbf'],
-  \ 'python': ['yapf']}
+  \ 'java': ['google_java_format'], 'javascript': ['eslint'],
+  \ 'php': ['php_cs_fixer'], 'python': ['yapf']}
   let g:ale_fix_on_save=0
   let g:ale_set_highlights=0
   let g:ale_sign_offset=1
@@ -177,7 +177,7 @@ Plug 'w0rp/ale'                         " Code Linting and fixing
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
 Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
-  let g:indentLine_char='┊'
+  let g:indentLine_char='▏'
   let g:indentLine_enabled=1
   let g:indentLine_faster=1
   let g:indentLine_concealcursor=''
@@ -191,14 +191,10 @@ Plug 'mengelbrecht/lightline-bufferline'
   \ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
   \ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
   let g:lightline#bufferline#unicode_symbols=1
+  let g:lightline#bufferline#clickable=1
 Plug 'itchyny/lightline.vim'
   let g:lightline = {
   \ 'colorscheme': 'base16_default_dark',
-  \ 'active': {
-  \   'left': [['mode', 'paste'], ['readonly', 'fugitive'],
-  \       ['bufferinfo', 'filename']],
-  \   'right': [['colinfo', 'percent'], ['filetype'],
-  \       ['fileformat']]},
   \ 'tabline': {
   \   'left': [['buffers']],
   \   'right': [['close']]},
@@ -208,30 +204,63 @@ Plug 'itchyny/lightline.vim'
   \ 'component_function': {
   \   'cocstatus': 'coc#status',
   \   'readonly': 'LightlineReadonly',
-  \   'fugitive': 'LightlineFugitive'}
+  \   'fugitive': 'FugitiveHead'}
   \ }
-	function! LightlineReadonly()
-		return &readonly ? '' : ''
-	endfunction
-	function! LightlineFugitive()
-		if exists('*fugitive#head')
-			let branch = fugitive#head()
-			return branch !=# '' ? ' '.branch : ''
-		endif
-		return ''
-	endfunction
   let g:lightline.enable={'statusline': 1, 'tabline': 1}
+  let g:lightline.component_raw={'buffers': 1}
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
   \ {'do': ':Tmuxline airline tmux'}
   let g:tmuxline_separators = {
   \ 'left': '', 'left_alt': '│', 'right': '', 'right_alt': '│'}
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
+  let g:rainbow_conf={'ctermfgs': [6,4,3,5,12,11]}
 Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
 "  let g:WebDevIconsUnicodeDecorateFolderNodes=1
 "  let g:DevIconsEnableFoldersOpenClose=1
 call plug#end()
 
+" Plugin-related autocommands
+augroup PLUG
+au!
+" Close coc.nvim completion preview window after completing
+au CompleteDone * if pumvisible() == 0 | pclose | endif
+" Highlight symbol under cursor on coc.nvim CursorHold
+au CursorHold * silent call CocActionAsync('highlight')
+" Show documentation depending on whether it's vim-related or not
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+" Search for string in current dir using rg/fzf
+command! -bang -nargs=* Find
+  \ call fzf#vim#grep(
+  \   'rg --column -F -i -n --no-heading --hidden -L -g "!.git/*" '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(
+  \     {'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+  \   <bang>0)
+" Pritty print git graph
+command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
+" Set lightline bufferline colours
+au VimEnter * call SetupLightlineColors()
+function SetupLightlineColors() abort
+  " transparent background in statusbar
+  let l:palette = lightline#palette()
+  let l:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
+  let l:palette.inactive.middle = l:palette.normal.middle
+  let l:palette.inactive.right = l:palette.normal.right
+  let l:palette.tabline.middle = l:palette.normal.middle
+  let l:palette.tabline.tabsel = l:palette.normal.left
+  call lightline#colorscheme()
+endfunction
+" Functions for lightline status line
+function! LightlineReadonly()
+  return &readonly ? '' : ''
+endfunction
+augroup END
 
 " INTERFACE/COLORS
 set background=dark
@@ -241,13 +270,13 @@ if filereadable(expand("~/.vimrc_background"))
 else
   colorscheme base16-default-dark
 endif
-let g:indentLine_color_term=18
+let g:indentLine_color_term=19
 
 " Custom highlight settings
 hi nontext      ctermfg=236 ctermbg=NONE
 hi specialkey   ctermfg=239 ctermbg=NONE
-hi cursorlinenr ctermfg=172 cterm=bold
-hi linenr       ctermbg=NONE
+hi cursorlinenr ctermfg=16 cterm=bold
+hi linenr       ctermfg=19 ctermbg=NONE
 hi normal       ctermbg=NONE
 hi comment      cterm=italic
 hi conditional  cterm=bold
@@ -278,26 +307,9 @@ nmap <F4> :ALEFix<CR>
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-" coc.nvim functions and mappings
-" Use <Tab> and <S-Tab> to navigate completion list
+" Use <Tab> and <S-Tab> to navigate coc.nvim completion list
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-augroup COMPLETION
-au!
-" Close completion preview window after completing
-au CompleteDone * if pumvisible() == 0 | pclose | endif
-" Highlight symbol under cursor on CursorHold
-au CursorHold * silent call CocActionAsync('highlight')
-" Search for string in current dir using rg/fzf
-command! -bang -nargs=* Find
-  \ call fzf#vim#grep(
-  \   'rg --column -F -i -n --no-heading --hidden -L -g "!.git/*" '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(
-  \     {'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
-  \   <bang>0)
-" Pritty print git graph
-command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
-augroup END
 
 " Remap keys for gotos
 nmap <silent> <leader>dd <Plug>(coc-definition)
@@ -309,14 +321,6 @@ nmap <leader>rr <Plug>(coc-rename)
 
 " Show documentation in preview window
 nnoremap <silent> <leader>hh :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
 
 " Override mode completions using FZF
 nmap <leader>h :Helptags<CR>

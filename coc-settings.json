@@ -54,7 +54,7 @@
           "format": "binary"
         },
         "index": {
-          "initialBlacklist": [".o$"]
+          "initialBlacklist": [".o$", ".a$"]
         }
       }
     },
@@ -65,12 +65,6 @@
       "initializationOptions": {
         "storagePath": "/tmp/intelephense"
       }
-    },
-    "bash": {
-      "command": "bash-language-server",
-      "args": ["start"],
-      "filetypes": ["sh", "zsh"],
-      "ignoredRootPaths": ["~"]
     },
     "dockerfile": {
       "command": "docker-langserver",

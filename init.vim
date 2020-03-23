@@ -105,8 +105,9 @@ Plug 'airblade/vim-gitgutter'           " Git diff in sign column
   let g:gitgutter_sign_modified_removed='▍'
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-markdown'               " Fancy highlihting for markdown
-Plug 'tpope/vim-obsession'              " Save session buffers and panes
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
+Plug 'powerman/vim-plugin-autosess'
+  let g:autosess_dir='~/.config/nvim/autosess'
 Plug 'justinmk/vim-sneak'               " incsearch as a motion
   let g:sneak#label=1
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
@@ -141,7 +142,7 @@ Plug 'junegunn/fzf.vim'                 " fzf vim integration
     \ 'marker':  ['fg', 'Keyword'],
     \ 'spinner': ['fg', 'Label'],
     \ 'header':  ['fg', 'Comment'] }
-  let g:fzf_layout = {'down': '~20%'}
+  let g:fzf_layout = {'down': '~25%'}
 
 " Completion & Coding
 Plug 'neoclide/coc.nvim',               " Code completion and navigation
@@ -159,20 +160,34 @@ Plug 'shougo/echodoc.vim'
 Plug 'liuchengxu/vista.vim',            " Visual LSP symbol viewer
   \ {'on': 'Vista!!'}
   let g:vista#renderer#enable_icon=1
-  let g:vista_sidebar_width=30
+  let g:vista_sidebar_width=35
   let g:vista_default_executive='coc'
   let g:vista_finder_alternative_executives=['ctags']
 Plug 'w0rp/ale'                         " Code Linting and fixing
   let g:ale_enabled=0
-  let g:ale_fixers = {
-  \ 'c': ['clang-format'], 'cpp': ['clang-format'], 'go': ['gofmt', 'goimports'],
+  let g:ale_fixers=
+  \ {'c': ['clang-format'], 'cpp': ['clang-format'],
+  \ 'go': ['gofmt', 'goimports'],
   \ 'java': ['google_java_format'], 'javascript': ['eslint'],
-  \ 'php': ['php_cs_fixer'], 'python': ['yapf']}
-  let g:ale_fix_on_save=0
+  \ 'php': ['php_cs_fixer', 'phpcbf'], 'python': ['black']}
+  let g:ale_fix_on_save=1
   let g:ale_set_highlights=0
   let g:ale_sign_offset=1
   let g:ale_sign_error='▍'
   let g:ale_sign_warning='▍'
+Plug 'preservim/nerdtree',              " File explorer
+  \ {'on': 'NERDTreeToggle'}
+  let NERDTreeShowHidden=1
+Plug 'xuyuanp/nerdtree-git-plugin'
+Plug 'jpalardy/vim-slime',              " Send code to external REPL
+  \ {'on': ['SlimeRegionSend', 'SlimeParagraphSend']}
+  let g:slime_no_mappings=1
+  let g:slime_target='tmux'
+  let g:slime_paste_file="$HOME/.config/nvim/slime_paste"
+  " Assume REPL is in previous tmux pane (usually bottom left)
+  let g:slime_default_config=
+  \ {"socket_name": "default", "target_pane": "{previous}"}
+  let g:slime_dont_ask_default=1
 
 " Visual
 Plug 'chriskempson/base16-vim'          " base16 colors for vim
@@ -181,43 +196,31 @@ Plug 'Yggdroot/indentLine'              " Custom char at indentation levels
   let g:indentLine_enabled=1
   let g:indentLine_faster=1
   let g:indentLine_concealcursor=''
-Plug 'mike-hearn/base16-vim-lightline'
-Plug 'mengelbrecht/lightline-bufferline'
-  let g:lightline#bufferline#show_number=2
-  let g:lightline#bufferline#shorten_path=1
-  let g:lightline#bufferline#filename_modifier = ':~:.'
-  let g:lightline#bufferline#enable_devicons=1
-  let g:lightline#bufferline#number_map = {
-  \ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
-  \ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
-  let g:lightline#bufferline#unicode_symbols=1
-  let g:lightline#bufferline#clickable=1
-Plug 'itchyny/lightline.vim'
-  let g:lightline = {
-  \ 'colorscheme': 'base16_default_dark',
-  \ 'tabline': {
-  \   'left': [['buffers']],
-  \   'right': [['close']]},
-  \ 'tabline_subseparator': {'left': '', 'right': ''},
-  \ 'component_expand': {'buffers': 'lightline#bufferline#buffers'},
-  \ 'component_type': {'buffers': 'tabsel'},
-  \ 'component_function': {
-  \   'cocstatus': 'coc#status',
-  \   'readonly': 'LightlineReadonly',
-  \   'fugitive': 'FugitiveHead'}
-  \ }
-  let g:lightline.enable={'statusline': 1, 'tabline': 1}
-  let g:lightline.component_raw={'buffers': 1}
+Plug 'vim-airline/vim-airline'
+  let g:airline_powerline_fonts=1
+  let g:airline_highlighting_cache=1
+  let g:airline_extensions=['branch', 'tabline']
+  let g:airline_extensions#tabline#show_buffers=1
+  " Tab/Bufferline options
+  let g:airline#extensions#tabline#buffer_idx_mode=1
+  let g:airline#extensions#tabline#formatter='unique_tail_improved'
+  let g:airline#extensions#tabline#keymap_ignored_filetypes=
+  \ ['vista', 'netrw']
+  let g:airline#extensions#tabline#buffers_label = 'b'
+  let g:airline#extensions#tabline#tabs_label = 't'
+  let g:airline#extensions#tabline#overflow_marker = ''
+Plug 'vim-airline/vim-airline-themes'
+  let g:airline_theme='base16'
 Plug 'edkolev/tmuxline.vim'             " Vim status line as tmux status line
-  \ {'do': ':Tmuxline airline tmux'}
-  let g:tmuxline_separators = {
-  \ 'left': '', 'left_alt': '│', 'right': '', 'right_alt': '│'}
+  \ {'do': ':TmuxlineSimple'}
+"  let g:tmuxline_separators = {
+"  \ 'left': '', 'left_alt': '│', 'right': '', 'right_alt': '│'}
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
   let g:rainbow_active=1
   let g:rainbow_conf={'ctermfgs': [6,4,3,5,12,11]}
 Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
-"  let g:WebDevIconsUnicodeDecorateFolderNodes=1
-"  let g:DevIconsEnableFoldersOpenClose=1
+  let g:WebDevIconsUnicodeDecorateFolderNodes=1
+  let g:DevIconsEnableFoldersOpenClose=1
 call plug#end()
 
 " Plugin-related autocommands
@@ -240,26 +243,10 @@ command! -bang -nargs=* Find
   \ call fzf#vim#grep(
   \   'rg --column -F -i -n --no-heading --hidden -L -g "!.git/*" '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(
-  \     {'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+  \     {'options': '--delimiter : --nth 4..'}, 'right:70%:hidden', '?'),
   \   <bang>0)
 " Pritty print git graph
 command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
-" Set lightline bufferline colours
-au VimEnter * call SetupLightlineColors()
-function SetupLightlineColors() abort
-  " transparent background in statusbar
-  let l:palette = lightline#palette()
-  let l:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
-  let l:palette.inactive.middle = l:palette.normal.middle
-  let l:palette.inactive.right = l:palette.normal.right
-  let l:palette.tabline.middle = l:palette.normal.middle
-  let l:palette.tabline.tabsel = l:palette.normal.left
-  call lightline#colorscheme()
-endfunction
-" Functions for lightline status line
-function! LightlineReadonly()
-  return &readonly ? '' : ''
-endfunction
 augroup END
 
 " INTERFACE/COLORS
@@ -304,8 +291,13 @@ nmap <F2> :Vista!!<CR>
 nmap <F3> :Gblame<CR>
 nmap <F4> :ALEFix<CR>
 
+" EasyAlign mappings
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+" vim-slime mappings
+xmap <leader>cc <Plug>SlimeRegionSend
+nmap <leader>cc <Plug>SlimeParagraphSend
 
 " Use <Tab> and <S-Tab> to navigate coc.nvim completion list
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -332,15 +324,15 @@ nmap <C-n> :bn<CR>
 " Previous buffer
 nmap <C-p> :bp<CR>
 " Jump to buffers 1 - 9
-nmap <Leader>1 <Plug>lightline#bufferline#go(1)
-nmap <Leader>2 <Plug>lightline#bufferline#go(2)
-nmap <Leader>3 <Plug>lightline#bufferline#go(3)
-nmap <Leader>4 <Plug>lightline#bufferline#go(4)
-nmap <Leader>5 <Plug>lightline#bufferline#go(5)
-nmap <Leader>6 <Plug>lightline#bufferline#go(6)
-nmap <Leader>7 <Plug>lightline#bufferline#go(7)
-nmap <Leader>8 <Plug>lightline#bufferline#go(8)
-nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
 
 " Normal mode mappings
 " Right strip spaces

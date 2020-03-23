@@ -36,7 +36,7 @@
     "default": "\uf29c"
   },
   "suggest.snippetIndicator": "►",
-  "coc.preferences.formatOnSaveFiletypes": ["python"],
+  "coc.preferences.formatOnSaveFiletypes": [],
   "diagnostic.infoSign": "▍",
   "diagnostic.warningSign": "▍",
   "diagnostic.errorSign": "▍",

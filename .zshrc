@@ -62,7 +62,7 @@ if [ -n "$DISPLAY" ]; then
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
             eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-horizon-terminal-dark.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-snazzy.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
@@ -115,7 +115,7 @@ source "$FZF/completion.zsh"
 source "$FZF/key-bindings.zsh"
 export FZF_COMPLETION_TRIGGER="**"
 export FZF_DEFAULT_OPTS="--height 50% --preview=\"less {}\" \
-  --preview-window=right:50%:hidden --cycle --multi \
+  --preview-window=right:30%:hidden --cycle --multi \
   --bind=?:toggle-preview --bind=tab:down --bind=btab:up --bind=space:toggle \
   --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up"
 export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\""

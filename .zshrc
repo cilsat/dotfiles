@@ -48,7 +48,8 @@ bindkey -M vicmd 'j' history-substring-search-down
 # Home/User configuration
 # -----------------
 # Set base home paths
-export HOME=/home/cilsat
+export DEFAULT_USER=cilsat
+export HOME=/home/$DEFAULT_USER
 export DOT=$HOME/.config/dotfiles
 export BASE16_SHELL="$HOME/src/base16-builder-python/output/shell"
 export FZF="/usr/share/fzf"
@@ -62,7 +63,7 @@ if [ -n "$DISPLAY" ]; then
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
             eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-snazzy.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-solarflare.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
@@ -98,28 +99,29 @@ export PASSWORD_STORE_DIR="$HOME/.password-store"
 export SSH_ASKPASS="ksshaskpass"
 
 # User environment
+# Path needs to include composer and go bin paths
+export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
+$HOME/.local/share/go/bin"
+export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
 # PyEnv
 export PYENV_ROOT="$HOME/.local/share/pyenv"
 eval "$(pyenv init -)"
-# Path to composer bin needed for vim php completion: composer global require
-# mkusher/padawan, padawan generate in project dir
-export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.local/share/go/bin"
-
-# Misc variables
+# pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
+# FZF vars
 source "$FZF/completion.zsh"
 source "$FZF/key-bindings.zsh"
 export FZF_COMPLETION_TRIGGER="**"
 export FZF_DEFAULT_OPTS="--height 50% --preview=\"less {}\" \
   --preview-window=right:30%:hidden --cycle --multi \
   --bind=?:toggle-preview --bind=tab:down --bind=btab:up --bind=space:toggle \
-  --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up"
+  --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up \
+  --color fg:7,bg:-1,hl:6,fg+:7,bg+:18,hl+:3 \
+  --color info:8,prompt:5,spinner:15,pointer:16,marker:3"
 export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\""
-
 _fzf_compgen_path() {
   fd -i -H -I -F -L -E ".git" -E "node_modules" . "$1"
 }

@@ -36,7 +36,7 @@
     "default": "\uf29c"
   },
   "suggest.snippetIndicator": "►",
-  "coc.preferences.formatOnSaveFiletypes": [],
+  "coc.preferences.formatOnSaveFiletypes": ["python", "cpp"],
   "diagnostic.infoSign": "▍",
   "diagnostic.warningSign": "▍",
   "diagnostic.errorSign": "▍",
@@ -77,8 +77,9 @@
       "filetypes": ["go"]
     }
   },
+  "python.disableInstallationCheck": true,
   "python.jediEnabled": true,
-  "python.jediPath": "/usr/lib/python3.7/site-packages/jedi",
+  "python.jediPath": "/usr/lib/python3.8/site-packages",
   "python.venvFolders": [
     ".cache/pypoetry/virtualenvs",
     ".local/share/virtualenvs",

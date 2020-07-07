@@ -59,11 +59,11 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     # xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
-    [ -n "$PS1" ] && \
-        [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-            eval "$("$BASE16_SHELL/profile_helper.sh")"
+    #[ -n "$PS1" ] && \
+    #    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+    #        eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-solarflare.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-flat.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
@@ -84,7 +84,7 @@ if [[ -n "$SSH_CONNECTION" ]]; then
     export DISPLAY=:0
 fi
 
-fortune -s | cowsay
+#fortune -s | cowsay
 
 # System environment
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\
@@ -106,8 +106,8 @@ export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
 # PyEnv
-export PYENV_ROOT="$HOME/.local/share/pyenv"
-eval "$(pyenv init -)"
+#export PYENV_ROOT="$HOME/.local/share/pyenv"
+#eval "$(pyenv init -)"
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "

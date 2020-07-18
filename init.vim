@@ -334,7 +334,12 @@ nmap <silent> <leader>dd <Plug>(coc-definition)
 nmap <silent> <leader>ii <Plug>(coc-implementation)
 nmap <silent> <leader>ff <Plug>(coc-references)
 
-" Remap for rename current word
+" Fugitive mappings
+nnoremap <leader>gd :Gvdiff<CR>
+nnoremap gh :diffget //2<CR>
+nnoremap gl :diffget //3<CR>
+
+"Remap for rename current word
 nmap <leader>rr <Plug>(coc-rename)
 
 " Show documentation in preview window
@@ -348,6 +353,8 @@ nmap <leader>c :Commands<CR>
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 
 "" Buffer navigation
+" Delete buffer
+nnoremap <leader>d :bp\|bd #<CR>
 " Next buffer
 nmap <C-n> :bn<CR>
 " Previous buffer
@@ -374,9 +381,9 @@ nmap <leader>yy "+yy
 nmap <leader>p "+p
 " Paste prepend from system clipboard
 nmap <leader>P "+P
+" Yanking in visual mode prevents cursor from jumping back to start of block
+vmap y ygv<Esc>
 
-" Delete buffer
-nnoremap <leader>d :bp\|bd #<CR>
 " Fuzzy search for file
 nnoremap <leader>e :Files<CR>
 " Fuzzy search for text
@@ -390,5 +397,3 @@ nmap <leader>0 ^
 nmap <esc> :noh<CR>
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
-" Yanking in visual mode prevents cursor from jumping back to start of block
-vmap y ygv<Esc>

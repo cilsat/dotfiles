@@ -77,23 +77,23 @@ font:
   # Normal (roman) font face
   normal:
     #family: Input Mono Narrow
-    family: Jetbrains Mono
+    family: JetBrains Mono
     # The `style` can be specified to pick a specific face.
     style: Medium
 
   # Bold font face
   bold:
     #family: Input Mono Narrow
-    family: Jetbrains Mono
+    family: JetBrains Mono
     # The `style` can be specified to pick a specific face.
     style: Bold
 
   # Italic font face
   italic:
     #family: Input Mono Narrow
-    family: Jetbrains Mono
+    family: JetBrains Mono
     # The `style` can be specified to pick a specific face.
-    style: Italic Medium
+    style: Medium Italic
 
   # Point size
   size: 5.5

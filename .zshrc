@@ -57,13 +57,9 @@ export FZF="/usr/share/fzf"
 # Check for Display
 if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
-    # xseticon -id $WINDOWID /usr/share/icons/Paper/48x48/apps/utilities-terminal.png
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
-    #[ -n "$PS1" ] && \
-    #    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-    #        eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-flat.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-decaf.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
@@ -131,3 +127,6 @@ alias nv="nvim"
 alias pnv="poetry run nvim"
 alias sc="sudo systemctl"
 alias op="xdg-open"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

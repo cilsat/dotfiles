@@ -1,8 +1,10 @@
 # This tmux statusbar config was created by tmuxline.vim
 # on Mon, 11 May 2020
 
-set -g status-justify "left"
 set -g status "on"
+set -g status-position top
+set -g status-interval 5
+set -g status-justify "left"
 set -g status-left-style "none"
 set -g message-command-style "fg=colour7,bg=colour19"
 set -g status-right-style "none"
@@ -17,7 +19,7 @@ setw -g window-status-separator ""
 setw -g window-status-style "fg=colour7,bg=colour18"
 
 set -g status-left "\
-#[fg=colour19,bg=colour4] \uf303  \
+#[fg=colour0,bg=colour4] \uf303  \
 #[fg=colour4,bg=colour19]▍\
 #[fg=colour21,bg=colour19] #h:\
 #[fg=colour21,bg=colour19,bold]#S \
@@ -26,7 +28,8 @@ set -g status-left "\
 
 set -g status-right "\
 #[fg=colour5,bg=colour19] \ue266  #[fg=colour18,bg=colour19]│\
-#[fg=colour21,bg=colour19] #(tmux-mem-cpu-load -i 3 -t 1 -a 1 -g 0 -m 1) \
+#[fg=colour21,bg=colour19] #(tmux-mem-cpu-load -i 3 -t 1 -a 0 -g 0 -m 1)\
+#(~/.config/dotfiles/cpu_now.sh) \
 #[fg=colour18,bg=colour19]│#[fg=colour3,bg=colour19] \uf589  \
 #[fg=colour18,bg=colour19]│\
 #[fg=colour21,bg=colour19] #(~/.config/dotfiles/power_now.sh) \

@@ -48,10 +48,10 @@ bindkey -M vicmd 'j' history-substring-search-down
 # Home/User configuration
 # -----------------
 # Set base home paths
-export HOME=/home/cilsat
+export HOME=/home/cil.satriawan
 export DOT=$HOME/.config/dotfiles
-export BASE16_SHELL="$HOME/src/base16-builder-python/output/shell"
-export FZF="/usr/share/fzf"
+export BASE16_SHELL="$HOME/src/base16-shell"
+export FZF="$HOME/.fzf/shell"
 
 # Check for Display
 if [ -n "$DISPLAY" ]; then
@@ -62,7 +62,7 @@ if [ -n "$DISPLAY" ]; then
         [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
             eval "$("$BASE16_SHELL/profile_helper.sh")"
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-snazzy.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-ocean.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
@@ -100,17 +100,20 @@ export SSH_ASKPASS="ksshaskpass"
 # User environment
 # Go path
 export GOPATH="$HOME/.local/share/go"
-# PyEnv
-export PYENV_ROOT="$HOME/.local/share/pyenv"
-eval "$(pyenv init -)"
-# Path to composer bin needed for vim php completion: composer global require
-# mkusher/padawan, padawan generate in project dir
+# Python
+export PYENV_ROOT="$HOME/.pyenv"
+export POETRY_ROOT="$HOME/.poetry"
+# PATH
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.local/share/go/bin"
+$HOME/.local/share/go/bin:$PYENV_ROOT/bin:$POETRY_ROOT/bin"
+
+eval "$(pyenv init -)"
 
 # Misc variables
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 source "$FZF/completion.zsh"
 source "$FZF/key-bindings.zsh"
 export FZF_COMPLETION_TRIGGER="**"

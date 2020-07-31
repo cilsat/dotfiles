@@ -37,6 +37,6 @@ zmodule zsh-users/zsh-syntax-highlighting
 zmodule zsh-users/zsh-history-substring-search
 # }}} End configuration added by Zim install
 
-zmodule https://github.com/zimfw/ssh
-zmodule https://github.com/zimfw/pacman
-zmodule https://github.com/zimfw/eriner
+zmodule zimfw/ssh
+zmodule zimfw/pacman
+zmodule zimfw/sorin

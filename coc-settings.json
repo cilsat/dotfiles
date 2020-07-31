@@ -36,7 +36,7 @@
     "default": "\uf29c"
   },
   "suggest.snippetIndicator": "►",
-  "coc.preferences.formatOnSaveFiletypes": [],
+  "coc.preferences.formatOnSaveFiletypes": ["python", "cpp"],
   "diagnostic.infoSign": "▍",
   "diagnostic.warningSign": "▍",
   "diagnostic.errorSign": "▍",
@@ -54,7 +54,8 @@
           "format": "binary"
         },
         "index": {
-          "initialBlacklist": [".o$", ".a$"]
+          "initialWhitelist": [".h$", ".hpp$", ".c$", ".cc$", ".cpp$"],
+          "initialBlacklist": ["."]
         }
       }
     },
@@ -77,15 +78,16 @@
       "filetypes": ["go"]
     }
   },
+  "python.disableInstallationCheck": true,
   "python.jediEnabled": true,
-  "python.jediPath": "/usr/lib/python3.7/site-packages/jedi",
+  "python.jediPath": "/usr/lib/python3.8/site-packages",
   "python.venvFolders": [
+    ".local/share/venv",
     ".cache/pypoetry/virtualenvs",
-    ".local/share/virtualenvs",
-    ".local/share/conda",
     ".local/share/conda/envs"
   ],
-  "python.linting.pylintEnabled": false,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintPath": "pylint",
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "/usr/bin/black",
   "python.formatting.blackArgs": ["--fast"]

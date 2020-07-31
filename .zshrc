@@ -59,7 +59,7 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-decaf.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
     elif [ "$ws" = 2 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
     elif [ "$ws" = 3 ];then
@@ -87,14 +87,13 @@ export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\
 /opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys
+export SSH_ASKPASS="ksshaskpass"
 export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$HOME/.password-store"
-# For kwallet ssh integration
-export SSH_ASKPASS="ksshaskpass"
 
-# User environment
+#-1 User environment
 # Path needs to include composer and go bin paths
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
 $HOME/.local/share/go/bin"

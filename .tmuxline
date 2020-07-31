@@ -12,11 +12,14 @@ set -g pane-active-border-style "fg=colour4"
 set -g status-style "none,bg=colour18"
 set -g message-style "fg=colour7,bg=colour19"
 set -g pane-border-style "fg=colour19"
-set -g status-right-length "100"
-set -g status-left-length "100"
+set -g status-right-length "500"
+set -g status-left-length "50"
 setw -g window-status-activity-style "none"
 setw -g window-status-separator ""
 setw -g window-status-style "fg=colour7,bg=colour18"
+
+set -g @net_speed_format "%3s\ue340 %3s\ue353"
+set -g @net_speed_interfaces "wlan0"
 
 set -g status-left "\
 #[fg=colour0,bg=colour4] \uf303  \
@@ -27,15 +30,14 @@ set -g status-left "\
 #[fg=colour16,bg=colour19] \ufab1 #[fg=colour18,bg=colour19]│"
 
 set -g status-right "\
-#[fg=colour5,bg=colour19] \ue266  #[fg=colour18,bg=colour19]│\
-#[fg=colour21,bg=colour19] #(tmux-mem-cpu-load -i 3 -t 1 -a 0 -g 0 -m 1)\
-#(~/.config/dotfiles/cpu_now.sh) \
+#[fg=colour5,bg=colour19] \ue266  \
+#[fg=colour18,bg=colour19]│\
+#[fg=colour21,bg=colour19]#(~/.config/dotfiles/cpu_now.sh) \
 #[fg=colour18,bg=colour19]│#[fg=colour3,bg=colour19] \uf589  \
 #[fg=colour18,bg=colour19]│\
 #[fg=colour21,bg=colour19] #(~/.config/dotfiles/power_now.sh) \
 #[fg=colour18,bg=colour19]│#[fg=colour6,bg=colour19] \uf073  \
-#[fg=colour18,bg=colour19]│\
-#[fg=colour21,bg=colour19] %a %d %b %H:%M "
+#[fg=colour18,bg=colour19]│#[fg=colour21,bg=colour19] %a %d %b "
 
 setw -g window-status-format "\
 #{?window_last_flag,#[fg=colour16#,bg=colour19],#[fg=colour21#,bg=colour19]} #I \

@@ -87,7 +87,7 @@
     ".local/share/conda/envs"
   ],
   "python.linting.pylintEnabled": true,
-  "python.linting.pylintPath": "/usr/bin/pylint",
+  "python.linting.pylintPath": "pylint",
   "python.formatting.provider": "black",
   "python.formatting.blackPath": "/usr/bin/black",
   "python.formatting.blackArgs": ["--fast"]

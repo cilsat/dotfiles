@@ -37,10 +37,10 @@
   },
   "suggest.snippetIndicator": "►",
   "coc.preferences.formatOnSaveFiletypes": ["python", "cpp"],
-  "diagnostic.infoSign": "▍",
-  "diagnostic.warningSign": "▍",
-  "diagnostic.errorSign": "▍",
-  "diagnostic.hintSign": "▍",
+  "diagnostic.infoSign": "▎",
+  "diagnostic.warningSign": "▎",
+  "diagnostic.errorSign": "▎",
+  "diagnostic.hintSign": "▎",
   "list.maxPreviewHeight": 25,
   "languageserver": {
     "ccls": {
@@ -59,14 +59,6 @@
         }
       }
     },
-    "intelephense": {
-      "command": "intelephense",
-      "args": ["--stdio"],
-      "filetypes": ["php"],
-      "initializationOptions": {
-        "storagePath": "/tmp/intelephense"
-      }
-    },
     "dockerfile": {
       "command": "docker-langserver",
       "args": ["--stdio"],
@@ -76,19 +68,22 @@
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/"],
       "filetypes": ["go"]
+    },
+    "intelephense": {
+      "command": "intelephense",
+      "args": ["--stdio"],
+      "filetypes": ["php"],
+      "initializationOptions": {
+        "storagePath": "/home/cilsat/.cache/intelephense"
+      }
+    },
+    "terraform": {
+      "command": "terraform-lsp",
+      "filetypes": ["terraform"],
+      "initializationOptions": {}
     }
   },
-  "python.disableInstallationCheck": true,
-  "python.jediEnabled": true,
-  "python.jediPath": "/usr/lib/python3.8/site-packages",
-  "python.venvFolders": [
-    ".local/share/venv",
-    ".cache/pypoetry/virtualenvs",
-    ".local/share/conda/envs"
-  ],
-  "python.linting.pylintEnabled": true,
-  "python.linting.pylintPath": "pylint",
+  "python.pythonPath": "python",
   "python.formatting.provider": "black",
-  "python.formatting.blackPath": "/usr/bin/black",
-  "python.formatting.blackArgs": ["--fast"]
+  "rust-analyzer.server.path": "rust-analyzer"
 }

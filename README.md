@@ -1,11 +1,12 @@
-Home directory structure:
+## Laptop/Desktop
+
+### Home directory structure:
 .
 ├── data
 │   ├── maps
 │   ├── speech
 │   └── text
 ├── Desktop
-├── dev
 ├── etc
 │   ├── music
 │   ├── pics
@@ -18,23 +19,28 @@ Home directory structure:
 │   ├── sh
 │   ├── snd
 │   └── zip
-└── www
+├── prosa
+└── agra
+
 
 * *data* stores datasets and corpora
 * *share* is the mounting point for cloud-based storage
-* *dev* contains personal software development projects
-* *src* contains source code from other people's projects
-* *www* stores and serves web-related software projects
+* *dev* contains personal non-work related software development projects
+* *src* contains other people's source code
 * *tmp* is meant as a temporary place to store files downloaded from browser:
   + *doc* stores documents, spreadsheets, PDFs, CSVs, and plaintext files
-  + *pic* stores temporary pictures
-  + *sh* stores temporary bash, python, perl scripts
+  + *pic* stores pictures
+  + *sh* stores bash, python, and perl scripts
   + *snd* stores audio files and songs
-  + *zip* stores temporary archives
-* *etc* stores permanent files unrelated to programming:
-  + *music* contains albums and is read by MPD
-  + *pics* contains wallpapers and other permanent pictures
-  + *roms* stores emulator roms
+  + *ark* stores compressed archives
+- *prosa* stores Prosa-related source code
+- *agra* stores Agranara-related source code
 
-The directories in *data*, *tmp* and *etc* may later be symlinked to the win10 
+The directories in *data* and *tmp* and may later be symlinked to the win10 
 partition to save space and to share files.
+
+### Setup
+
+Setup uses `ansible`, and assumes a properly partitioned and bootloaded Arch 
+Linux installation with `sudo` and a non-root user already configured. :e
+

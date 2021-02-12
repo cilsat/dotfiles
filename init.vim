@@ -17,6 +17,14 @@ set cursorline                          " Highlight current cursor line
 set scrolloff=2                         " Keep 2 lines around cursorline
 set timeoutlen=300                      " Fixes slow mode changes
 syntax sync minlines=300
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("nvim")
+  set signcolumn=number
+else
+  " Recent vim can merge signcolumn and number column into one
+  set signcolumn=number
+endif
 
 " Undo
 set undofile                            " Saves undo tree to file
@@ -31,6 +39,7 @@ set infercase
 " Searching
 set hlsearch                            " Highlight query
 set incsearch                           " Incremental search
+set inccommand=split                    " Live preview substitution commands
 set gdefault                            " Add /g flag on :s by default
 set path+=.,**                          " Recursive 'fuzzy' find
 set wildmode=list:longest,list:full     " Lazy file name tabe completion
@@ -72,8 +81,8 @@ augroup GENERAL
   au FileType python setl shiftwidth=4 tabstop=4
   au FileType go setl shiftwidth=4 tabstop=4
   " Get highlight-group beneath cursor
-  function! SynGroup()                                                            
-    let l:s = synID(line('.'), col('.'), 1)                                       
+  function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
   endfun
   " Auto install Plug if not found
@@ -103,15 +112,17 @@ Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
 Plug 'jiangmiao/auto-pairs'             " Automatic brackets
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'mhinz/vim-signify'                " Alternative git diff in gutter
-let g:signify_sign_add='▍'
-let g:signify_sign_delete='▍'
-let g:signify_sign_delete_first_line='▍'
-let g:signify_sign_change='▍'
+let g:signify_disable_by_default=1
+let g:signify_sign_add='▎'
+let g:signify_sign_delete='▎'
+let g:signify_sign_delete_first_line='▎'
+let g:signify_sign_change='▎'
 let g:signify_sign_show_count=0
 let g:signify_sign_show_text=1
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
 Plug 'tpope/vim-markdown'               " Fancy highlihting for markdown
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
+Plug 'tpope/vim-commentary'             " Toggle comment motion
 Plug 'powerman/vim-plugin-autosess'
 let g:autosess_dir='~/.config/nvim/autosess'
 Plug 'justinmk/vim-sneak'               " incsearch as a motion
@@ -124,7 +135,7 @@ Plug 'sheerun/vim-polyglot'             " Syntax highlihting for most langs
 let g:polyglot_disabled=['php', 'latex']
 Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
 let g:pandoc#spell#default_langs=['en', 'id']
-let g:pandoc#formatting#mode='ha'
+let g:pandoc#formatting#mode='sA'
 Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 let g:tex_flavor='latex'
@@ -134,20 +145,29 @@ let g:vimtex_view_method='zathura'
 Plug 'junegunn/fzf',                    " path to fzf binary
       \ {'dir': '~/.local/share/fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'                 " fzf vim integration
+let $BAT_THEME='base16'
 let g:fzf_layout = {'down': '~25%'}
+let g:fzf_colors=
+      \ {'bg': ['bg', 'cursorline'],
+      \  'bg+': ['fg', 'linenr'],
+      \  'hl': ['fg', 'special'],
+      \  'hl+': ['bg', 'sneak'],
+      \  'gutter': ['bg', 'cursorline']}
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 " Completion & Coding
 Plug 'neoclide/coc.nvim',               " Code completion and navigation
       \ {'do': 'yarn install --frozen-lockfile'}
 let g:markdown_fenced_languages = [
-      \ 'html', 'vim', 'ruby', 'bash=sh', 'rust', 'python', 'c', 'cpp']
+      \ 'html', 'vim', 'ruby', 'bash=sh', 'rust', 'c', 'cpp']
 let g:coc_global_extensions = [
       \ 'coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver','coc-tslint',
-      \ 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-python', 'coc-yaml',
-      \ 'coc-snippets', 'coc-java']
+      \ 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-pyright', 'coc-yaml',
+      \ 'coc-snippets', 'coc-java', 'coc-rust-analyzer']
+let g:coc_snippet_next = '<tab>'
 set updatetime=300                    " Smaller updatetime for CursorHold
 set shortmess+=c                      " Don't show |ins-completion-menu|
+Plug 'honza/vim-snippets'
 Plug 'shougo/echodoc.vim'
 let g:echodoc_enable_at_startup=1
 Plug 'liuchengxu/vista.vim',            " Visual LSP symbol viewer
@@ -159,10 +179,14 @@ let g:vista_finder_alternative_executives=['ctags']
 Plug 'w0rp/ale'                         " Code Linting and fixing
 let g:ale_enabled=0
 let g:ale_fixers=
-      \ {'c': ['clang-format'], 'cpp': ['clang-format'],
+      \ {'*': ['remove_trailing_lines', 'trim_whitespace'],
+      \ 'c': ['clang-format'], 'cpp': ['clang-format'],
       \ 'go': ['gofmt', 'goimports'],
-      \ 'java': ['google_java_format'], 'javascript': ['eslint'],
-      \ 'php': ['php_cs_fixer', 'phpcbf'], 'python': ['black']}
+      \ 'java': ['google_java_format'],
+      \ 'javascript': ['eslint'], 'json': ['prettier'],
+      \ 'php': ['php_cs_fixer', 'phpcbf'],
+      \ 'python': ['black'],
+      \ 'rust': ['rustfmt'], 'typescript': ['eslint'], 'xml': ['xmllint']}
 let g:ale_fix_on_save=0
 let g:ale_set_highlights=0
 let g:ale_sign_offset=1
@@ -195,52 +219,70 @@ let g:indentLine_concealcursor=''
 Plug 'mike-hearn/base16-vim-lightline'
 Plug 'mengelbrecht/lightline-bufferline'
 let g:lightline#bufferline#show_number=2
-let g:lightline#bufferline#shorten_path=1
 let g:lightline#bufferline#filename_modifier = ':~:.'
-let g:lightline#bufferline#enable_devicons=1
+let g:lightline#bufferline#icon_position='right'
 let g:lightline#bufferline#number_map = {
       \ 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴',
       \ 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹'}
 let g:lightline#bufferline#unicode_symbols=1
 let g:lightline#bufferline#clickable=1
-let g:lightline#bufferline#read_only=''
 let g:lightline#bufferline#number_separator=''
 Plug 'itchyny/lightline.vim'
 let g:lightline = {
       \ 'colorscheme': 'base16_default_dark',
+      \ 'active': {
+      \   'left': [['mode', 'paste'], ['filename'], ['branch']],
+      \   'right': [['lineinfo'], ['percent'], ['fileencoding', 'fileformat', 'filetype']]
+      \ },
+      \ 'inactive': {
+      \   'left': [['mode', 'paste'], ['filename']],
+      \   'right': [['lineinfo'], ['percent']]
+      \ },
       \ 'tabline': {
       \   'left': [['buffers']],
       \   'right': [['close']]},
-      \ 'tabline_subseparator': {'left': '', 'right': ''},
+      \ 'tabline_separator': {'left': '', 'right': ''},
+      \ 'tabline_subseparator': {'left': '|', 'right': '|'},
       \ 'component_expand': {'buffers': 'lightline#bufferline#buffers'},
       \ 'component_type': {'buffers': 'tabsel'},
       \ 'component_function': {
-      \   'cocstatus': 'coc#status',
-      \   'readonly': 'LightlineReadonly',
-      \   'fugitive': 'FugitiveHead'}
+      \   'branch': 'LightlineBranch',
+      \   'filename': 'LightlineFilename',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileformat': 'LightlineFileformat',
+      \   'lineinfo': 'LightlineLineInfo'}
       \ }
 let g:lightline.enable={'statusline': 1, 'tabline': 1}
 let g:lightline.component_raw={'buffers': 1}
-let g:lightline.enable={'statusline': 1, 'tabline': 1}
 Plug 'edkolev/tmuxline.vim',            " Vim status line as tmux status line
       \ {'do': ':Tmuxline lightline powerline'}
 let g:tmuxline_separators = {
       \ 'left': '', 'left_alt': '▏', 'right': '', 'right_alt': ''}
 Plug 'luochen1990/rainbow'              " Assign colors to matching brackets
-let g:rainbow_active=1
+let g:rainbow_active=2
 let g:rainbow_conf={'ctermfgs': [6,4,3,5,12,11]}
 Plug 'ryanoasis/vim-devicons'           " Pretty icons in popular plugins
 let g:WebDevIconsUnicodeDecorateFolderNodes=1
 let g:DevIconsEnableFoldersOpenClose=1
+Plug 'gillyb/stable-windows'            " Prevent jumping/scrolling windows
+Plug 'machakann/vim-highlightedyank'    " Highlight post yank text
 call plug#end()
 
-" Plugin-related autocommands
-augroup PLUG
+" Code-related autocommands and functions
+augroup CODE
   au!
   " Close coc.nvim completion preview window after completing
   au CompleteDone * if pumvisible() == 0 | pclose | endif
   " Highlight symbol under cursor on coc.nvim CursorHold
   au CursorHold * silent call CocActionAsync('highlight')
+  " Set nonumber for preview windows
+  au FileType fzf set laststatus=0 noshowmode noruler nonu nornu signcolumn=no
+        \| auto BufLeave <buffer> set laststatus=2 ruler nu rnu
+  " Check backspace for coc.nvim tab completion
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
   " Show documentation depending on whether it's vim-related or not
   function! s:show_documentation()
     if &filetype == 'vim'
@@ -249,29 +291,71 @@ augroup PLUG
       call CocAction('doHover')
     endif
   endfunction
+  function! OrganizeImports()
+    if &filetype == 'python'
+      call CocActionAsync('runCommand', 'pyright.organizeImports')
+    endif
+  endfunction
   " Search for string in current dir using rg/fzf
   command! -bang -nargs=* Find
         \ call fzf#vim#grep(
-        \   'rg --column -F -i -n --no-heading --hidden -L -g "!.git/*" '.shellescape(<q-args>), 1,
-        \   fzf#vim#with_preview(
-        \     {'options': '--delimiter : --nth 4..'}, 'right:70%:hidden', '?'),
-        \   <bang>0)
+        \   'rg --column -F -i -N --color=always --no-heading -uu -L -g "!.git/*" '.shellescape(<q-args>),
+        \ 1,
+        \ fzf#vim#with_preview(),
+        \ <bang>0)
   " Pritty print git graph
   command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
+augroup END
+
+" Lightline-related autocommands and functions
+augroup LIGHTLINE
+  au!
   " Set lightline bufferline colours
-  au VimEnter * call SetupLightlineColors()
-  function SetupLightlineColors() abort
-    " transparent background in statusbar
+  au VimEnter * call LightlineSetupColors()
+  function LightlineSetupColors() abort
     let l:palette = lightline#palette()
-    let l:palette.normal.middle = [ [ 'NONE', 'NONE', 'NONE', 'NONE' ] ]
-    let l:palette.inactive.left = l:palette.normal.middle
+    let l:palette.normal.left = [
+          \ ['none', 'none', 15, 12, 'bold'],
+          \ ['none', 'none', 15, 8]]
+    let l:palette.insert.left = [
+          \ ['none', 'none', 0, 2, 'bold'],
+          \ ['none', 'none', 15, 8]]
+    let l:palette.visual.left = [
+          \ ['none', 'none', 0, 16, 'bold'],
+          \ ['none', 'none', 15, 8]]
+    let l:palette.replace.left = [
+          \ ['none', 'none', 0, 9, 'bold'],
+          \ ['none', 'none', 15, 8]]
+    let l:palette.normal.middle = [['none', 'none', 20, 18]]
+    let l:palette.normal.right = l:palette.normal.left
+    let l:palette.insert.right = l:palette.insert.left
+    let l:palette.visual.right = l:palette.visual.left
+    let l:palette.replace.right = l:palette.replace.left
+    let l:palette.inactive.left = [['none', 'none', 20, 19]]
+    let l:palette.inactive.middle = l:palette.normal.middle
+    let l:palette.inactive.right = l:palette.inactive.left
     let l:palette.tabline.middle = l:palette.normal.middle
     let l:palette.tabline.tabsel = l:palette.normal.left
     call lightline#colorscheme()
   endfunction
   " Functions for lightline status line
-  function! LightlineReadonly()
-    return &readonly ? '' : ''
+  function! LightlineFilename()
+    return &readonly ? ' '.expand('%:t') : expand('%:t')
+  endfunction
+  function! LightlineBranch()
+    return strlen(FugitiveHead()) ? ' '.FugitiveHead() : ''
+  endfunction
+  function! LightlineFileformat()
+    return winwidth(0) > 70 ? &fileformat.WebDevIconsGetFileFormatSymbol().' ' : ''
+  endfunction
+  function! LightlineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype.WebDevIconsGetFileTypeSymbol().' ' : 'no ft') : ''
+  endfunction
+  function! LightlineLineInfo()
+    let current_line = printf('%3s', line('.'))
+    let current_col  = printf('%-3s', col('.'))
+    let lineinfo     = ''.current_line.':'.current_col
+    return lineinfo
   endfunction
 augroup END
 
@@ -284,7 +368,8 @@ let g:indentLine_color_term=19
 " Custom highlight settings
 hi nontext               ctermfg=236 ctermbg=NONE
 hi specialkey            ctermfg=239 ctermbg=NONE
-hi cursorlinenr          ctermfg=16  cterm=bold
+hi cursorline            ctermbg=18
+hi cursorlinenr          ctermfg=16  ctermbg=18 cterm=bold
 hi linenr                ctermfg=19  ctermbg=NONE
 hi normal                ctermbg=NONE
 hi comment               cterm=italic
@@ -308,25 +393,34 @@ hi aleerrorsign          ctermfg=01
 hi alewarningsign        ctermfg=03  cterm=bold
 hi tagbarfoldicon        ctermfg=04
 hi sneak                 ctermfg=00  ctermbg=yellow
+hi highlightedyankregion ctermbg=19
 
 
 " CUSTOM KEY MAPPINGS
 " Plugin key mappings
-nmap <F1> :NERDTreeToggle<CR>
+nmap <F1> :SignifyToggle<CR>
 nmap <F2> :Vista!!<CR>
 nmap <F3> :Gblame<CR>
 nmap <F4> :ALEFix<CR>
+nmap <F5> :PlugUpd<CR>
+map <F8> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+      \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+      \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " EasyAlign mappings
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " vim-slime mappings
-xmap <leader>cc <Plug>SlimeRegionSend
+xmap <leader>c <Plug>SlimeRegionSend
 nmap <leader>cc <Plug>SlimeParagraphSend
 
-" Use <Tab> and <S-Tab> to navigate coc.nvim completion list
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" Use <Tab> and <S-Tab> to navigate coc.nvim completion list and snippets
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Remap keys for gotos
@@ -334,7 +428,7 @@ nmap <silent> <leader>dd <Plug>(coc-definition)
 nmap <silent> <leader>ii <Plug>(coc-implementation)
 nmap <silent> <leader>ff <Plug>(coc-references)
 
-" Fugitive mappings
+" Fugitive/signify mappings
 nnoremap <leader>gd :Gvdiff<CR>
 nnoremap gh :diffget //2<CR>
 nnoremap gl :diffget //3<CR>
@@ -347,14 +441,16 @@ nnoremap <silent> <leader>hh :call <SID>show_documentation()<CR>
 
 " Override mode completions using FZF
 nmap <leader>h :Helptags<CR>
-nmap <leader>c :Commands<CR>
+nmap <leader>o :Commands<CR>
 
 " Which key
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 
-"" Buffer navigation
+"" Pane/Buffer navigation
 " Delete buffer
 nnoremap <leader>d :bp\|bd #<CR>
+" Delete pane
+nnoremap <leader>w :q<CR> 
 " Next buffer
 nmap <C-n> :bn<CR>
 " Previous buffer
@@ -392,6 +488,8 @@ nnoremap <leader>f :Find<CR>
 nnoremap <leader>b :Buffers<CR>
 " Split pane vertically and search for file
 nnoremap <leader>v :vs<CR>:Files<CR>
+" Split pane horizontally and search for file
+nnoremap <leader>s :split<CR>:Files<CR>
 
 nmap <leader>0 ^
 nmap <esc> :noh<CR>

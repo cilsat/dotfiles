@@ -30,14 +30,11 @@ set -g status-left "\
 #[fg=colour16,bg=colour19] \ufab1 #[fg=colour18,bg=colour19]│"
 
 set -g status-right "\
-#[fg=colour5,bg=colour19] \ue266  \
-#[fg=colour18,bg=colour19]│\
-#[fg=colour21,bg=colour19]#(~/.config/dotfiles/cpu_now.sh) \
-#[fg=colour18,bg=colour19]│#[fg=colour3,bg=colour19] \uf589  \
+#[fg=colour3,bg=colour19] \uf589  \
 #[fg=colour18,bg=colour19]│\
 #[fg=colour21,bg=colour19] #(~/.config/dotfiles/power_now.sh) \
 #[fg=colour18,bg=colour19]│#[fg=colour6,bg=colour19] \uf073  \
-#[fg=colour18,bg=colour19]│#[fg=colour21,bg=colour19] %a %d %b "
+#[fg=colour18,bg=colour19]│#[fg=colour21,bg=colour19] %a %d %b %H:%M"
 
 setw -g window-status-format "\
 #{?window_last_flag,#[fg=colour16#,bg=colour19],#[fg=colour21#,bg=colour19]} #I \
@@ -49,5 +46,5 @@ setw -g window-status-format "\
 
 setw -g window-status-current-format "\
 #[fg=colour16,bg=colour19,bold] #I ▐\
-#[fg=colour18,bg=colour16,bold] #W \
+#[fg=colour0,bg=colour16,bold] #W \
 #{?window_end_flag,#[fg=colour16#,bg=colour18],#[fg=colour16#,bg=colour19]}▍"

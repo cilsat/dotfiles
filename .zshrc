@@ -19,7 +19,7 @@ zstyle ':zim:termtitle' format '%1~'
 # See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # Set pac alias
-zstyle ':zim:pacman' frontend 'yay'
+zstyle ':zim:pacman' frontend 'paru'
 
 # Initalize
 if [[ ${ZIM_HOME}/init.zsh -ot ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
@@ -50,7 +50,6 @@ bindkey -M vicmd 'j' history-substring-search-down
 # Set base home paths
 export DEFAULT_USER=cilsat
 export HOME=/home/$DEFAULT_USER
-export DOT=$HOME/.config/dotfiles
 export BASE16_SHELL="$HOME/src/base16-builder-python/output/shell"
 export FZF="/usr/share/fzf"
 
@@ -59,9 +58,9 @@ if [ -n "$DISPLAY" ]; then
     # Use a different color scheme for each workspace
     ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
     if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-eighties.sh"
     elif [ "$ws" = 2 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-gruvbox-dark-soft.sh"
+        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
     elif [ "$ws" = 3 ];then
         BASE16_THEME="$BASE16_SHELL/scripts/base16-ocean.sh"
     elif [ "$ws" = 4 ];then
@@ -100,9 +99,11 @@ $HOME/.local/share/go/bin"
 export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
+# Java path
+export JAVA_HOME="/usr/lib/jvm/java-11-openjdk"
 # PyEnv
 #export PYENV_ROOT="$HOME/.local/share/pyenv"
-#eval "$(pyenv init -)"
+eval "$(pyenv init -)"
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
@@ -110,22 +111,26 @@ export LESS=" -R "
 source "$FZF/completion.zsh"
 source "$FZF/key-bindings.zsh"
 export FZF_COMPLETION_TRIGGER="**"
-export FZF_DEFAULT_OPTS="--height 50% --preview=\"less {}\" \
+export FZF_DEFAULT_OPTS="--height 50% --preview=\"bat {}\" \
   --preview-window=right:30%:hidden --cycle --multi \
   --bind=?:toggle-preview --bind=tab:down --bind=btab:up --bind=space:toggle \
   --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up \
   --color fg:7,bg:-1,hl:6,fg+:7,bg+:18,hl+:3 \
-  --color info:8,prompt:5,spinner:15,pointer:16,marker:3"
+  --color gutter:-1,info:8,prompt:5,spinner:15,pointer:16,marker:3"
 export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\""
 _fzf_compgen_path() {
   fd -i -H -I -F -L -E ".git" -E "node_modules" . "$1"
 }
+export BAT_THEME="base16"
 
 # Aliases
 alias nv="nvim"
 alias pnv="poetry run nvim"
+alias jc="sudo journalctl"
 alias sc="sudo systemctl"
+alias scu="systemctl --user"
 alias op="xdg-open"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source /usr/share/nvm/init-nvm.sh

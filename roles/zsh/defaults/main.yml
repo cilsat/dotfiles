@@ -1,0 +1,4 @@
+zsh_packages:
+  - zsh
+  - lesspipe
+  - source-highlight

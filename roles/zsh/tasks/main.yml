@@ -1,0 +1,29 @@
+- name: Install Zsh
+  pacman:
+    name: "{{item}}"
+    update_cache: yes
+  become: yes
+  become_user: root
+  become_method: sudo
+  loop: "{{zsh_packages}}"
+
+- name: Install Zim
+  raw: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | zsh)\""
+
+- name: Symlink Zsh
+  file:
+    src: "{{dotfiles_home}}/roles/zsh/files/zshrc"
+    dest: "{{dotfiles_user_home}}/.zshrc"
+    state: link
+
+- name: Symlink Zim
+  file:
+    src: "{{dotfiles_home}}/roles/zsh/files/zimrc"
+    dest: "{{dotfiles_user_home}}/.zimrc"
+    state: link
+
+- name: Install Zim modules
+  raw: "sh -c \"$(zimfw install)\""
+
+- name: Update Zsh Comp
+  raw: "sh -c \"$(rm ~/.zcompdump && compinit)\""

@@ -55,22 +55,20 @@ export FZF="/usr/share/fzf"
 
 # Check for Display
 if [ -n "$DISPLAY" ]; then
-    # Use a different color scheme for each workspace
-    ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
-    if [ "$ws" = 1 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-eighties.sh"
-    elif [ "$ws" = 2 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-oceanicnext-purple.sh"
-    elif [ "$ws" = 3 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-ocean.sh"
-    elif [ "$ws" = 4 ];then
-        BASE16_THEME="$BASE16_SHELL/scripts/base16-materia.sh"
-    fi
-    [[ -s "$BASE16_THEME" ]] && source "$BASE16_THEME"
-    # Attach shell to workspace tmux session and force unicode
-    if [[ -z $(tmux ls | egrep $ws": .*attached") ]]; then
-        tmux -u new -As "$ws"
-    fi
+  # Use a different color scheme for each workspace
+  ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
+  if [ "$ws" = 1 ];then
+    BASE16_THEME="decaf"
+  elif [ "$ws" = 2 ];then
+    BASE16_THEME="oceanicnext-purple"
+  elif [ "$ws" = 3 ];then
+    BASE16_THEME="ocean"
+  elif [ "$ws" = 4 ];then
+    BASE16_THEME="materia"
+  fi
+  [[ -n $BASE16_THEME ]] && source "$BASE16_SHELL/scripts/base16-$BASE16_THEME.sh"
+  # Attach shell to workspace tmux session and force unicode
+  [[ -z $(tmux ls | egrep $ws": .*attached") ]] && tmux -u new -As "$ws"
 fi
 
 # Preferred editor for local and remote sessions
@@ -102,35 +100,43 @@ export GOPATH="$HOME/.local/share/go"
 # Java path
 export JAVA_HOME="/usr/lib/jvm/java-11-openjdk"
 # PyEnv
-#export PYENV_ROOT="$HOME/.local/share/pyenv"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
+# NVM
+source /usr/share/nvm/init-nvm.sh
+
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
+export BAT_THEME="base16"
 # FZF vars
 source "$FZF/completion.zsh"
 source "$FZF/key-bindings.zsh"
 export FZF_COMPLETION_TRIGGER="**"
 export FZF_DEFAULT_OPTS="--height 50% --preview=\"bat {}\" \
-  --preview-window=right:30%:hidden --cycle --multi \
+  --preview-window=right:50% --cycle --multi \
   --bind=?:toggle-preview --bind=tab:down --bind=btab:up --bind=space:toggle \
   --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up \
-  --color fg:7,bg:-1,hl:6,fg+:7,bg+:18,hl+:3 \
+  --color fg:7,bg:-1,hl:6,fg+:7,bg+:18,hl+:3,border:19 \
   --color gutter:-1,info:8,prompt:5,spinner:15,pointer:16,marker:3"
 export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\""
 _fzf_compgen_path() {
   fd -i -H -I -F -L -E ".git" -E "node_modules" . "$1"
 }
-export BAT_THEME="base16"
+# LF vars
+LF_ICONS=$(sed ~/.config/lf/diricons \
+            -e '/^[ \t]*#/d'       \
+            -e '/^[ \t]*$/d'       \
+            -e 's/[ \t]\+/=/g'     \
+            -e 's/$/ /')
+LF_ICONS=${LF_ICONS//$'\n'/:}
+export LF_ICONS
 
 # Aliases
 alias nv="nvim"
-alias pnv="poetry run nvim"
 alias jc="sudo journalctl"
 alias sc="sudo systemctl"
 alias scu="systemctl --user"
 alias op="xdg-open"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source /usr/share/nvm/init-nvm.sh

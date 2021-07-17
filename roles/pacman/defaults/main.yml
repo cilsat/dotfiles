@@ -1,0 +1,149 @@
+aur_packages:
+  - yay
+  - htop-vim-git
+  - bear
+
+kde_aur_packages:
+  - plasma5-applets-eventcalendar
+  - plasma5-applets-redshift-control-git
+
+pacman_packages:
+  - base-devel
+  - openssh
+  - fzf
+  - tmux
+  - zsh
+  - fd
+  - ripgrep
+  - dnscrypt-proxy
+  - unzip
+  - unrar
+  - tldr
+  - xsel
+  - rsync
+  - aria2
+  - man-db
+  - wget
+  - lesspipe
+  - source-highlight
+  - cmake
+
+  - throttled # throttling and undervolting on thinkpad
+  - tlp
+  - ethtool
+  - powertop
+  - tp_smapi # battery thresholds
+  - acpi_call
+  - dmidecode
+  - fwupd # firware
+  - fprintd # fingerprint
+
+  - plasma-desktop
+  - plasma-nm
+  - networkmanager-openvpn
+  - plasma-pa
+  - powerdevil
+  - kwalletmanager
+  - kwallet-pam
+  - kwalletcli
+  - sddm
+  - sddm-kcm
+  - dolphin
+  - plasma5-applets-eventcalendar
+  - plasma5-applets-redshift-control-git
+  - pavucontrol-qt
+  - ksshaskpass
+  - bluedevil
+  - pulseaudio-bluetooth
+  - colord-kde
+  - kate
+  - spectacle
+  - okular
+  - kscreen
+  - gwenview
+  - kdeconnect
+  - cantata
+  - krita
+  - krdc
+  - xdg-desktop-portal-kde
+  - plasma-browser-integration
+  - user-manager
+  - kvantum-qt5
+  - papirus-icon-theme
+  - kde-gtk-config
+  - breeze-gtk
+
+  - libreoffice
+  - discord
+  - google-chat-linux
+  - toptracker
+  - spotify
+  - kitty
+  - wmctrl
+  - ttf-jetbrains-mono
+  - otf-san-francisco
+  - ttf-nerd-fonts-symbols-mono
+  - noto-fonts-cjk
+  - intellij-idea-community-edition
+  - soulseekqt
+
+  - mpd
+  - libebur128
+  - mpv
+  - sox
+  - youtube-dl
+  - libva-intel-driver
+  - intel-media-driver
+  - libva-utils
+
+  - pass
+  - firefox
+  - browserpass
+  - browserpass-firefox
+
+  - nodejs-lts-erbium
+  - npm
+  - yarn
+
+  - ipython
+  - python-poetry
+  - python-requests
+  - python-pip
+
+  - docker
+  - docker-compose
+  - postgresql
+  - redis
+  - kubectl
+  - k9s
+  - kcachegrind
+  - gperftools
+  - libvirt
+  - qemu
+  - ebtables
+  - virt-manager
+  - virt-install
+  - dnsmasq
+
+  - php
+  - composer
+  - php-gd
+  - php-pgsql
+  - php-intl
+  - php-yaml
+
+  - go
+  - gopls
+
+  - neovim
+  - python-neovim
+  - ccls
+  - bear
+  - python-jedi
+  - nodejs-intelephense
+  - python-black
+
+  - pandoc-bin
+  - texlive-core
+  - texlive-bin
+  - texlive-latexextra

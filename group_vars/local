@@ -1,0 +1,6 @@
+dotfiles_user_home: "{{ '~' | expanduser }}"
+dotfiles_home: "{{dotfiles_user_home}}/.config/dotfiles"
+
+full_name: Cil Satriawan
+git_user: cilsat
+git_email: cil.satriawan@gmail.com

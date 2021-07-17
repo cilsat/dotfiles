@@ -27,7 +27,7 @@ window:
   # by DPI and the specified value is always added at both opposing sides.
   padding:
     x: 0
-    y: 0
+    y: 2
 
   # Window decorations
   #
@@ -84,7 +84,7 @@ font:
   bold:
     family: JetBrains Mono
     # The `style` can be specified to pick a specific face.
-    style: Bold
+    style: ExtraBold
 
   # Italic font face
   italic:
@@ -93,7 +93,7 @@ font:
     style: Medium Italic
 
   # Point size
-  size: 5.5
+  size: 9.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -106,7 +106,7 @@ font:
   # increasing `y` moves the glyph upwards.
   glyph_offset:
     x: 0
-    y: -2
+    y: -1
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
@@ -230,7 +230,7 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: true
 
-  url:
+  hints:
     # URL launcher
     #
     # This program is executed when clicking on a text which is recognized as a URL.
@@ -365,7 +365,6 @@ key_bindings:
   - { key: Insert,   mods: Shift,   action: PasteSelection               }
   - { key: Key0,     mods: Control, action: ResetFontSize                }
   - { key: Equals,   mods: Control, action: IncreaseFontSize             }
-  - { key: Subtract, mods: Control, action: DecreaseFontSize             }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                    chars: "\x1b[H",   mode: ~AppCursor  }
   - { key: End,                     chars: "\x1bOF",   mode: AppCursor   }

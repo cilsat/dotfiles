@@ -1,0 +1,12 @@
+- name: Install AUR helper
+
+- name: Install Pacman packages
+  pacman:
+    name: "{{item}}"
+    update_cache: yes
+  become: yes
+  become_user: root
+  become_method: sudo
+  loop: "{{packages}}"
+
+- name: Install AUR packages

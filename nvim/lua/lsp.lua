@@ -2,7 +2,8 @@
 function org_imports(wait_ms)
   local params = vim.lsp.util.make_range_params()
   params.context = {only = {"source.organizeImports"}}
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params,
+                                          wait_ms)
   for _, res in pairs(result or {}) do
     for _, r in pairs(res.result or {}) do
       if r.edit then
@@ -23,20 +24,22 @@ local on_attach = function(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
+  local opts = {noremap = true, silent = true}
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
   buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<leader>m', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>',
+                 opts)
+  buf_set_keymap('n', '<leader>m',
+                 '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '<F6>', '<cmd>lua org_imports(250)<CR>', opts)
   -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   -- buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  -- buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   -- buf_set_keymap('n', '<M-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   -- buf_set_keymap('n', '<M-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
@@ -45,26 +48,22 @@ local on_attach = function(client, bufnr)
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "<F4>", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<F4>", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    buf_set_keymap("n", "<F4>", "<cmd>lua vim.lsp.buf.range_formatting()<CR>",
+                   opts)
   end
 
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
-    vim.fn.sign_define('LspDiagnosticsSignError', {
-      text = '', texthl = 'LspDiagnosticsSignError';
-    })
-    vim.fn.sign_define('LspDiagnosticsSignError', {
-      text='▎', texthl = 'LspDiagnosticsSignError';
-    })
-    vim.fn.sign_define('LspDiagnosticsSignWarning', {
-      text='▎', texthl = 'LspDiagnosticsSignWarning';
-    })
-    vim.fn.sign_define('LspDiagnosticsSignInformation', {
-      text='▎', texthl = 'LspDiagnosticsSignInformation';
-    })
-    vim.fn.sign_define('LspDiagnosticsSignHint', {
-      text='▎', texthl = 'LspDiagnosticsSignHint';
-    })
+    vim.fn.sign_define('LspDiagnosticsSignError',
+                       {text = '', texthl = 'LspDiagnosticsSignError'})
+    vim.fn.sign_define('LspDiagnosticsSignError',
+                       {text = '▎', texthl = 'LspDiagnosticsSignError'})
+    vim.fn.sign_define('LspDiagnosticsSignWarning',
+                       {text = '▎', texthl = 'LspDiagnosticsSignWarning'})
+    vim.fn.sign_define('LspDiagnosticsSignInformation',
+                       {text = '▎', texthl = 'LspDiagnosticsSignInformation'})
+    vim.fn.sign_define('LspDiagnosticsSignHint',
+                       {text = '▎', texthl = 'LspDiagnosticsSignHint'})
 
     vim.api.nvim_exec([[
       augroup lsp_document_highlight
@@ -76,45 +75,30 @@ local on_attach = function(client, bufnr)
   end
 
   local border = {
-    {"🭽", "FloatBorder"},
-    {"▔", "FloatBorder"},
-    {"🭾", "FloatBorder"},
-    {"▕", "FloatBorder"},
-    {"🭿", "FloatBorder"},
-    {"▁", "FloatBorder"},
-    {"🭼", "FloatBorder"},
-    {"▏", "FloatBorder"},
+    {"🭽", "FloatBorder"}, {"▔", "FloatBorder"}, {"🭾", "FloatBorder"},
+    {"▕", "FloatBorder"}, {"🭿", "FloatBorder"}, {"▁", "FloatBorder"},
+    {"🭼", "FloatBorder"}, {"▏", "FloatBorder"}
   }
   -- Floating windows
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-    vim.lsp.handlers.hover, {border = border}
-  )
+  vim.lsp.handlers["textDocument/hover"] =
+      vim.lsp.with(vim.lsp.handlers.hover, {border = border})
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-    vim.lsp.handlers.hover, {border = border}
-  )
+                                                       vim.lsp.handlers.hover,
+                                                       {border = border})
 end
 
 -- Enable snippet support
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  }
+  properties = {'documentation', 'detail', 'additionalTextEdits'}
 }
 
 -- Use a loop to conveniently both setup all defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = {
-  "clangd", "intelephense", "gopls", "jdtls", "rust_analyzer", "tsserver"
-}
+local servers = {"clangd", "intelephense", "gopls", "jdtls", "rust_analyzer"}
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-  }
+  nvim_lsp[lsp].setup {on_attach = on_attach, capabilities = capabilities}
 end
 
 -- Setup Lua completion manually
@@ -122,27 +106,28 @@ local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-require('lspconfig').sumneko_lua.setup {
+nvim_lsp.sumneko_lua.setup {
   cmd = {'lua-language-server'},
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     Lua = {
-      runtime = {
-        version = 'LuaJIT',
-        path = runtime_path,
-      },
-      diagnostics = {
-        globals = {'vim'},
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
+      runtime = {version = 'LuaJIT', path = runtime_path},
+      diagnostics = {globals = {'vim'}},
+      workspace = {library = vim.api.nvim_get_runtime_file("", true)},
+      telemetry = {enable = false}
+    }
+  }
+}
+
+-- Setup typescript-language-server with ts-utils
+nvim_lsp.tsserver.setup {
+  on_attach = function(client)
+    client.resolved_capabilities.document_formatting = false
+    require('nvim-lsp-ts-utils').setup {}
+    on_attach(client)
+  end,
+  capabilities = capabilities
 }
 
 -- Attempt to load python environment automatically when using pyright
@@ -162,43 +147,73 @@ local function get_python_path(workspace)
   return vim.fn.exepath('python3') or vim.fn.exepath('python') or 'python'
 end
 
-require'lspconfig'.pyright.setup {
+nvim_lsp.pyright.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   on_init = function(client)
-    client.config.settings.python.pythonPath = get_python_path(client.config.root_dir)
+    client.config.settings.python.pythonPath =
+        get_python_path(client.config.root_dir)
   end
+}
+
+-- Setup efm-langserver
+local efm = require('efm')
+nvim_lsp.efm.setup {
+  on_attach = on_attach,
+  init_options = {documentFormatting = true},
+  root_dir = vim.loop.cwd,
+  settings = {
+    rootMarkers = {'.git/'},
+    languages = {
+      -- ['='] = (efm.misspell),
+      vim = {efm.vint},
+      lua = {efm.lua_format},
+      go = {efm.revive, efm.goimports},
+      python = {efm.black, efm.flake8, efm.mypy},
+      -- php = {efm.php_cs_fixer},
+      typescript = {efm.prettier, efm.eslint},
+      javascript = {efm.prettier, efm.eslint},
+      typescriptreact = {efm.prettier, efm.eslint},
+      javascriptreact = {efm.prettier, efm.eslint},
+      yaml = {efm.prettier},
+      json = {efm.prettier},
+      html = {efm.prettier},
+      css = {efm.prettier},
+      markdown = {efm.prettier},
+      sh = {efm.shfmt}
+    }
+  }
 }
 
 -- LSP completion config via nvim-compe
 require'compe'.setup {
-  enabled = true;
-  autocomplete = true;
-  debug = false;
-  min_length = 1;
-  preselect = 'enable';
-  throttle_time = 80;
-  source_timeout = 200;
-  incomplete_delay = 400;
-  max_abbr_width = 100;
-  max_kind_width = 100;
-  max_menu_width = 100;
+  enabled = true,
+  autocomplete = true,
+  debug = false,
+  min_length = 1,
+  preselect = 'enable',
+  throttle_time = 80,
+  source_timeout = 200,
+  incomplete_delay = 400,
+  max_abbr_width = 100,
+  max_kind_width = 100,
+  max_menu_width = 100,
   documentation = {
-    border = {"🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏",},
-  };
+    border = {"🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏"}
+  },
 
   source = {
-    path = true;
-    buffer = true;
-    calc = true;
-    vsnip = true;
-    nvim_lsp = true;
-    nvim_lua = true;
-    spell = true;
-    tags = true;
-    snippets_nvim = true;
-    nvim_treesitter = true;
-  };
+    path = true,
+    buffer = true,
+    calc = false,
+    vsnip = true,
+    nvim_lsp = true,
+    nvim_lua = true,
+    spell = false,
+    tags = false,
+    snippets_nvim = true,
+    nvim_treesitter = true
+  }
 }
 
 -- Use <Tab> and <S-Tab> to navigate nvim-compe completion menu
@@ -216,12 +231,12 @@ local check_back_space = function()
 end
 
 _G.compe_cr = function()
-	if vim.fn.pumvisible() == 1 and vim.fn.complete_info()['selected'] ~= -1 then
-		-- return t("<Plug>(compe-confirm)")
-		vim.fn['compe#confirm']({select = true})
-	else
-		return require("consclose").consCR() .. t("<Plug>DiscretionaryEnd")
-	end
+  if vim.fn.pumvisible() == 1 and vim.fn.complete_info()['selected'] ~= -1 then
+    -- return t("<Plug>(compe-confirm)")
+    vim.fn['compe#confirm']({select = true})
+  else
+    return require("consclose").consCR() .. t("<Plug>DiscretionaryEnd")
+  end
 end
 
 -- Use (s-)tab to:
@@ -254,30 +269,19 @@ vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 
--- Lspsaga setup for prettier/smarter popups
---require'lspsaga'.init_lsp_saga {
---  border_style = 1
---}
-
--- LSP symbol tree viewer
-require'symbols-outline'.setup {
-  highlight_hovered_item = true;
-  show_guides = true;
-}
-
 -- Load autopairs
-require('nvim-autopairs').setup({
-  check_ts = true,
-  fast_wrap = {
-    end_key = 'e',
-    keys = {'asdfghjkl;qwriop['},
-    highlight = 'Sneak',
-  }
-})
-require('nvim-autopairs.completion.compe').setup({
-  map_cr = true,
-  map_complete = true,
-})
+-- require('nvim-autopairs').setup({
+--  check_ts = true,
+--  fast_wrap = {
+--    end_key = 'e',
+--    keys = {'asdfghjkl;qwriop['},
+--    highlight = 'Sneak',
+--  }
+-- })
+-- require('nvim-autopairs.completion.compe').setup({
+--  map_cr = true,
+--  map_complete = true,
+-- })
 
 -- nvim-treesitter for vastly improved source code parsing
 require'nvim-treesitter.configs'.setup {
@@ -285,18 +289,12 @@ require'nvim-treesitter.configs'.setup {
     "bash", "c", "cpp", "go", "java", "javascript", "json", "julia", "kotlin",
     "lua", "php", "python", "query", "ruby", "rust", "toml", "typescript", "vue"
   },
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = false,
-  },
-  rainbow = {
-    enable = true,
-  },
-  autopairs = {
-    enable = true,
-  },
+  highlight = {enable = true},
+  indent = {enable = false},
+  rainbow = {enable = true}
+  -- autopairs = {
+  --  enable = true,
+  -- },
 }
 
 -- lsp-kind for pretty icons in completion menu
@@ -323,43 +321,39 @@ require('lspkind').init({
     EnumMember = '  ',
     Constant = '  ',
     Struct = '  '
-  },
+  }
 })
 
 -- telescope for fuzzy searching
 local picker_config = {
-  show_line = false;
-  prompt_title = '';
-  results_title = '';
-  preview_title = '';
+  show_line = false,
+  prompt_title = '',
+  results_title = '',
+  preview_title = '',
+  vimgrep_arguments = {
+    'rg', '--column', '--smart-case', '--color=never', '--no-heading',
+    '--with-filename', '-uu', '-F', '-L', '-g', '!.git/**', '-g',
+    '!__pycache__/**', '-g', '!node_modules', '-g', '!**.o'
+  },
+  find_command = {
+    'fd', '-i', '-uu', '-F', '-L', '-S', '-1m', '-E', '.git', '-E',
+    'node_modules', '-E', '__pycache__', '-E', '**.o', '-E', '*.jpg', '-E',
+    '*.wav'
+  }
 }
 
 require('telescope').setup {
   defaults = {
-    vimgrep_arguments = {
-      'rg', '--column', '--smart-case', '--color=never', '--no-heading',
-      '--with-filename', '-uu', '-F', '-L', '-g', '!.git/**',
-      '-g', '!__pycache__/**', '-g', '!node_modules', '-g', '!**.o'
-    },
-    find_command = {
-      'fd', '-i', '-uu', '-F', '-L', '-S', '-1m',
-      '-E', '.git', '-E', 'node_modules', '-E', '__pycache__', '-E', '**.o',
-      '-E', '*.jpg', '-E', '*.wav'
-    },
-    mappings = {
-      i = {
-        ["<esc>"] = require('telescope.actions').close,
-      },
-    },
+    mappings = {i = {["<esc>"] = require('telescope.actions').close}},
+    dynamic_preview_title = true,
     borderchars = {
-      results = {'▔', '▕', '▁', '▏', '🭽', '🭾', '🭿', '🭼' };
-      prompt = {' ', '▕', '▁', '▏', '▏', '▕', '🭿', '🭼' };
-      preview = {'▔', '▕', '▁', ' ', '▔', '🭾', '🭿', '▁' };
+      results = {'▔', '▕', '▁', '▏', '🭽', '🭾', '🭿', '🭼'},
+      prompt = {' ', '▕', '▁', '▏', '▏', '▕', '🭿', '🭼'},
+      preview = {'▔', '▕', '▁', ' ', '▔', '🭾', '🭿', '▁'}
     },
+    winblend = 7,
     layout_strategy = 'flex',
-    layout_config = {
-      height = 0.7
-    },
+    layout_config = {height = 0.7}
   },
   pickers = {
     find_files = picker_config,
@@ -367,7 +361,7 @@ require('telescope').setup {
     buffers = picker_config,
     help_tags = picker_config,
     commands = picker_config,
-    lsp_references = picker_config,
+    lsp_references = picker_config
   }
 }
 

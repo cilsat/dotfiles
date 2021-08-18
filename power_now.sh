@@ -7,12 +7,8 @@
 #paste /sys/class/power_supply/BAT0/energy_now \
 #  /sys/class/power_supply/BAT0/power_now | awk '{printf(" %.2fh", $1/$2)}' 
 
-## Current maximum CPU clock
-sort /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq | tail -n 1 |\
-  awk '{printf("%.1fGHz",$1*10^-6)}'
-
 ## Current average CPU temperature
-awk '{printf(" %.1f℃",$1*10^-3)}' /sys/devices/platform/thinkpad_hwmon/hwmon/*/temp1_input
+awk '{printf("%.1f℃",$1*10^-3)}' /sys/devices/platform/thinkpad_hwmon/hwmon/*/temp1_input
 
 ## Current power consumption
 awk '{printf(" %.2fW", $1*10^-6)}' /sys/class/power_supply/BAT0/power_now

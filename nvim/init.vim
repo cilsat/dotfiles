@@ -1,70 +1,9 @@
 " VIM SETTINGS
-" General settings
-set hidden                              " Hide buffers when they are abandoned
-set laststatus=2                        " Always show status line
-set mouse=a                             " Enable mouse usage (all modes)
-set lazyredraw                          " Stop unnecessary rendering
-set noshowmode                          " Hide mode in status line
-set linebreak                           " Break lines on word end
-set encoding=utf8                       " Character encoding
-set showtabline=2                       " Always show tabline on top
-set completeopt=menuone,noselect        " Omnifunc completion window options
-set shortmess+=c                        " Hide messages related to ins-completion
-"set iskeyword-=_                        " Set _ as word separator
-" Line numbering and scrolling
-set number                              " Show line number
-set relativenumber                      " Use relative line number
-set cursorline                          " Highlight current cursor line
-set scrolloff=2                         " Keep 2 lines around cursorline
-set timeoutlen=300                      " Fixes slow mode changes
-set signcolumn=number                   " Gutter in the line number col
-" Undo
-set undofile                            " Saves undo tree to file
-set undodir=~/.config/nvim/undo         " Directory to save undo file
-set noswapfile                          " Swap file become unnecessary
-" Matching
-set showcmd                             " Show (partial) command in status line
-set showmatch                           " Show matching brackets
-set ignorecase                          " Do case insensitive matching
-set smartcase                           " Do smart case matching
-set infercase
-" Searching
-set hlsearch                            " Highlight query
-set incsearch                           " Incremental search
-set inccommand=split                    " Live preview substitution commands
-set gdefault                            " Add /g flag on :s by default
-set path+=.,**                          " Recursive 'fuzzy' find
-set wildmode=list:longest,list:full     " Lazy file name tabe completion
-set wildmenu                            " Display all matching files on tab
-set wildignorecase
-" Indentation settings
-set backspace=indent,eol,start          " allow bs over autoindent, eol, start
-set softtabstop=2
-set tabstop=2
-set shiftwidth=2
-set shiftround                          " rounds number of spaces to indent
-set expandtab
-set cindent
-set colorcolumn=80
-set textwidth=80
-" Fold settings
-set foldmethod=indent
-set nofoldenable
-set foldnestmax=5
-set foldlevel=2
-" Color settings
-set background=dark                     " Assume a dark background
-set termguicolors                       " Enable true color support
-syn sync minlines=300
-
+luafile ~/.config/nvim/lua/options.lua
 
 " PLUGINS & SETTINGS
 " Auto install Plug if not found
-if has('nvim')
-  let plug_path='~/.config/nvim'
-else
-  let plug_path='~/.vim'
-endif
+let plug_path='~/.config/nvim'
 if empty(glob(plug_path.'/autoload/plug.vim'))
   silent !curl -fLo plug_path.'/autoload' --create-dirs
         \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -79,87 +18,56 @@ let g:sneak#label=1
 Plug 'nvim-lua/popup.nvim'              " Telescope dependancy for popups
 Plug 'nvim-lua/plenary.nvim'            " Telescope dependancy
 Plug 'nvim-telescope/telescope.nvim'    " Fuzzy search for various categories
-Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'andymass/vim-matchup'             " Improved % matching/navigation
+Plug 'nvim-telescope/telescope-fzy-native.nvim' " Fzy sorter for telescope
 Plug 'romgrk/barbar.nvim'               " Standalone lua-based tab/bufferline
 let bufferline = get(g:, 'bufferline', {})
 let bufferline.icons="both"
 let bufferline.icon_custom_colors=v:false
 let bufferline.icon_separator_active='▍'
 let bufferline.icon_separator_inactive='▍'
-let bufferline.maximum_padding=0
+let bufferline.maximum_padding=2
 let bufferline.semantic_letters=v:false
 
 " Enhance existing built-in functionality
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
-Plug 'tpope/vim-markdown'               " Fancy highlihting for markdown
 Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
 Plug 'tpope/vim-commentary'             " Toggle comment motion
-Plug 'powerman/vim-plugin-autosess'     " Automatically save/restore sessions
-let g:autosess_dir='~/.config/nvim/autosess'
+Plug 'rmagatti/auto-session'            " Automatically save/restore sessions
+Plug 'rmagatti/session-lens'            " Telescope extension for auto-session
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
-Plug 'junegunn/vim-easy-align'          " Align text around characters
 Plug 'shougo/context_filetype.vim'      " Detect multiple filetype in one file
-Plug 'folke/which-key.nvim',        " Helm-like display for vim mappings
+Plug 'folke/which-key.nvim',            " Helm-like display for vim mappings
       \ { 'branch': 'main', 'on': ['WhichKey', 'WhichKey!'] }
 
 " Integrate with external tools
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'mhinz/vim-signify'                " Alternative git diff in gutter
-let g:signify_disable_by_default=1
+let g:signify_disable_by_default=0
 let g:signify_sign_add='▎'
 let g:signify_sign_delete='▎'
 let g:signify_sign_delete_first_line='▎'
 let g:signify_sign_change='▎'
 let g:signify_sign_show_count=0
 let g:signify_sign_show_text=1
-Plug 'edkolev/tmuxline.vim',            " Vim status line as tmux status line
-      \ {'do': ':Tmuxline lightline powerline'}
-let g:tmuxline_separators = {
-      \ 'left': '', 'left_alt': '▏', 'right': '', 'right_alt': ''}
-Plug 'vim-pandoc/vim-pandoc'            " Plugin for pandoc support
-let g:pandoc#spell#default_langs=['en', 'id']
-let g:pandoc#formatting#mode='sA'
-Plug 'vim-pandoc/vim-pandoc-syntax'     " Pandoc markdown syntax highlightin
 Plug 'lervag/vimtex'                    " LaTex helper
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
-"Plug 'xuhdev/vim-latex-live-preview',   " LaTex preview
-"      \ {'on': 'LLPStartPreview'}
 Plug 'iamcco/markdown-preview.nvim',    " Preview markdown from browser
       \ { 'do': 'cd app && yarn install'  }
 
 " Completion & Coding
-"Plug 'jiangmiao/auto-pairs'             " Parenthesis auto-completion
+Plug 'jiangmiao/auto-pairs'             " Parenthesis auto-completion
 Plug 'neovim/nvim-lspconfig'            " Base config for Neovim's builtin LSP
-Plug 'mfussenegger/nvim-jdtls'          " Neovim JDTLS langserver
 Plug 'nvim-treesitter/nvim-treesitter'  " Neovim's treesitter implementation
-"Plug 'glepnir/lspsaga.nvim',
-"      \ {'branch': 'main'}
 Plug 'hrsh7th/nvim-compe'               " Auto-completion using builtin LSP
 Plug 'hrsh7th/vim-vsnip'                " Enable snippets during completion
 Plug 'ray-x/lsp_signature.nvim'         " Function signature popup
 Plug 'onsails/lspkind-nvim'             " Fancy icons/symbols for LSP popups
 Plug 'honza/vim-snippets'               " Collection of various snippets
+Plug 'mfussenegger/nvim-jdtls'          " Neovim JDTLS langserver
+Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
 Plug 'windwp/nvim-autopairs'            " Auto-completion of bracket/quote pairs
-Plug 'simrat39/symbols-outline.nvim'    " Visual LSP symbol tree sidebar
-Plug 'w0rp/ale'                         " Code Linting and formatting
-let g:ale_enabled=0
-let g:ale_fixers=
-      \ {'*': ['remove_trailing_lines', 'trim_whitespace'],
-      \ 'c': ['clang-format'], 'cpp': ['clang-format'],
-      \ 'go': ['gofmt', 'goimports'],
-      \ 'java': ['google_java_format'],
-      \ 'javascript': ['eslint'], 'json': ['prettier'],
-      \ 'php': ['php_cs_fixer'],
-      \ 'python': ['black'],
-      \ 'rust': ['rustfmt'], 'typescript': ['eslint'], 'xml': ['xmllint']}
-let g:ale_fix_on_save=0
-let g:ale_set_highlights=0
-let g:ale_sign_offset=1
-let g:ale_sign_error='▍'
-let g:ale_sign_warning='▍'
 Plug 'jpalardy/vim-slime',              " Send code to external REPL
       \ {'on': ['SlimeRegionSend', 'SlimeParagraphSend']}
 let g:slime_no_mappings=1
@@ -182,15 +90,17 @@ let g:indent_blankline_buftype_exclude = ['terminal', 'popup']
 let g:indent_blankline_show_current_context = v:true
 let g:indent_blankline_context_patterns = [ 'class', 'function', 'method', '^if', '^while', '^for', '^try', '^object', '^table', 'block', 'arguments', '^switch' ]
 Plug 'kyazdani42/nvim-web-devicons'     " Fancy icons/symbols
-"Plug 'glepnir/galaxyline.nvim', {'branch': 'main'} " Vim status line
 Plug 'hoob3rt/lualine.nvim'             " Lua-based status line
 Plug 'p00f/nvim-ts-rainbow'             " Treesitter-based rainbow parentheses
-Plug 'gillyb/stable-windows'            " Prevent jumping/scrolling windows
 Plug 'machakann/vim-highlightedyank'    " Highlight yanked text
 call plug#end()
 
-
 " ALOHA LUAA~
+lua << EOF
+require('auto-session').setup {
+  log_level = 'warning'
+}
+EOF
 luafile ~/.config/nvim/lua/gui.lua
 luafile ~/.config/nvim/lua/lsp.lua
 
@@ -218,21 +128,12 @@ augroup GENERAL
     let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
   endfun
-  " Neovim specific settings
-  if has('nvim')
-    let g:python_host_prog='/usr/bin/python2'
-    let g:python3_host_prog='/usr/bin/python3'
-    set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-  endif
-augroup END
-
-" Code-related autocommands and functions
-augroup CODE
-  au!
-  " Close coc.nvim completion preview window after completing
+  " Close popup menu after completion
   au CompleteDone * if pumvisible() == 0 | pclose | endif
-  " Pritty print git graph
-  command -nargs=* Glg Git! log --graph --pretty=format:'\%h - (\%ad)\%d \%s <\%an>' --abbrev-commit --date=local <args>
+  " Neovim specific settings
+  let g:python_host_prog='/usr/bin/python2'
+  let g:python3_host_prog='/usr/bin/python3'
+  set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
 augroup END
 
 
@@ -262,10 +163,8 @@ nmap <leader>P "+P
 vmap y ygv<Esc>
 
 " Plugin key mappings
-nmap <F1> :SignifyToggle<CR>
-nmap <F2> :SymbolsOutline<CR>
 nmap <F3> :Git blame<CR>
-nmap <F4> :ALEFix<CR>
+" F4 defined in lua/lsp.lua
 nmap <F5> :PlugUpd<CR>
 map <F8> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
       \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
@@ -349,13 +248,3 @@ inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
-" Saga mappings
-"nnoremap <silent>ga :Lspsaga code_action<CR>
-"nnoremap <silent>gf :Lspsaga lsp_finder<CR>
-"nnoremap <silent>K :Lspsaga hover_doc<CR>
-"nnoremap <C-k> :Lspsaga signature_help<CR>
-"nnoremap <silent>gR :Lspsaga rename<CR>
-"nnoremap <silent>gp :Lspsaga preview_definition<CR>
-"nnoremap <M-p> :Lspsaga diagnostic_jump_prev<CR>
-"nnoremap <M-n> :Lspsaga diagnostic_jump_next<CR>

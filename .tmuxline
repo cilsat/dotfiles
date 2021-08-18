@@ -4,7 +4,7 @@
 set -g status "on"
 set -g status-position bottom
 set -g status-interval 5
-set -g status-justify "left"
+set -g status-justify "centre"
 set -g status-left-style "none"
 set -g message-command-style "fg=colour7,bg=colour19"
 set -g status-right-style "none"
@@ -25,26 +25,27 @@ set -g status-left "\
 #[fg=colour0,bg=colour4] \uf303  \
 #[fg=colour4,bg=colour19]▍\
 #[fg=colour21,bg=colour19] #h:\
-#[fg=colour21,bg=colour19,bold]#S \
-#[fg=colour18,bg=colour19]│\
-#[fg=colour16,bg=colour19] \ufab1 #[fg=colour18,bg=colour19]│"
+#[fg=colour21,bg=colour19,bold]#S  "
 
 set -g status-right "\
+#[fg=colour19,bg=colour18]▐\
 #[fg=colour3,bg=colour19] \uf589  \
 #[fg=colour18,bg=colour19]│\
 #[fg=colour21,bg=colour19] #(~/.config/dotfiles/power_now.sh) \
 #[fg=colour18,bg=colour19]│#[fg=colour6,bg=colour19] \uf073  \
-#[fg=colour18,bg=colour19]│#[fg=colour21,bg=colour19] %a %d %b %H:%M"
+#[fg=colour18,bg=colour19]│#[fg=colour21,bg=colour19] %d %b %H:%M "
 
 setw -g window-status-format "\
+#{?window_start_flag,#[fg=colour16#,bg=colour19]  \ufab1 #[fg=colour18#,bg=colour19]│,}\
 #{?window_last_flag,#[fg=colour16#,bg=colour19],#[fg=colour21#,bg=colour19]} #I \
 #{?window_last_flag,#[fg=colour19#,bg=colour8]▍,#[fg=colour18#,bg=colour19]│}\
-#{?window_last_flag,#[fg=colour16#,bg=colour8],#[fg=colour21#,bg=colour19]} #W \
+#{?window_last_flag,#[fg=colour16#,bg=colour8],#[fg=colour21#,bg=colour19]}  #W  \
 #{?window_last_flag,\
 #{?window_end_flag,#[fg=colour8#,bg=colour18]▍,#[fg=colour8#,bg=colour19]▍},\
 #{?window_end_flag,#[fg=colour19#,bg=colour18]▍,#[fg=colour18#,bg=colour19]│}}"
 
 setw -g window-status-current-format "\
+#{?window_start_flag,#[fg=colour16#,bg=colour19]  \ufab1 #[fg=colour18#,bg=colour19]│,}\
 #[fg=colour16,bg=colour19,bold] #I ▐\
-#[fg=colour0,bg=colour16,bold] #W \
+#[fg=colour0,bg=colour16,bold]  #W  \
 #{?window_end_flag,#[fg=colour16#,bg=colour18],#[fg=colour16#,bg=colour19]}▍"

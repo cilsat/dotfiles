@@ -1,22 +1,26 @@
 -- Pretty icons
-require'nvim-web-devicons'.setup {
-  default = true;
-}
+require'nvim-web-devicons'.setup {default = true}
 
 -- Setup base16
-local nvim = require'nvim'
-local theme = require('themes.base16-decaf')
-require('theme').apply_base16_theme(theme, true)
+vim.cmd [[
+  filetype on
+  filetype plugin indent on
+]]
+local nvim = require 'nvim'
+local base16_theme
+if vim.env.BASE16_THEME then
+  base16_theme = require('themes.base16-'..vim.env.BASE16_THEME)
+else
+  base16_theme = require('themes.base16-decaf')
+end
+require('theme').apply_base16_theme(base16_theme, true)
 
 -- Setup colorizer
 require'colorizer'.setup()
 
 -- Rainbow parentheses
 require'nvim-treesitter.configs'.setup {
-  rainbow = {
-    enable = true,
-    extended_mode = true,
-  }
+  rainbow = {enable = true, extended_mode = true}
 }
 
 -- Lualine setup
@@ -31,25 +35,21 @@ require('lualine').setup {
       insert = {a = {bg = nvim.g.color02, fg = fg, gui = 'bold'}, b = b, c = c},
       visual = {a = {bg = nvim.g.color05, fg = fg, gui = 'bold'}, b = b, c = c},
       replace = {a = {bg = nvim.g.color01, fg = fg, gui = 'bold'}, b = b, c = c},
-      command = {a = {bg = nvim.g.color16, fg = fg, gui = 'bold'} ,b = b, c = c},
+      command = {a = {bg = nvim.g.color16, fg = fg, gui = 'bold'}, b = b, c = c},
       inactive = {b = {bg = nvim.g.color19, fg = fg, gui = 'bold'}, c = c}
     },
     section_separators = '',
-    component_separators = '│',
+    component_separators = '│'
   },
   sections = {
-    lualine_b = {
-      {'filename', file_status = true},
-      {'filetype', colored = true},
-    },
+    lualine_b = {{'filename', file_status = true}},
     lualine_c = {
-      {'branch', icon = ''},
-      {
+      {'branch', icon = ''}, {
         'diff',
         symbols = {added = ' ', modified = '柳', removed = ' '},
         color_added = nvim.g.color08,
         color_modified = nvim.g.color08,
-        color_removed = nvim.g.color08,
+        color_removed = nvim.g.color08
       }
     },
     lualine_x = {
@@ -61,92 +61,117 @@ require('lualine').setup {
         color_warn = nvim.g.color03,
         color_info = nvim.g.color06,
         color_hint = nvim.g.color08,
-        symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '},
-      },
-      {'encoding', upper = true}, 'fileformat'
+        symbols = {error = ' ', warn = ' ', info = ' ', hint = ' '}
+      }, {'encoding', upper = true}, 'fileformat'
     }
   }
 }
 
 -- Custom editor highlight settings
 local cmd = vim.cmd
-cmd('hi Number guifg='..nvim.g.color17)
-cmd('hi Comment gui=italic')
-cmd('hi CursorLine guibg='..nvim.g.color18)
-cmd('hi CursorLineNr gui=bold guifg='..nvim.g.color16..' guibg='..nvim.g.color18)
-cmd('hi LineNr guifg='..nvim.g.color19..' guibg=none')
-cmd('hi TagbarFoldIcon guifg='..nvim.g.color04)
+local function hi(group, elements)
+  local command = 'hi ' .. group
+  if elements.fg ~= nil then command = command .. ' guifg=' .. elements.fg end
+  if elements.bg ~= nil then command = command .. ' guibg=' .. elements.bg end
+  if elements.gui ~= nil then command = command .. ' gui=' .. elements.gui end
+  cmd(command)
+end
+
+-- Editor highlights
+hi('Number', {fg = nvim.g.color17})
+hi('Comment', {gui = 'italic'})
+hi('CursorLine', {bg = nvim.g.color18})
+hi('CursorLineNr', {fg = nvim.g.color07, bg = nvim.g.color18})
+hi('LineNr', {fg = nvim.g.color19, bg = 'none'})
+hi('SignColumn', {bg = 'none'})
+hi('TagbarFoldIcon', {fg = nvim.g.color04})
+hi('VertSplit', {bg = 'none'})
+
+-- Popup menu
+hi('PmenuSel', {fg = nvim.g.color07, bg = nvim.g.color19})
 
 -- Custom plugin highlights
-cmd('hi Sneak guifg=bg guibg='..nvim.g.color17)
-cmd('hi HighlightedYankRegion guibg='..nvim.g.color19)
-cmd('hi IndentBlanklineChar guifg='..nvim.g.color19..' guibg=none')
-cmd('hi IndentBlanklineContextChar guifg='..nvim.g.color08..' guibg=none')
-cmd('hi LspSagaHoverBorder guifg='..nvim.g.color19)
+hi('Sneak', {fg = 'bg', bg = nvim.g.color17})
+hi('HighlightedYankRegion', {bg = nvim.g.color19})
+hi('IndentBlanklineChar', {fg = nvim.g.color19, bg = 'none'})
+hi('IndentBlanklineContextChar', {fg = nvim.g.color08, bg = 'none'})
 
 -- Barbar (tab/bufferline) highlights
 -- Currently active/selected buffer
-cmd('hi BufferCurrent gui=bold guifg='..nvim.g.color15..' guibg='..nvim.g.color08)
-cmd('hi BufferCurrentIndex guifg='..nvim.g.color15..' guibg='..nvim.g.color08)
-cmd('hi BufferCurrentMod gui=italic,bold guifg='..nvim.g.color17..' guibg='..nvim.g.color08)
-cmd('hi BufferCurrentSign guifg='..nvim.g.color04..' guibg='..nvim.g.color08)
-cmd('hi BufferCurrentIcon guifg=bg guibg='..nvim.g.color04)
-cmd('hi BufferCurrentTarget gui=bold guifg='..nvim.g.color17..' guibg='..nvim.g.color08)
+hi('BufferCurrent', {fg = nvim.g.color15, bg = nvim.g.color19})
+hi('BufferCurrentIndex', {fg = nvim.g.color15, bg = nvim.g.color19})
+hi('BufferCurrentMod',
+   {gui = 'italic,bold', fg = nvim.g.color17, bg = nvim.g.color19})
+hi('BufferCurrentSign', {fg = nvim.g.color04, bg = nvim.g.color19})
+hi('BufferCurrentIcon', {fg = 'bg', bg = nvim.g.color04})
+hi('BufferCurrentTarget',
+   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08})
 -- Currently visible (but not active) buffer(s)
-cmd('hi BufferVisible gui=bold guifg='..nvim.g.color21..' guibg='..nvim.g.color19)
-cmd('hi BufferVisibleIndex guifg='..nvim.g.color21..' guibg='..nvim.g.color19)
-cmd('hi BufferVisibleMod gui=italic,bold guifg='..nvim.g.color21..' guibg='..nvim.g.color19)
-cmd('hi BufferVisibleSign guifg='..nvim.g.colorbg..' guibg='..nvim.g.color19)
-cmd('hi BufferVisibleIcon guifg='..nvim.g.color21..' guibg='..nvim.g.color19)
-cmd('hi BufferVisibleTarget gui=bold guifg='..nvim.g.color17..' guibg='..nvim.g.color19)
+hi('BufferVisible', {fg = nvim.g.color21, bg = nvim.g.color19})
+hi('BufferVisibleIndex', {fg = nvim.g.color21, bg = nvim.g.color19})
+hi('BufferVisibleMod',
+   {gui = 'italic,bold', fg = nvim.g.color21, bg = nvim.g.color19})
+hi('BufferVisibleSign', {fg = nvim.g.colorbg, bg = nvim.g.color19})
+hi('BufferVisibleIcon', {fg = nvim.g.color21, bg = nvim.g.color19})
+hi('BufferVisibleTarget',
+   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color19})
 -- Inactive buffers
-cmd('hi BufferInactive guifg='..nvim.g.color20..' guibg='..nvim.g.color18)
-cmd('hi BufferInactiveIndex guifg='..nvim.g.color20..' guibg='..nvim.g.color18)
-cmd('hi BufferInactiveMod gui=italic guifg='..nvim.g.color20..' guibg='..nvim.g.color18)
-cmd('hi BufferInactiveSign guifg='..nvim.g.colorbg..' guibg='..nvim.g.color18)
-cmd('hi BufferInactiveIcon guifg='..nvim.g.color20..' guibg='..nvim.g.color17)
-cmd('hi BufferInactiveTarget gui=bold guifg='..nvim.g.color17..' guibg='..nvim.g.color18)
+hi('BufferInactive', {fg = nvim.g.color20, bg = nvim.g.color18})
+hi('BufferInactiveIndex', {fg = nvim.g.color20, bg = nvim.g.color18})
+hi('BufferInactiveMod',
+   {gui = 'italic', fg = nvim.g.color20, bg = nvim.g.color18})
+hi('BufferInactiveSign', {fg = nvim.g.colorbg, bg = nvim.g.color18})
+hi('BufferInactiveIcon', {fg = nvim.g.color20, bg = nvim.g.color17})
+hi('BufferInactiveTarget',
+   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color18})
 -- Tab/bufferline background
-cmd('hi BufferTabpages guifg='..nvim.g.color18)
-cmd('hi BufferTabpageFill guifg='..nvim.g.colorbg..' guibg=none')
+hi('BufferTabpages', {fg = nvim.g.color18})
+hi('BufferTabpageFill', {fg = nvim.g.colorbg, bg = nvim.g.color18})
 
 -- Treesitter highlights
-cmd('hi TSPunctBracket guifg=fg')
-cmd('hi TSPunctDelimiter guifg=fg')
-cmd('hi TSPunctSpecial guifg=fg')
-cmd('hi RainbowCol1 guifg='..nvim.g.color06)
-cmd('hi RainbowCol2 guifg='..nvim.g.color04)
-cmd('hi RainbowCol3 guifg='..nvim.g.color03)
-cmd('hi RainbowCol4 guifg='..nvim.g.color05)
-cmd('hi RainbowCol5 guifg='..nvim.g.color12)
-cmd('hi RainbowCol6 guifg='..nvim.g.color11)
-cmd('hi RainbowCol7 guifg='..nvim.g.color07)
+cmd('hi TSPunctBracket guifg = fg')
+cmd('hi TSPunctDelimiter guifg = fg')
+cmd('hi TSPunctSpecial guifg = fg')
+hi('RainbowCol1', {fg = nvim.g.color06})
+hi('RainbowCol2', {fg = nvim.g.color04})
+hi('RainbowCol3', {fg = nvim.g.color03})
+hi('RainbowCol4', {fg = nvim.g.color05})
+hi('RainbowCol5', {fg = nvim.g.color12})
+hi('RainbowCol6', {fg = nvim.g.color11})
+hi('RainbowCol7', {fg = nvim.g.color07})
 
 -- LSP highlights
-cmd('hi LspDiagnosticsSignError gui=italic guifg='..nvim.g.color17)
-cmd('hi LspDiagnosticsSignWarning gui=italic guifg='..nvim.g.color11)
-cmd('hi LspDiagnosticsSignInformation gui=italic guifg='..nvim.g.color10)
-cmd('hi LspDiagnosticsSignHint gui=italic guifg='..nvim.g.color14)
-cmd('hi LspReferenceRead gui=bold guibg='..nvim.g.color19)
-cmd('hi LspReferenceText gui=bold guibg='..nvim.g.color19)
-cmd('hi LspReferenceWrite gui=bold guibg='..nvim.g.color19)
-cmd('hi LspDiagnosticsUnderlineError gui=undercurl')
-cmd('hi LspDiagnosticsUnderlineWarning gui=undercurl')
-cmd('hi LspDiagnosticsUnderlineInformation gui=undercurl')
-cmd('hi LspDiagnosticsUnderlineHint gui=undercurl')
-cmd('hi LspDiagnosticsVirtualTextError gui=italic guifg='..nvim.g.color17)
-cmd('hi LspDiagnosticsVirtualTextWarning gui=italic guifg='..nvim.g.color20)
-cmd('hi LspDiagnosticsVirtualTextInfo gui=italic guifg='..nvim.g.color19)
-cmd('hi LspDiagnosticsVirtualTextHint gui=italic guifg='..nvim.g.color19)
+hi('LspDiagnosticsSignError', {gui = 'italic', fg = nvim.g.color17})
+hi('LspDiagnosticsSignWarning', {gui = 'italic', fg = nvim.g.color11})
+hi('LspDiagnosticsSignInformation', {gui = 'italic', fg = nvim.g.color10})
+hi('LspDiagnosticsSignHint', {gui = 'italic', fg = nvim.g.color14})
+hi('LspReferenceRead', {gui = 'bold', bg = nvim.g.color19})
+hi('LspReferenceText', {gui = 'bold', bg = nvim.g.color19})
+hi('LspReferenceWrite', {gui = 'bold', bg = nvim.g.color19})
+hi('LspDiagnosticsUnderlineError', {gui = 'undercurl'})
+hi('LspDiagnosticsUnderlineWarning', {gui = 'undercurl'})
+hi('LspDiagnosticsUnderlineInformation', {gui = 'undercurl'})
+hi('LspDiagnosticsUnderlineHint', {gui = 'undercurl'})
+hi('LspDiagnosticsVirtualTextError', {gui = 'italic', fg = nvim.g.color17})
+hi('LspDiagnosticsVirtualTextWarning', {gui = 'italic', fg = nvim.g.color20})
+hi('LspDiagnosticsVirtualTextInfo', {gui = 'italic', fg = nvim.g.color19})
+hi('LspDiagnosticsVirtualTextHint', {gui = 'italic', fg = nvim.g.color19})
+
+-- Signify highlights
+hi('SignifySignAdd', {bg = 'none'})
+hi('SignifySignChange', {bg = 'none'})
+hi('SignifySignDelete', {bg = 'none'})
+hi('SignifySignChangeDelete', {bg = 'none'})
 
 -- Telescope
-cmd('hi TelescopeNormal guibg='..nvim.g.color18)
-cmd('hi TelescopeBorder guifg=#000000 guibg='..nvim.g.color18)
+hi('TelescopeNormal', {bg = nvim.g.color18})
+hi('TelescopeBorder', {fg = nvim.g.color08, bg = nvim.g.color18})
+hi('TelescopeMatching', {fg = nvim.g.color06, bg = nvim.g.color18})
 cmd('hi link TelescopePreviewNormal TelescopeNormal')
--- cmd('hi TelescopePreviewBorder guifg=#000000 guibg='..nvim.g.color00)
+-- cmd('hi TelescopePreviewBorder fg = #000000 bg = nvim.g.color00)
 
 -- Highlighting for floating windows
-cmd('hi NormalFloat guibg='..nvim.g.color18)
-cmd('hi FloatBorder guifg=#000000 guibg='..nvim.g.color18)
+hi('NormalFloat', {bg = nvim.g.color18})
+hi('FloatBorder', {fg = nvim.g.color08, bg = nvim.g.color18})
 cmd('hi link CompeDocumentation NormalFloat')
 cmd('hi link CompeDocumentationBorder FloatBorder')

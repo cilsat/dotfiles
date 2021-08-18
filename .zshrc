@@ -55,16 +55,34 @@ export FZF="/usr/share/fzf"
 
 # Check for Display
 if [ -n "$DISPLAY" ]; then
-  # Use a different color scheme for each workspace
-  ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
-  if [ "$ws" = 1 ];then
-    BASE16_THEME="decaf"
-  elif [ "$ws" = 2 ];then
-    BASE16_THEME="oceanicnext-purple"
-  elif [ "$ws" = 3 ];then
-    BASE16_THEME="ocean"
-  elif [ "$ws" = 4 ];then
-    BASE16_THEME="materia"
+  # If using KDE, set color scheme per activity
+  if [ $XDG_CURRENT_DESKTOP = "KDE" ]; then
+    ac=$(dbus-send --session --dest=org.kde.ActivityManager \
+      --type=method_call --print-reply=literal /ActivityManager/Activities \
+      org.kde.ActivityManager.Activities.CurrentActivity | tr -d "[:blank:]")
+    ws=$(dbus-send --session --dest=org.kde.ActivityManager --type=method_call \
+      --print-reply /ActivityManager/Activities \
+      org.kde.ActivityManager.Activities.ActivityInformation \
+      "string:$ac" | sed "4q;d" | cut -d ' ' -f8 | tr -d '"')
+    if [ "$ws" = "Work" ]; then
+      export BASE16_THEME="decaf"
+    elif [ "$ws" = "Code" ]; then
+      export BASE16_THEME="solarflare"
+    elif [ "$ws" = "Fun" ]; then
+      export BASE16_THEME="flat"
+    fi
+  else
+    # Use a different color scheme for each workspace
+    ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
+    if [ "$ws" = 1 ]; then
+      export BASE16_THEME="decaf"
+    elif [ "$ws" = 2 ]; then
+      export BASE16_THEME="oceanicnext-purple"
+    elif [ "$ws" = 3 ]; then
+      export BASE16_THEME="ocean"
+    elif [ "$ws" = 4 ]; then
+      export BASE16_THEME="materia"
+    fi
   fi
   [[ -n $BASE16_THEME ]] && source "$BASE16_SHELL/scripts/base16-$BASE16_THEME.sh"
   # Attach shell to workspace tmux session and force unicode
@@ -76,8 +94,6 @@ export EDITOR='nvim'
 if [[ -n "$SSH_CONNECTION" ]]; then
     export DISPLAY=:0
 fi
-
-#fortune -s | cowsay
 
 # System environment
 export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\

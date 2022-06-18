@@ -19,51 +19,43 @@ end
 -- General LSP Config
 local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   local opts = {noremap = true, silent = true}
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>',
-                 opts)
-  buf_set_keymap('n', '<leader>m',
-                 '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '<F6>', '<cmd>lua org_imports(250)<CR>', opts)
+  set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  set_keymap('n', '<leader>m', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
+  set_keymap('n', '<F7>', '<cmd>lua org_imports(250)<CR>', opts)
   -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  -- buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   -- buf_set_keymap('n', '<M-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   -- buf_set_keymap('n', '<M-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
   -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<F4>", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<F4>", "<cmd>lua vim.lsp.buf.range_formatting()<CR>",
-                   opts)
-  end
+  client.resolved_capabilities.document_formatting = false
+  client.resolved_capabilities.document_range_formatting = false
 
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
-    vim.fn.sign_define('LspDiagnosticsSignError',
-                       {text = '', texthl = 'LspDiagnosticsSignError'})
-    vim.fn.sign_define('LspDiagnosticsSignError',
-                       {text = '▎', texthl = 'LspDiagnosticsSignError'})
-    vim.fn.sign_define('LspDiagnosticsSignWarning',
-                       {text = '▎', texthl = 'LspDiagnosticsSignWarning'})
-    vim.fn.sign_define('LspDiagnosticsSignInformation',
-                       {text = '▎', texthl = 'LspDiagnosticsSignInformation'})
-    vim.fn.sign_define('LspDiagnosticsSignHint',
-                       {text = '▎', texthl = 'LspDiagnosticsSignHint'})
+    vim.fn.sign_define('DiagnosticSignError',
+                       {text = '▎', texthl = 'DiagnosticSignError'})
+    vim.fn.sign_define('DiagnosticSignWarn',
+                       {text = '▎', texthl = 'DiagnosticSignWarn'})
+    vim.fn.sign_define('DiagnosticSignInfo',
+                       {text = '▎', texthl = 'DiagnosticSignInfo'})
+    vim.fn.sign_define('DiagnosticSignHint',
+                       {text = '▎', texthl = 'DiagnosticSignHint'})
 
     vim.api.nvim_exec([[
       augroup lsp_document_highlight
@@ -89,6 +81,7 @@ end
 
 -- Enable snippet support
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {'documentation', 'detail', 'additionalTextEdits'}
@@ -96,10 +89,15 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 
 -- Use a loop to conveniently both setup all defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = {"clangd", "intelephense", "gopls", "jdtls", "rust_analyzer"}
+local servers = {"clangd", "gopls", "jdtls", "phpactor", "rust_analyzer"}
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {on_attach = on_attach, capabilities = capabilities}
+  nvim_lsp[lsp].setup ({on_attach = on_attach, capabilities = capabilities})
 end
+
+-- Setup clangd manually
+local clangd_caps = vim.lsp.protocol.make_client_capabilities()
+clangd_caps.offsetEncoding = {"utf-16"}
+nvim_lsp.clangd.setup { capabilities = clangd_caps}
 
 -- Setup Lua completion manually
 local runtime_path = vim.split(package.path, ';')
@@ -148,140 +146,112 @@ local function get_python_path(workspace)
 end
 
 nvim_lsp.pyright.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
   on_init = function(client)
     client.config.settings.python.pythonPath =
         get_python_path(client.config.root_dir)
-  end
-}
-
--- Setup efm-langserver
-local efm = require('efm')
-nvim_lsp.efm.setup {
+  end,
   on_attach = on_attach,
-  init_options = {documentFormatting = true},
-  root_dir = vim.loop.cwd,
-  settings = {
-    rootMarkers = {'.git/'},
-    languages = {
-      -- ['='] = (efm.misspell),
-      vim = {efm.vint},
-      lua = {efm.lua_format},
-      go = {efm.revive, efm.goimports},
-      python = {efm.black, efm.flake8, efm.mypy},
-      -- php = {efm.php_cs_fixer},
-      typescript = {efm.prettier, efm.eslint},
-      javascript = {efm.prettier, efm.eslint},
-      typescriptreact = {efm.prettier, efm.eslint},
-      javascriptreact = {efm.prettier, efm.eslint},
-      yaml = {efm.prettier},
-      json = {efm.prettier},
-      html = {efm.prettier},
-      css = {efm.prettier},
-      markdown = {efm.prettier},
-      sh = {efm.shfmt}
+  capabilities = capabilities,
+}
+
+-- LSP completion config via nvim-cmp
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and
+             vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col)
+                 :match("%s") == nil
+end
+
+local feedkey = function(key, mode)
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true),
+                        mode, true)
+end
+
+local cmp = require('cmp')
+cmp.setup {
+  window = {
+    documentation = {
+      border = {"🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏"}
     }
-  }
-}
-
--- LSP completion config via nvim-compe
-require'compe'.setup {
-  enabled = true,
-  autocomplete = true,
-  debug = false,
-  min_length = 1,
-  preselect = 'enable',
-  throttle_time = 80,
-  source_timeout = 200,
-  incomplete_delay = 400,
-  max_abbr_width = 100,
-  max_kind_width = 100,
-  max_menu_width = 100,
-  documentation = {
-    border = {"🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏"}
   },
-
-  source = {
-    path = true,
-    buffer = true,
-    calc = false,
-    vsnip = true,
-    nvim_lsp = true,
-    nvim_lua = true,
-    spell = false,
-    tags = false,
-    snippets_nvim = true,
-    nvim_treesitter = true
+  formatting = {
+    format = function(entry, vim_item)
+      vim_item.kind =
+          require('lspkind').presets.default[vim_item.kind] .. " " ..
+              vim_item.kind
+      vim_item.menu = ({
+        buffer = "[BUF]",
+        nvim_lsp = "[LSP]",
+        vsnip = "[SNIP]",
+        nvim_lua = "[LUA]",
+        latex_symbols = "[TEX]"
+      })[entry.source.name]
+      return vim_item
+    end
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true
+    }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif vim.fn['vsnip#available']() == 1 then
+        feedkey('<Plug>vsnip-expand-or-jump', '')
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, {'i', 's'}),
+    ['<S-Tab>'] = cmp.mapping(function()
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+        feedkey('<Plug>vsnip-jump-prev', '')
+      end
+    end, {'i', 's'})
+  },
+  snippet = {expand = function(args) vim.fn["vsnip#anonymous"](args.body) end},
+  sources = {
+    {name = 'nvim_lsp'},
+    {name = 'treesitter'},
+    {name = 'buffer'},
+    {name = 'path'},
   }
 }
 
--- Use <Tab> and <S-Tab> to navigate nvim-compe completion menu
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-  local col = vim.fn.col('.') - 1
-  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-    return true
-  else
-    return false
-  end
-end
-
-_G.compe_cr = function()
-  if vim.fn.pumvisible() == 1 and vim.fn.complete_info()['selected'] ~= -1 then
-    -- return t("<Plug>(compe-confirm)")
-    vim.fn['compe#confirm']({select = true})
-  else
-    return require("consclose").consCR() .. t("<Plug>DiscretionaryEnd")
-  end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
-  elseif vim.fn.call("vsnip#available", {1}) == 1 then
-    return t "<Plug>(vsnip-expand-or-jump)"
-  elseif check_back_space() then
-    return t "<Tab>"
-  else
-    return vim.fn['compe#complete']()
-  end
-end
-_G.s_tab_complete = function()
-  if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
-  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-    return t "<Plug>(vsnip-jump-prev)"
-  else
-    return t "<S-Tab>"
-  end
-end
-
-vim.api.nvim_set_keymap("i", "<CR>", "v:lua.compe_cr()", {expr = true})
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+-- Use null-fs for formatting, diagnostics, code actions, etc
+local null_ls = require("null-ls")
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.clang_format,
+    null_ls.builtins.formatting.gofmt,
+    null_ls.builtins.formatting.phpcsfixer,
+    null_ls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.shfmt,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.trim_whitespace,
+    null_ls.builtins.diagnostics.hadolint,
+    --null_ls.builtins.diagnostics.markdownlint,
+  }
+})
 
 -- Load autopairs
--- require('nvim-autopairs').setup({
---  check_ts = true,
---  fast_wrap = {
---    end_key = 'e',
---    keys = {'asdfghjkl;qwriop['},
---    highlight = 'Sneak',
---  }
--- })
--- require('nvim-autopairs.completion.compe').setup({
---  map_cr = true,
---  map_complete = true,
--- })
+require('nvim-autopairs').setup({
+  check_ts = true,
+  map_c_w = true,
+  fast_wrap = {}
+})
 
 -- nvim-treesitter for vastly improved source code parsing
 require'nvim-treesitter.configs'.setup {
@@ -291,69 +261,88 @@ require'nvim-treesitter.configs'.setup {
   },
   highlight = {enable = true},
   indent = {enable = false},
-  rainbow = {enable = true}
-  -- autopairs = {
-  --  enable = true,
-  -- },
+  rainbow = {enable = true},
+  -- autopairs = {enable = true},
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = "gnn",
+      node_incremental = "grn",
+      scope_incremental = "grc",
+      node_decremental = "grm",
+    },
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        [']m'] = '@function.outer',
+        [']]'] = '@class.outer',
+      },
+      goto_next_end = {
+        [']M'] = '@function.outer',
+        [']['] = '@class.outer',
+      },
+      goto_previous_start = {
+        ['[m'] = '@function.outer',
+        ['[['] = '@class.outer',
+      },
+      goto_previous_end = {
+        ['[M'] = '@function.outer',
+        ['[]'] = '@class.outer',
+      },
+    },
+  },
 }
-
--- lsp-kind for pretty icons in completion menu
-require('lspkind').init({
-  with_text = false,
-  symbol_map = {
-    Text = '  ',
-    Method = ' ƒ',
-    Function = '  ',
-    Constructor = '  ',
-    Variable = ' []',
-    Class = '  ',
-    Interface = ' 蘒',
-    Module = '  ',
-    Property = '  ',
-    Unit = ' 塞 ',
-    Value = '  ',
-    Enum = ' 練',
-    Keyword = '  ',
-    Snippet = '  ',
-    Color = '',
-    File = '',
-    Folder = ' ﱮ ',
-    EnumMember = '  ',
-    Constant = '  ',
-    Struct = '  '
-  }
-})
 
 -- telescope for fuzzy searching
 local picker_config = {
-  show_line = false,
   prompt_title = '',
   results_title = '',
   preview_title = '',
-  vimgrep_arguments = {
-    'rg', '--column', '--smart-case', '--color=never', '--no-heading',
-    '--with-filename', '-uu', '-F', '-L', '-g', '!.git/**', '-g',
-    '!__pycache__/**', '-g', '!node_modules', '-g', '!**.o'
-  },
   find_command = {
-    'fd', '-i', '-uu', '-F', '-L', '-S', '-1m', '-E', '.git', '-E',
-    'node_modules', '-E', '__pycache__', '-E', '**.o', '-E', '*.jpg', '-E',
-    '*.wav'
-  }
+    'fd', '-i', '-uu', '-F', '-L', '--color=never'
+  },
 }
 
 require('telescope').setup {
   defaults = {
-    mappings = {i = {["<esc>"] = require('telescope.actions').close}},
-    dynamic_preview_title = true,
+    mappings = {
+      i = {
+        ["<esc>"] = require('telescope.actions').close,
+        ["<C-w>"] = function() vim.cmd [[normal! bcw]] end,
+      }
+    },
     borderchars = {
       results = {'▔', '▕', '▁', '▏', '🭽', '🭾', '🭿', '🭼'},
       prompt = {' ', '▕', '▁', '▏', '▏', '▕', '🭿', '🭼'},
-      preview = {'▔', '▕', '▁', ' ', '▔', '🭾', '🭿', '▁'}
+      preview = {'▔', '▕', '▁', '▏', '🭽', '🭾', '🭿', '🭼'}
     },
     winblend = 7,
     layout_strategy = 'flex',
-    layout_config = {height = 0.7}
+    layout_config = {height = 0.7},
+    --dynamic_preview_title = true,
+    vimgrep_arguments = {
+      'rg', '--column', '-H', '-uu', '-F', '-L', '-S'
+    },
+    file_ignore_patterns = {
+      '.git/.*',
+      '.mypy_cache',
+      'node_modules',
+      '__pycache__'
+    }
   },
   pickers = {
     find_files = picker_config,
@@ -361,8 +350,11 @@ require('telescope').setup {
     buffers = picker_config,
     help_tags = picker_config,
     commands = picker_config,
-    lsp_references = picker_config
+    lsp_references = picker_config,
+    current_buffer_fuzzy_find = picker_config
   }
 }
 
-require('telescope').load_extension('fzy_native')
+require('telescope').load_extension('fzf')
+
+require('diffview')

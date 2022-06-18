@@ -109,7 +109,7 @@ export PASSWORD_STORE_DIR="$HOME/.password-store"
 #-1 User environment
 # Path needs to include composer and go bin paths
 export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.local/share/go/bin"
+$HOME/.local/share/go/bin:$HOME/.local/share/gem/ruby/3.0.0/bin"
 export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
@@ -117,7 +117,7 @@ export GOPATH="$HOME/.local/share/go"
 export JAVA_HOME="/usr/lib/jvm/java-11-openjdk"
 # PyEnv
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PATH:$PYENV_ROOT/bin"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 # NVM
@@ -155,4 +155,7 @@ alias nv="nvim"
 alias jc="sudo journalctl"
 alias sc="sudo systemctl"
 alias scu="systemctl --user"
+alias dk="docker"
+alias dkc="docker-compose"
 alias op="xdg-open"
+alias gssh="gcloud compute ssh"

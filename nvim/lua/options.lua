@@ -46,7 +46,7 @@ opt.smartcase = true -- Case sensitive when pattern contains uppercase
 opt.infercase = true -- Infer case in insert mode completion
 opt.hlsearch = true -- Highlight search query
 opt.incsearch = true -- Incrementally highlight while searching
-opt.inccommand = "split" -- Live preview substitutions in split window
+opt.inccommand = "nosplit" -- Live preview substitutions in split window
 opt.gdefault = true -- Add /g flag on substitutions by default
 
 -- Indentation and linebreak behavior

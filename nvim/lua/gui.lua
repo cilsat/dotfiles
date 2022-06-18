@@ -55,7 +55,7 @@ require('lualine').setup {
     lualine_x = {
       {
         'diagnostics',
-        sources = {'nvim_lsp'},
+        sources = {'nvim_diagnostic'},
         sections = {'error', 'warn', 'info', 'hint'},
         color_error = nvim.g.color17,
         color_warn = nvim.g.color03,
@@ -107,26 +107,26 @@ hi('BufferCurrentIcon', {fg = 'bg', bg = nvim.g.color04})
 hi('BufferCurrentTarget',
    {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08})
 -- Currently visible (but not active) buffer(s)
-hi('BufferVisible', {fg = nvim.g.color21, bg = nvim.g.color19})
-hi('BufferVisibleIndex', {fg = nvim.g.color21, bg = nvim.g.color19})
+hi('BufferVisible', {fg = nvim.g.color20, bg = nvim.g.color19})
+hi('BufferVisibleIndex', {fg = nvim.g.color20, bg = nvim.g.color19})
 hi('BufferVisibleMod',
-   {gui = 'italic,bold', fg = nvim.g.color21, bg = nvim.g.color19})
+   {gui = 'italic', fg = nvim.g.color17, bg = nvim.g.color19})
 hi('BufferVisibleSign', {fg = nvim.g.colorbg, bg = nvim.g.color19})
 hi('BufferVisibleIcon', {fg = nvim.g.color21, bg = nvim.g.color19})
 hi('BufferVisibleTarget',
-   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color19})
+   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08})
 -- Inactive buffers
 hi('BufferInactive', {fg = nvim.g.color20, bg = nvim.g.color18})
 hi('BufferInactiveIndex', {fg = nvim.g.color20, bg = nvim.g.color18})
 hi('BufferInactiveMod',
-   {gui = 'italic', fg = nvim.g.color20, bg = nvim.g.color18})
+   {gui = 'italic', fg = nvim.g.color17, bg = nvim.g.color18})
 hi('BufferInactiveSign', {fg = nvim.g.colorbg, bg = nvim.g.color18})
 hi('BufferInactiveIcon', {fg = nvim.g.color20, bg = nvim.g.color17})
 hi('BufferInactiveTarget',
-   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color18})
+   {gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08})
 -- Tab/bufferline background
 hi('BufferTabpages', {fg = nvim.g.color18})
-hi('BufferTabpageFill', {fg = nvim.g.colorbg, bg = nvim.g.color18})
+hi('BufferTabpageFill', {fg = nvim.g.colorbg, bg = nvim.g.colorbg})
 
 -- Treesitter highlights
 cmd('hi TSPunctBracket guifg = fg')
@@ -141,21 +141,21 @@ hi('RainbowCol6', {fg = nvim.g.color11})
 hi('RainbowCol7', {fg = nvim.g.color07})
 
 -- LSP highlights
-hi('LspDiagnosticsSignError', {gui = 'italic', fg = nvim.g.color17})
-hi('LspDiagnosticsSignWarning', {gui = 'italic', fg = nvim.g.color11})
-hi('LspDiagnosticsSignInformation', {gui = 'italic', fg = nvim.g.color10})
-hi('LspDiagnosticsSignHint', {gui = 'italic', fg = nvim.g.color14})
 hi('LspReferenceRead', {gui = 'bold', bg = nvim.g.color19})
 hi('LspReferenceText', {gui = 'bold', bg = nvim.g.color19})
 hi('LspReferenceWrite', {gui = 'bold', bg = nvim.g.color19})
-hi('LspDiagnosticsUnderlineError', {gui = 'undercurl'})
-hi('LspDiagnosticsUnderlineWarning', {gui = 'undercurl'})
-hi('LspDiagnosticsUnderlineInformation', {gui = 'undercurl'})
-hi('LspDiagnosticsUnderlineHint', {gui = 'undercurl'})
-hi('LspDiagnosticsVirtualTextError', {gui = 'italic', fg = nvim.g.color17})
-hi('LspDiagnosticsVirtualTextWarning', {gui = 'italic', fg = nvim.g.color20})
-hi('LspDiagnosticsVirtualTextInfo', {gui = 'italic', fg = nvim.g.color19})
-hi('LspDiagnosticsVirtualTextHint', {gui = 'italic', fg = nvim.g.color19})
+hi('DiagnosticSignError', {gui = 'italic', fg = nvim.g.color17})
+hi('DiagnosticSignWarning', {gui = 'italic', fg = nvim.g.color11})
+hi('DiagnosticSignInformation', {gui = 'italic', fg = nvim.g.color10})
+hi('DiagnosticSignHint', {gui = 'italic', fg = nvim.g.color14})
+hi('DiagnosticUnderlineError', {gui = 'undercurl'})
+hi('DiagnosticUnderlineWarning', {gui = 'undercurl'})
+hi('DiagnosticUnderlineInformation', {gui = 'undercurl'})
+hi('DiagnosticUnderlineHint', {gui = 'undercurl'})
+hi('DiagnosticVirtualTextError', {gui = 'italic', fg = nvim.g.color17})
+hi('DiagnosticVirtualTextWarning', {gui = 'italic', fg = nvim.g.color20})
+hi('DiagnosticVirtualTextInfo', {gui = 'italic', fg = nvim.g.color19})
+hi('DiagnosticVirtualTextHint', {gui = 'italic', fg = nvim.g.color19})
 
 -- Signify highlights
 hi('SignifySignAdd', {bg = 'none'})

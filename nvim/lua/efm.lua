@@ -34,7 +34,10 @@ return {
     },
     lintSource = "mypy"
   },
-  php_cs_fixer = {formatCommand = "php-cs-fixer fix"},
+  php_cs_fixer = {
+    formatCommand = "php-cs-fixer --rules=@Symfony -n -q fix",
+    formatStdin = true
+  },
   prettier = {
     formatCommand = ([[
     prettier

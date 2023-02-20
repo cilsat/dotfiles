@@ -1,9 +1,3 @@
-vim.cmd [[
-  syntax off
-  filetype off
-  filetype plugin indent off
-]]
-
 local opt = vim.opt
 
 -- Basic appearance and behavior
@@ -59,10 +53,12 @@ opt.shiftwidth = 2 -- Number of spaces to use for each indent step
 opt.cindent = true -- Use C-style indenting
 
 -- Folding behavior
+opt.foldcolumn = '0'
+opt.foldlevel = 99 -- Level to begin folding
+opt.foldlevelstart = 99 -- Level to begin folding
 opt.foldmethod = "indent" -- Folds follow indents
-opt.foldenable = false -- Do not fold by default
+opt.foldenable = true -- Do not fold by default
 opt.foldnestmax = 5 -- Maximum level of nested folds
-opt.foldlevel = 2 -- Level to begin folding
 
 -- Disable internal plugins
 local disabled_plugins = {
@@ -74,4 +70,4 @@ local disabled_plugins = {
 for _, plugin in pairs(disabled_plugins) do vim.g["loaded" .. plugin] = 0 end
 
 -- Default floating window borders
-vim.g.floating_window_border = {'🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏'}
+--vim.g.floating_window_border = {'🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏'}

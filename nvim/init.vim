@@ -1,6 +1,3 @@
-" VIM SETTINGS
-luafile ~/.config/nvim/lua/options.lua
-
 " PLUGINS & SETTINGS
 " Auto install Plug if not found
 let plug_path='~/.config/nvim'
@@ -11,40 +8,67 @@ if empty(glob(plug_path.'/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.local/share/nvim/plugs')
+" Completion & Coding
+Plug 'neovim/nvim-lspconfig'            " Base config for Neovim's builtin LSP
+Plug 'nvim-treesitter/nvim-treesitter'  " Neovim's treesitter implementation
+Plug 'nvim-treesitter/playground'       " Treesitter queries directly in neovim
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'  " Neovim's treesitter implementation
+Plug 'hrsh7th/nvim-cmp'                 " Auto-completion using builtin LSP
+Plug 'hrsh7th/cmp-nvim-lsp'             " nvim-lsp completion source
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help' "nvim-lsp functin signature helper
+Plug 'hrsh7th/cmp-nvim-lsp-document-symbol' "display document symbols in search function
+Plug 'hrsh7th/cmp-buffer'               " buffer words completion source
+Plug 'hrsh7th/cmp-path'                 " path completion source
+Plug 'ray-x/cmp-treesitter'             " treesitter completion source
+Plug 'onsails/lspkind-nvim'             " Fancy icons/symbols for LSP popups
+Plug 'saadparwaiz1/cmp_luasnip'         " luasnip completion source
+Plug 'l3mon4d3/luasnip'                 " Lua-based vscode snippets
+Plug 'rafamadriz/friendly-snippets'     " Collection of snippets for various languages
+Plug 'mfussenegger/nvim-jdtls'          " Neovim JDTLS langserver
+Plug 'simrat39/rust-tools.nvim'         " Improved rust experience (inlays, etc)
+Plug 'jose-elias-alvarez/typescript.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'  " Generic LSP for formatting, linting, etc
+Plug 'windwp/nvim-autopairs'            " Auto-completion of bracket/quote pairs
+Plug 'pwntester/octo.nvim'              " Repo PR/MR editing directly from vim
+
+" Eye Candy
+Plug 'norcalli/nvim-colorizer.lua'      " Show actual color on color tags
+Plug 'norcalli/nvim-base16.lua'         " base16 gui colors for neovim
+Plug 'lukas-reineke/indent-blankline.nvim' " Show indent lines on blank lines too
+  let g:indent_blankline_char='▏'
+  let g:indent_blankline_filetype_exclude = ['help', 'vim']
+  let g:indent_blankline_buftype_exclude = ['terminal', 'popup']
+  let g:indent_blankline_show_current_context = v:true
+  let g:indent_blankline_context_patterns = [ 'class', 'function', 'method', '^if', '^while', '^for', '^try', '^object', '^table', 'block', 'arguments', '^switch' ]
+Plug 'kyazdani42/nvim-web-devicons'     " Fancy icons/symbols
 " Search & Navigation
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes
-Plug 'ggandor/lightspeed.nvim'          " Navigate within buffer at lightspeed
+Plug 'ggandor/leap.nvim'                " Navigate within buffer
 Plug 'nvim-lua/popup.nvim'              " Telescope dependancy for popups
 Plug 'nvim-lua/plenary.nvim'            " Telescope dependancy
 Plug 'nvim-telescope/telescope.nvim'    " Fuzzy search for various categories
 Plug 'nvim-telescope/telescope-fzf-native.nvim' " FZF C port for telescope
 Plug 'romgrk/barbar.nvim'               " Standalone lua-based tab/bufferline
-  let bufferline = get(g:, 'bufferline', {})
-  let bufferline.icons="both"
-  let bufferline.icon_custom_colors=v:false
-  let bufferline.icon_separator_active='▍'
-  let bufferline.icon_separator_inactive='▍'
-  let bufferline.maximum_padding=2
-  let bufferline.semantic_letters=v:false
-"Plug 'stevearc/aerial.nvim'             " View/naviate code outline
+Plug 'elihunter173/dirbuf.nvim'         " Rename files/dirs as nvim buffer
 
 " Enhance existing built-in functionality
 Plug 'tpope/vim-repeat'                 " Expands repeatable actions/gestures
-Plug 'tpope/vim-surround'               " Expands actions for surrounding pairs
+Plug 'kylechui/nvim-surround'           " Expands actions for surrounding pairs
 Plug 'tpope/vim-commentary'             " Toggle comment motion
 Plug 'rmagatti/auto-session'            " Automatically save/restore sessions
 Plug 'rmagatti/session-lens'            " Telescope extension for auto-session
 Plug 'wellle/targets.vim'               " Expands text object actions/gestures
 Plug 'vim-scripts/VisIncr'              " Expands autoincrement functions
-Plug 'shougo/context_filetype.vim'      " Detect multiple filetype in one file
-Plug 'folke/which-key.nvim',            " Helm-like display for vim mappings
-      \ { 'branch': 'main', 'on': ['WhichKey', 'WhichKey!'] }
 Plug 'tweekmonster/startuptime.vim',    " Diagnose/calculate vim startup times
       \ {'on': 'StartupTime'}
+Plug 'lewis6991/impatient.nvim'         " Lua caching for improved startup
+Plug 'kevinhwang91/promise-async'       " Required for nvim-ufo
+Plug 'kevinhwang91/nvim-ufo'            " Modern neovim folding
 
 " Integrate with external tools
 Plug 'tpope/vim-fugitive'               " Git wrapper for vim
 Plug 'sindrets/diffview.nvim'           " Git diff tabpage view
+  set fillchars+=diff:╱
 Plug 'mhinz/vim-signify'                " Alternative git diff in gutter
   let g:signify_disable_by_default=0
   let g:signify_sign_add='▎'
@@ -60,39 +84,17 @@ Plug 'lervag/vimtex'                    " LaTex helper
 Plug 'iamcco/markdown-preview.nvim',    " Preview markdown from browser
       \ { 'do': 'cd app && yarn install'  }
 
-" Completion & Coding
-Plug 'neovim/nvim-lspconfig'            " Base config for Neovim's builtin LSP
-Plug 'nvim-treesitter/nvim-treesitter'  " Neovim's treesitter implementation
-Plug 'hrsh7th/nvim-cmp'                 " Auto-completion using builtin LSP
-Plug 'hrsh7th/cmp-nvim-lsp'             " nvim-lsp completion source
-Plug 'hrsh7th/cmp-buffer'               " buffer words completion source
-Plug 'hrsh7th/cmp-path'                 " path completion source
-Plug 'ray-x/cmp-treesitter'             " treesitter completion source
-Plug 'hrsh7th/vim-vsnip'                " Enable snippets during completion
-Plug 'ray-x/lsp_signature.nvim'         " Function signature popup
-Plug 'onsails/lspkind-nvim'             " Fancy icons/symbols for LSP popups
-Plug 'honza/vim-snippets'               " Collection of various snippets
-Plug 'mfussenegger/nvim-jdtls'          " Neovim JDTLS langserver
-Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
-Plug 'jose-elias-alvarez/null-ls.nvim'  " Generic LSP for formatting, linting, etc
-Plug 'windwp/nvim-autopairs'            " Auto-completion of bracket/quote pairs
-
-" Eye Candy
-Plug 'norcalli/nvim-colorizer.lua'      " Show actual color on color tags
-Plug 'norcalli/nvim-base16.lua'         " base16 gui colors for neovim
-Plug 'lukas-reineke/indent-blankline.nvim' " Show indent lines on blank lines too
-  let g:indent_blankline_char='▏'
-  let g:indent_blankline_filetype_exclude = ['help', 'vim']
-  let g:indent_blankline_buftype_exclude = ['terminal', 'popup']
-  let g:indent_blankline_show_current_context = v:true
-  let g:indent_blankline_context_patterns = [ 'class', 'function', 'method', '^if', '^while', '^for', '^try', '^object', '^table', 'block', 'arguments', '^switch' ]
-Plug 'kyazdani42/nvim-web-devicons'     " Fancy icons/symbols
-Plug 'nvim-lualine/lualine.nvim'             " Lua-based status line
+Plug 'nvim-lualine/lualine.nvim'        " Lua-based status line
 Plug 'p00f/nvim-ts-rainbow'             " Treesitter-based rainbow parentheses
 Plug 'machakann/vim-highlightedyank'    " Highlight yanked text
+"Plug 'j-hui/fidget.nvim'                " LSP server progress widget
 call plug#end()
 
 " ALOHA LUAA~
+lua require('impatient')
+luafile ~/.config/nvim/lua/options.lua
+luafile ~/.config/nvim/lua/gui.lua
+luafile ~/.config/nvim/lua/lsp.lua
 lua << EOF
 local opts = {
   auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
@@ -104,9 +106,6 @@ local opts = {
 }
 require('auto-session').setup(opts)
 EOF
-luafile ~/.config/nvim/lua/gui.lua
-luafile ~/.config/nvim/lua/lsp.lua
-
 
 " AUTOCOMMANDS
 " General autocommands
@@ -170,17 +169,15 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " Plugin key mappings
-"nmap <F2> :AerialToggle<CR>
+nmap <F1> :DiffviewOpen<CR>
+nmap <F2> :Dirbuf<CR>
 nmap <F3> :Git blame<CR>
-nmap <F4> :lua vim.lsp.buf.formatting()<CR>
+" <F4> set in lsp.lua
+"nmap <F4> :lua vim.lsp.buf.format({timeout_ms = 2000, async = true})<CR>
 nmap <F5> :PlugUpd<CR>
 nmap <F6> :SaveSession<CR>
 
-" Tmux navigator + tilish mappings
-noremap <silent> <m-h> :TmuxNavigateLeft<cr>
-noremap <silent> <m-j> :TmuxNavigateDown<cr>
-noremap <silent> <m-k> :TmuxNavigateUp<cr>
-noremap <silent> <m-l> :TmuxNavigateRight<cr>
+nmap <F10> :call SynGroup()<CR>
 
 " EasyAlign mappings
 xmap ga <Plug>(EasyAlign)
@@ -190,16 +187,6 @@ nmap ga <Plug>(EasyAlign)
 xmap <leader>s <Plug>SlimeRegionSend
 nmap <leader>ss <Plug>SlimeParagraphSend
 
-" Fugitive/signify mappings
-nnoremap <leader>g :lua require'telescope.builtin'.git_status{}<CR>
-nnoremap <leader>gs :G<CR>
-nnoremap <leader>gd :Gvdiff<CR>
-nnoremap <leader>gh :diffget //2<CR>
-nnoremap <leader>gl :diffget //3<CR>
-
-" Show documentation in preview window
-nnoremap <silent> <leader>hh :call <SID>show_documentation()<CR>
-
 " Which key
 "nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
 
@@ -208,21 +195,23 @@ nnoremap <silent> <leader>hh :call <SID>show_documentation()<CR>
 nnoremap <leader>d :BufferClose<CR>
 " Delete pane
 nnoremap <leader>w :q<CR>
+" Write and delete pane
+nnoremap <leader>x :wq<CR>
 " Next buffer
-nmap <C-n> :BufferNext<CR>
+nnoremap <C-n> :BufferNext<CR>
 " Previous buffer
-nmap <C-p> :BufferPrevious<CR>
+nnoremap <C-p> :BufferPrevious<CR>
 " Jump to buffers 1 - 9
-nmap <leader>1 :BufferGoto 1<CR>
-nmap <leader>2 :BufferGoto 2<CR>
-nmap <leader>3 :BufferGoto 3<CR>
-nmap <leader>4 :BufferGoto 4<CR>
-nmap <leader>5 :BufferGoto 5<CR>
-nmap <leader>6 :BufferGoto 6<CR>
-nmap <leader>7 :BufferGoto 7<CR>
-nmap <leader>8 :BufferGoto 8<CR>
-nmap <leader>9 :BufferGoto 9<CR>
-nmap <leader>0 :BufferPick<CR>
+nnoremap <silent> <leader>1 :BufferGoto 1<CR>
+nnoremap <silent> <leader>2 :BufferGoto 2<CR>
+nnoremap <silent> <leader>3 :BufferGoto 3<CR>
+nnoremap <silent> <leader>4 :BufferGoto 4<CR>
+nnoremap <silent> <leader>5 :BufferGoto 5<CR>
+nnoremap <silent> <leader>6 :BufferGoto 6<CR>
+nnoremap <silent> <leader>7 :BufferGoto 7<CR>
+nnoremap <silent> <leader>8 :BufferGoto 8<CR>
+nnoremap <silent> <leader>9 :BufferGoto 9<CR>
+nnoremap <silent> <leader>0 :BufferLast<CR>
 
 " Normal mode mappings
 " Right strip spaces

@@ -1,62 +1,45 @@
--- Organizes imports: Useful for gopls
-function org_imports(wait_ms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = {only = {"source.organizeImports"}}
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params,
-                                          wait_ms)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit)
-      else
-        vim.lsp.buf.execute_command(r.command)
-      end
-    end
-  end
-  vim.lsp.buf.formatting()
+-- LSP config via nvim-lspconfig
+local nvim_lsp = require('lspconfig')
+
+local function border(hl_name)
+  return {
+    { "╭", hl_name },
+    { "─", hl_name },
+    { "╮", hl_name },
+    { "│", hl_name },
+    { "╯", hl_name },
+    { "─", hl_name },
+    { "╰", hl_name },
+    { "│", hl_name },
+  }
 end
 
--- General LSP Config
-local nvim_lsp = require('lspconfig')
+-- Mappings
+local opts = { noremap = true, silent = true }
+vim.keymap.set('n', '<C-[>', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', '<C-]>', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+-- Define custome on_attach function to inject keymaps and other options
 local on_attach = function(client, bufnr)
-  local function set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = {noremap = true, silent = true}
-  set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  set_keymap('n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  set_keymap('n', '<leader>m', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-  set_keymap('n', '<F7>', '<cmd>lua org_imports(250)<CR>', opts)
-  -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- buf_set_keymap('n', '<M-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  -- buf_set_keymap('n', '<M-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-  -- Set some keybinds conditional on server capabilities
-  client.resolved_capabilities.document_formatting = false
-  client.resolved_capabilities.document_range_formatting = false
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<C-m>', vim.diagnostic.open_float, bufopts)
+  vim.keymap.set('n', '<leader>k', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<F4>', function() vim.lsp.buf.format { async = true } end, bufopts)
 
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.fn.sign_define('DiagnosticSignError',
-                       {text = '▎', texthl = 'DiagnosticSignError'})
-    vim.fn.sign_define('DiagnosticSignWarn',
-                       {text = '▎', texthl = 'DiagnosticSignWarn'})
-    vim.fn.sign_define('DiagnosticSignInfo',
-                       {text = '▎', texthl = 'DiagnosticSignInfo'})
-    vim.fn.sign_define('DiagnosticSignHint',
-                       {text = '▎', texthl = 'DiagnosticSignHint'})
-
+  client.server_capabilities.document_formatting = false
+  client.server_capabilities.document_range_formatting = false
+  if client.server_capabilities.document_highlight then
     vim.api.nvim_exec([[
       augroup lsp_document_highlight
       autocmd! * <buffer>
@@ -66,66 +49,45 @@ local on_attach = function(client, bufnr)
     ]], false)
   end
 
-  local border = {
-    {"🭽", "FloatBorder"}, {"▔", "FloatBorder"}, {"🭾", "FloatBorder"},
-    {"▕", "FloatBorder"}, {"🭿", "FloatBorder"}, {"▁", "FloatBorder"},
-    {"🭼", "FloatBorder"}, {"▏", "FloatBorder"}
-  }
   -- Floating windows
-  vim.lsp.handlers["textDocument/hover"] =
-      vim.lsp.with(vim.lsp.handlers.hover, {border = border})
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    vim.lsp.handlers.hover, { border = border("FloatBorder") })
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-                                                       vim.lsp.handlers.hover,
-                                                       {border = border})
+    vim.lsp.handlers.hover, { border = border("FloatBorder") })
 end
 
--- Enable snippet support
+-- Enable snippet and folding support
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {'documentation', 'detail', 'additionalTextEdits'}
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+capabilities.textDocument.foldingRange = {
+  dynamicRegistration = false,
+  lineFoldingOnly = true
 }
 
 -- Use a loop to conveniently both setup all defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = {"clangd", "gopls", "jdtls", "phpactor", "rust_analyzer"}
+local servers = { "gopls", "jdtls", "phpactor", "tsserver" }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup ({on_attach = on_attach, capabilities = capabilities})
+  nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = capabilities }
 end
-
--- Setup clangd manually
-local clangd_caps = vim.lsp.protocol.make_client_capabilities()
-clangd_caps.offsetEncoding = {"utf-16"}
-nvim_lsp.clangd.setup { capabilities = clangd_caps}
 
 -- Setup Lua completion manually
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
-nvim_lsp.sumneko_lua.setup {
-  cmd = {'lua-language-server'},
+nvim_lsp.lua_ls.setup {
+  cmd = { 'lua-language-server' },
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
     Lua = {
-      runtime = {version = 'LuaJIT', path = runtime_path},
-      diagnostics = {globals = {'vim'}},
-      workspace = {library = vim.api.nvim_get_runtime_file("", true)},
-      telemetry = {enable = false}
+      runtime = { version = 'LuaJIT', path = runtime_path },
+      diagnostics = { globals = { 'vim' } },
+      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+      telemetry = { enable = false }
     }
   }
-}
-
--- Setup typescript-language-server with ts-utils
-nvim_lsp.tsserver.setup {
-  on_attach = function(client)
-    client.resolved_capabilities.document_formatting = false
-    require('nvim-lsp-ts-utils').setup {}
-    on_attach(client)
-  end,
-  capabilities = capabilities
 }
 
 -- Attempt to load python environment automatically when using pyright
@@ -148,42 +110,69 @@ end
 nvim_lsp.pyright.setup {
   on_init = function(client)
     client.config.settings.python.pythonPath =
-        get_python_path(client.config.root_dir)
+    get_python_path(client.config.root_dir)
   end,
   on_attach = on_attach,
   capabilities = capabilities,
 }
 
--- LSP completion config via nvim-cmp
+-- Setup clangd manually
+capabilities.offsetEncoding = { "utf-16" }
+nvim_lsp.clangd.setup {
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
+-- Setup rust-tools separately
+require('rust-tools').setup {
+  server = { on_attach = on_attach }
+}
+
+-- LSP completion and snippets via nvim-cmp and luasnip
+local cmp_window = require("cmp.utils.window")
+cmp_window.info_ = cmp_window.info
+cmp_window.info = function(self)
+  local info = self:info_()
+  info.scrollable = false
+  return info
+end
+
 local has_words_before = function()
   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and
-             vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col)
-                 :match("%s") == nil
+      vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col)
+      :match("%s") == nil
 end
 
-local feedkey = function(key, mode)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true),
-                        mode, true)
-end
-
+require('luasnip.loaders.from_vscode').lazy_load()
 local cmp = require('cmp')
+cmp.setup.cmdline('/', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp_document_symbol' }
+  }, { { name = 'buffer' } }
+  )
+})
+local luasnip = require('luasnip')
 cmp.setup {
   window = {
+    completion = {
+      border = border("CmpBorder"),
+      winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None"
+    },
     documentation = {
-      border = {"🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏"}
+      border = border("CmpDocBorder")
     }
   },
   formatting = {
     format = function(entry, vim_item)
       vim_item.kind =
-          require('lspkind').presets.default[vim_item.kind] .. " " ..
-              vim_item.kind
+      require('lspkind').presets.default[vim_item.kind] .. " " ..
+          vim_item.kind
       vim_item.menu = ({
         buffer = "[BUF]",
         nvim_lsp = "[LSP]",
-        vsnip = "[SNIP]",
+        luasnip = "[SNIP]",
         nvim_lua = "[LUA]",
         latex_symbols = "[TEX]"
       })[entry.source.name]
@@ -195,7 +184,7 @@ cmp.setup {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    --['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
@@ -204,65 +193,73 @@ cmp.setup {
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif vim.fn['vsnip#available']() == 1 then
-        feedkey('<Plug>vsnip-expand-or-jump', '')
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
         fallback()
       end
-    end, {'i', 's'}),
-    ['<S-Tab>'] = cmp.mapping(function()
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-        feedkey('<Plug>vsnip-jump-prev', '')
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
       end
-    end, {'i', 's'})
+    end, { 'i', 's' })
   },
-  snippet = {expand = function(args) vim.fn["vsnip#anonymous"](args.body) end},
+  snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
   sources = {
-    {name = 'nvim_lsp'},
-    {name = 'treesitter'},
-    {name = 'buffer'},
-    {name = 'path'},
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
+    { name = 'treesitter' },
+    { name = 'buffer' },
+    { name = 'path' },
+    { name = 'luasnip', option = { show_autosnippets = true } },
+  }
+}
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+-- LSP diagnostics, formatting, and code actions via null-ls
+local null_ls = require("null-ls")
+null_ls.setup {
+  sources = {
+    null_ls.builtins.formatting.trim_newlines,
+    null_ls.builtins.formatting.trim_whitespace,
+    null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.ruff,
+    null_ls.builtins.formatting.clang_format,
+    null_ls.builtins.formatting.gofmt,
+    null_ls.builtins.formatting.phpcbf,
+    null_ls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.shfmt,
+    --null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.hadolint,
+    --null_ls.builtins.diagnostics.markdownlint,
+    null_ls.builtins.diagnostics.phpcs,
   }
 }
 
--- Use null-fs for formatting, diagnostics, code actions, etc
-local null_ls = require("null-ls")
-null_ls.setup({
-  sources = {
-    null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.clang_format,
-    null_ls.builtins.formatting.gofmt,
-    null_ls.builtins.formatting.phpcsfixer,
-    null_ls.builtins.formatting.prettierd,
-    null_ls.builtins.formatting.shfmt,
-    null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.trim_whitespace,
-    null_ls.builtins.diagnostics.hadolint,
-    --null_ls.builtins.diagnostics.markdownlint,
-  }
-})
-
--- Load autopairs
-require('nvim-autopairs').setup({
-  check_ts = true,
-  map_c_w = true,
-  fast_wrap = {}
-})
-
--- nvim-treesitter for vastly improved source code parsing
-require'nvim-treesitter.configs'.setup {
+-- Source code syntax highlighting/parsing via nvim-treesitter
+require('nvim-treesitter.configs').setup {
   ensure_installed = {
-    "bash", "c", "cpp", "go", "java", "javascript", "json", "julia", "kotlin",
-    "lua", "php", "python", "query", "ruby", "rust", "toml", "typescript", "vue"
+    "bash", "c", "cmake", "cpp", "dockerfile", "erlang", "elixir", "go",
+    "html", "java", "javascript", "json", "julia", "kotlin", "latex", "lua",
+    "markdown", "markdown_inline", "perl", "php", "proto", "python",
+    "qmljs", "query", "ruby", "rust", "toml", "tsx", "typescript", "vue",
+    "yaml"
   },
-  highlight = {enable = true},
-  indent = {enable = false},
-  rainbow = {enable = true},
-  -- autopairs = {enable = true},
+  sync_install = false,
+  autopairs = { enable = true },
+  highlight = { enable = true },
+  indent = { enable = true },
+  rainbow = { enable = true, extended_mode = true },
+  --playground = { enable = true },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -275,14 +272,36 @@ require'nvim-treesitter.configs'.setup {
   textobjects = {
     select = {
       enable = true,
-      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+      -- Automatically jump forward to textobj, similar to targets.vim
+      lookahead = true,
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ['af'] = '@function.outer',
         ['if'] = '@function.inner',
-        ['ac'] = '@class.outer',
-        ['ic'] = '@class.inner',
+        ['ac'] = '@call.outer',
+        -- you can optionally set descriptions to the mappings (used in the desc parameter of nvim_buf_set_keymap
+        --['ic'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
+        ['ic'] = 'call.inner',
+        ['ab'] = '@block.outer',
+        ['ib'] = '@block.inner',
+        ['al'] = '@loop.outer',
+        ['il'] = '@loop.inner',
+        ['ap'] = '@parameter.outer',
+        ['ip'] = '@parameter.inner',
+        ['ai'] = '@conditional.outer',
+        ['ii'] = '@conditional.inner',
       },
+      -- You can choose the select mode (default is charwise 'v')
+      selection_modes = {
+        ['@parameter.outer'] = 'v', -- charwise
+        ['@function.outer'] = 'V', -- linewise
+        ['@class.outer'] = '<c-v>', -- blockwise
+      },
+      -- If you set this to `true` (default is `false`) then any textobject is
+      -- extended to include preceding xor succeeding whitespace. Succeeding
+      -- whitespace has priority in order to act similarly to eg the built-in
+      -- `ap`.
+      include_surrounding_whitespace = false,
     },
     move = {
       enable = true,
@@ -307,7 +326,7 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
--- telescope for fuzzy searching
+-- Search and filter various sources via telescope
 local picker_config = {
   prompt_title = '',
   results_title = '',
@@ -316,7 +335,6 @@ local picker_config = {
     'fd', '-i', '-uu', '-F', '-L', '--color=never'
   },
 }
-
 require('telescope').setup {
   defaults = {
     mappings = {
@@ -325,23 +343,22 @@ require('telescope').setup {
         ["<C-w>"] = function() vim.cmd [[normal! bcw]] end,
       }
     },
-    borderchars = {
-      results = {'▔', '▕', '▁', '▏', '🭽', '🭾', '🭿', '🭼'},
-      prompt = {' ', '▕', '▁', '▏', '▏', '▕', '🭿', '🭼'},
-      preview = {'▔', '▕', '▁', '▏', '🭽', '🭾', '🭿', '🭼'}
-    },
+    border = {},
+    borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
     winblend = 7,
     layout_strategy = 'flex',
-    layout_config = {height = 0.7},
+    layout_config = { height = 0.7 },
     --dynamic_preview_title = true,
     vimgrep_arguments = {
-      'rg', '--column', '-H', '-uu', '-F', '-L', '-S'
+      'rg', '--column', '-H', '-F', '-L', '-S'
     },
     file_ignore_patterns = {
       '.git/.*',
       '.mypy_cache',
       'node_modules',
-      '__pycache__'
+      '__pycache__',
+      '*.chunk.js',
+      '*.o'
     }
   },
   pickers = {
@@ -351,10 +368,28 @@ require('telescope').setup {
     help_tags = picker_config,
     commands = picker_config,
     lsp_references = picker_config,
-    current_buffer_fuzzy_find = picker_config
-  }
+    current_buffer_fuzzy_find = picker_config,
+    filte_browser = picker_config
+  },
 }
-
 require('telescope').load_extension('fzf')
 
-require('diffview')
+-- Load autopairs
+require('nvim-autopairs').setup {
+  check_ts = true,
+  map_c_w = true,
+}
+-- Modern folding
+require('ufo').setup {}
+-- Git diff, file history, and conflicts
+require('diffview').setup {
+  enhanced_diff_hl = true,
+}
+-- Add/delete/change surrounding pairs
+require('nvim-surround').setup {}
+-- Progress bar for LSP operations
+--require('fidget').setup {}
+-- Buffer navigation in 3-4 keystrokes
+require('leap').add_default_mappings()
+-- Setup Octo
+require('octo').setup()

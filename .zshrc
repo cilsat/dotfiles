@@ -48,45 +48,31 @@ bindkey -M vicmd 'j' history-substring-search-down
 # Home/User configuration
 # -----------------
 # Set base home paths
-export DEFAULT_USER=cilsat
-export HOME=/home/$DEFAULT_USER
 export BASE16_SHELL="$HOME/src/base16-builder-python/output/shell"
 export FZF="/usr/share/fzf"
 
 # Check for Display
 if [ -n "$DISPLAY" ]; then
-  # If using KDE, set color scheme per activity
-  if [ $XDG_CURRENT_DESKTOP = "KDE" ]; then
-    ac=$(dbus-send --session --dest=org.kde.ActivityManager \
-      --type=method_call --print-reply=literal /ActivityManager/Activities \
-      org.kde.ActivityManager.Activities.CurrentActivity | tr -d "[:blank:]")
-    ws=$(dbus-send --session --dest=org.kde.ActivityManager --type=method_call \
-      --print-reply /ActivityManager/Activities \
-      org.kde.ActivityManager.Activities.ActivityInformation \
-      "string:$ac" | sed "4q;d" | cut -d ' ' -f8 | tr -d '"')
-    if [ "$ws" = "Work" ]; then
-      export BASE16_THEME="decaf"
-    elif [ "$ws" = "Code" ]; then
-      export BASE16_THEME="solarflare"
-    elif [ "$ws" = "Fun" ]; then
-      export BASE16_THEME="flat"
-    fi
+  # Use a different color scheme for each workspace
+  ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
+  if [ "$ws" = 1 ]; then
+    export BASE16_THEME="decaf"
+  elif [ "$ws" = 2 ]; then
+    export BASE16_THEME="oceanicnext-purple"
+  elif [ "$ws" = 3 ]; then
+    export BASE16_THEME="ocean"
+  elif [ "$ws" = 4 ]; then
+    export BASE16_THEME="materia"
   else
-    # Use a different color scheme for each workspace
-    ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
-    if [ "$ws" = 1 ]; then
-      export BASE16_THEME="decaf"
-    elif [ "$ws" = 2 ]; then
-      export BASE16_THEME="oceanicnext-purple"
-    elif [ "$ws" = 3 ]; then
-      export BASE16_THEME="ocean"
-    elif [ "$ws" = 4 ]; then
-      export BASE16_THEME="materia"
-    fi
+    export BASE16_THEME="decaf"
   fi
   [[ -n $BASE16_THEME ]] && source "$BASE16_SHELL/scripts/base16-$BASE16_THEME.sh"
+  # Start tmux service
+  if ! systemctl --user is-active --quiet tmux.service; then
+    systemctl --user start tmux.service;
+  fi
   # Attach shell to workspace tmux session and force unicode
-  [[ -z $(tmux ls | egrep $ws": .*attached") ]] && tmux -u new -As "$ws"
+  [[ -z $(tmux ls | grep -e $ws": .*attached") ]] && tmux -u new -As "$ws"
 fi
 
 # Preferred editor for local and remote sessions
@@ -100,8 +86,6 @@ export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\
 /opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
 
 # Keys
-export SSH_ASKPASS="ksshaskpass"
-export SSH_KEY_PATH="$HOME/.ssh/rsa_id"
 export GNUPGHOME="$HOME/.gnupg"
 export GPGKEY=716809DD
 export PASSWORD_STORE_DIR="$HOME/.password-store"
@@ -114,14 +98,25 @@ export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
 # Java path
-export JAVA_HOME="/usr/lib/jvm/java-11-openjdk"
+export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
 # PyEnv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PATH:$PYENV_ROOT/bin"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
+pyenv() {
+  unset -f pyenv
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PATH:$PYENV_ROOT/bin"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+  pyenv $@
+}
 # NVM
-source /usr/share/nvm/init-nvm.sh
+nvm() {
+  unset -f nvm
+  [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+  source /usr/share/nvm/nvm.sh --no-use
+  source /usr/share/nvm/bash_completion
+  source /usr/share/nvm/install-nvm-exec
+  nvm $@
+}
 
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
@@ -131,31 +126,36 @@ export BAT_THEME="base16"
 source "$FZF/completion.zsh"
 source "$FZF/key-bindings.zsh"
 export FZF_COMPLETION_TRIGGER="**"
-export FZF_DEFAULT_OPTS="--height 50% --preview=\"bat {}\" \
+export FZF_DEFAULT_OPTS="--height 50% \
+  --preview='bat --style=numbers --color=always --line-range :500 {}' \
   --preview-window=right:50% --cycle --multi \
   --bind=?:toggle-preview --bind=tab:down --bind=btab:up --bind=space:toggle \
   --bind=ctrl-d:half-page-down --bind=ctrl-u:half-page-up \
   --color fg:7,bg:-1,hl:6,fg+:7,bg+:18,hl+:3,border:19 \
   --color gutter:-1,info:8,prompt:5,spinner:15,pointer:16,marker:3"
-export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\""
+export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\"\
+  -E \"__pycache__\" -E \".mypy_cache\""
 _fzf_compgen_path() {
-  fd -i -H -I -F -L -E ".git" -E "node_modules" . "$1"
+  fd -i -H -I -F -L -E ".git" -E "node_modules" -E ".mypy_cache" -E "__pycache__" . "$1"
 }
 # LF vars
-LF_ICONS=$(sed ~/.config/lf/diricons \
-            -e '/^[ \t]*#/d'       \
-            -e '/^[ \t]*$/d'       \
-            -e 's/[ \t]\+/=/g'     \
-            -e 's/$/ /')
-LF_ICONS=${LF_ICONS//$'\n'/:}
-export LF_ICONS
+#LF_ICONS=$(sed ~/.config/lf/diricons \
+#            -e '/^[ \t]*#/d'       \
+#            -e '/^[ \t]*$/d'       \
+#            -e 's/[ \t]\+/=/g'     \
+#            -e 's/$/ /')
+#LF_ICONS=${LF_ICONS//$'\n'/:}
+#export LF_ICONS
 
 # Aliases
 alias nv="nvim"
-alias jc="sudo journalctl"
 alias sc="sudo systemctl"
 alias scu="systemctl --user"
+alias jc="sudo journalctl"
+alias jcu="journalctl --user-unit"
 alias dk="docker"
 alias dkc="docker-compose"
 alias op="xdg-open"
 alias gssh="gcloud compute ssh"
+alias tre="fd | as-tree"
+alias kc="kubectl"

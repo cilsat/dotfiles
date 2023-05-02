@@ -103,6 +103,11 @@ local function get_python_path(workspace)
     local venv = vim.fn.trim(vim.fn.system('poetry env info -p'))
     return path.join(venv, 'bin', 'python')
   end
+  -- Use virtualenv in .venv in workspace directory if available.
+  local match = vim.fn.glob(path.join(workspace, '.venv/bin/python'))
+  if match ~= '' then
+    return path.join('.venv', 'bin', 'python')
+  end
   -- Fallback to system Python.
   return vim.fn.exepath('python3') or vim.fn.exepath('python') or 'python'
 end
@@ -110,7 +115,7 @@ end
 nvim_lsp.pyright.setup {
   on_init = function(client)
     client.config.settings.python.pythonPath =
-    get_python_path(client.config.root_dir)
+        get_python_path(client.config.root_dir)
   end,
   on_attach = on_attach,
   capabilities = capabilities,
@@ -154,6 +159,7 @@ cmp.setup.cmdline('/', {
   )
 })
 local luasnip = require('luasnip')
+local lspkind = require('lspkind')
 cmp.setup {
   window = {
     completion = {
@@ -165,19 +171,16 @@ cmp.setup {
     }
   },
   formatting = {
-    format = function(entry, vim_item)
-      vim_item.kind =
-      require('lspkind').presets.default[vim_item.kind] .. " " ..
-          vim_item.kind
-      vim_item.menu = ({
+    format = lspkind.cmp_format({
+      mode = 'symbol',
+      menu = {
         buffer = "[BUF]",
         nvim_lsp = "[LSP]",
         luasnip = "[SNIP]",
         nvim_lua = "[LUA]",
         latex_symbols = "[TEX]"
-      })[entry.source.name]
-      return vim_item
-    end
+      }
+    })
   },
   mapping = {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -218,7 +221,7 @@ cmp.setup {
     { name = 'treesitter' },
     { name = 'buffer' },
     { name = 'path' },
-    { name = 'luasnip', option = { show_autosnippets = true } },
+    { name = 'luasnip',                option = { show_autosnippets = true } },
   }
 }
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
@@ -228,20 +231,24 @@ cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 local null_ls = require("null-ls")
 null_ls.setup {
   sources = {
+    null_ls.builtins.diagnostics.hadolint,
+    --null_ls.builtins.diagnostics.markdownlint,
+    null_ls.builtins.diagnostics.phpcs,
+    null_ls.builtins.diagnostics.ruff,
     null_ls.builtins.formatting.trim_newlines,
     null_ls.builtins.formatting.trim_whitespace,
     null_ls.builtins.formatting.isort,
     null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.ruff,
     null_ls.builtins.formatting.clang_format,
     null_ls.builtins.formatting.gofmt,
-    null_ls.builtins.formatting.phpcbf,
+    null_ls.builtins.formatting.goimports,
+    --null_ls.builtins.formatting.phpcbf,
+    null_ls.builtins.formatting.pg_format,
+    null_ls.builtins.formatting.phpcsfixer,
     null_ls.builtins.formatting.prettierd,
+    null_ls.builtins.formatting.ruff,
     null_ls.builtins.formatting.shfmt,
     --null_ls.builtins.formatting.stylua,
-    null_ls.builtins.diagnostics.hadolint,
-    --null_ls.builtins.diagnostics.markdownlint,
-    null_ls.builtins.diagnostics.phpcs,
   }
 }
 
@@ -257,7 +264,7 @@ require('nvim-treesitter.configs').setup {
   sync_install = false,
   autopairs = { enable = true },
   highlight = { enable = true },
-  indent = { enable = true },
+  indent = { enable = false },
   rainbow = { enable = true, extended_mode = true },
   --playground = { enable = true },
   incremental_selection = {
@@ -294,7 +301,7 @@ require('nvim-treesitter.configs').setup {
       -- You can choose the select mode (default is charwise 'v')
       selection_modes = {
         ['@parameter.outer'] = 'v', -- charwise
-        ['@function.outer'] = 'V', -- linewise
+        ['@function.outer'] = 'V',  -- linewise
         ['@class.outer'] = '<c-v>', -- blockwise
       },
       -- If you set this to `true` (default is `false`) then any textobject is

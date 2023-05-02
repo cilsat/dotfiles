@@ -1,8 +1,8 @@
 -- Pretty icons
-require 'nvim-web-devicons'.setup { default = true }
+require('nvim-web-devicons').setup { default = true }
 
 -- Setup base16
-local nvim = require 'nvim'
+local nvim = require('nvim')
 local base16_theme
 if vim.env.BASE16_THEME then
   base16_theme = require('themes.base16-' .. vim.env.BASE16_THEME)
@@ -12,7 +12,7 @@ end
 require('theme').apply_base16_theme(base16_theme, true)
 
 -- Setup colorizer
-require 'colorizer'.setup {}
+require('colorizer').setup {}
 
 -- Setup diagnostic characters
 vim.fn.sign_define('DiagnosticSignError', { text = '▎', texthl = 'DiagnosticSignError' })
@@ -21,12 +21,21 @@ vim.fn.sign_define('DiagnosticSignInfo', { text = '▎', texthl = 'DiagnosticSig
 vim.fn.sign_define('DiagnosticSignHint', { text = '▎', texthl = 'DiagnosticSignHint' })
 
 -- Bufferline setup
-require('bufferline').setup {
-  icons = 'both',
-  icon_custom_colors = false,
-  icon_separator_active = '▍',
-  icon_separator_inactive = '▍',
-  maximum_padding = 2,
+require('barbar').setup {
+  icons = {
+    buffer_index = true,
+    separator = { left = '▍', right = '' },
+    diagnostics = {
+      [vim.diagnostic.severity.ERROR] = { enabled = false, icon = 'Ⓧ ' },
+      [vim.diagnostic.severity.HINT] = { enabled = false, icon = '💡' },
+      [vim.diagnostic.severity.INFO] = { enabled = false, icon = 'ⓘ ' },
+      [vim.diagnostic.severity.WARN] = { enabled = false, icon = '⚠️ ' },
+    },
+    visible = {
+      separator = { left = '▍', right = '' },
+    },
+  },
+  maximum_length = 20,
   semantic_letters = false
 }
 
@@ -52,12 +61,12 @@ require('lualine').setup {
     lualine_b = { { 'filename', file_status = true } },
     lualine_c = {
       { 'branch', icon = '' }, {
-        'diff',
-        symbols = { added = ' ', modified = '柳', removed = ' ' },
-        color_added = nvim.g.color08,
-        color_modified = nvim.g.color08,
-        color_removed = nvim.g.color08
-      }
+      'diff',
+      symbols = { added = ' ', modified = '柳', removed = ' ' },
+      color_added = nvim.g.color08,
+      color_modified = nvim.g.color08,
+      color_removed = nvim.g.color08
+    }
     },
     lualine_x = {
       {
@@ -94,6 +103,15 @@ hi('SignColumn', { bg = 'none' })
 hi('TagbarFoldIcon', { fg = nvim.g.color04 })
 hi('VertSplit', { bg = 'none' })
 
+-- Language highlighting
+hi('@attribute', { gui = 'italic', fg = nvim.g.color04 })
+hi('@keyword', { gui = 'italic', fg = nvim.g.color05 })
+hi('@keyword.function', { gui = 'italic', fg = nvim.g.color05 })
+hi('@keyword.return', { gui = 'italic', fg = nvim.g.color16 })
+hi('@variable', { fg = 'none' })
+hi('@exception', { gui = 'bold', fg = nvim.g.color09 })
+hi('@constructor', { gui = 'bold', fg = nvim.g.color12 })
+
 -- Popup menu
 hi('PmenuSel', { fg = nvim.g.color07, bg = nvim.g.color19 })
 
@@ -102,38 +120,6 @@ hi('Sneak', { fg = 'bg', bg = nvim.g.color17 })
 hi('HighlightedYankRegion', { bg = nvim.g.color19 })
 hi('IndentBlanklineChar', { fg = nvim.g.color19, bg = 'none' })
 hi('IndentBlanklineContextChar', { fg = nvim.g.color08, bg = 'none' })
-
--- Barbar (tab/bufferline) highlights
--- Currently active/selected buffer
-hi('BufferCurrent', { fg = nvim.g.color15, bg = nvim.g.color19 })
-hi('BufferCurrentIndex', { fg = nvim.g.color15, bg = nvim.g.color19 })
-hi('BufferCurrentMod',
-  { gui = 'italic,bold', fg = nvim.g.color17, bg = nvim.g.color19 })
-hi('BufferCurrentSign', { fg = nvim.g.color04, bg = nvim.g.color19 })
-hi('BufferCurrentIcon', { fg = 'bg', bg = nvim.g.color04 })
-hi('BufferCurrentTarget',
-  { gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08 })
--- Currently visible (but not active) buffer(s)
-hi('BufferVisible', { fg = nvim.g.color20, bg = nvim.g.color19 })
-hi('BufferVisibleIndex', { fg = nvim.g.color20, bg = nvim.g.color19 })
-hi('BufferVisibleMod',
-  { gui = 'italic', fg = nvim.g.color17, bg = nvim.g.color19 })
-hi('BufferVisibleSign', { fg = nvim.g.colorbg, bg = nvim.g.color19 })
-hi('BufferVisibleIcon', { fg = nvim.g.color21, bg = nvim.g.color19 })
-hi('BufferVisibleTarget',
-  { gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08 })
--- Inactive buffers
-hi('BufferInactive', { fg = nvim.g.color20, bg = nvim.g.color18 })
-hi('BufferInactiveIndex', { fg = nvim.g.color20, bg = nvim.g.color18 })
-hi('BufferInactiveMod',
-  { gui = 'italic', fg = nvim.g.color17, bg = nvim.g.color18 })
-hi('BufferInactiveSign', { fg = nvim.g.colorbg, bg = nvim.g.color18 })
-hi('BufferInactiveIcon', { fg = nvim.g.color20, bg = nvim.g.color17 })
-hi('BufferInactiveTarget',
-  { gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08 })
--- Tab/bufferline background
-hi('BufferTabpages', { fg = nvim.g.color18 })
-hi('BufferTabpageFill', { fg = nvim.g.colorbg, bg = nvim.g.colorbg })
 
 -- Treesitter highlights
 cmd('hi TSPunctBracket guifg = fg')
@@ -200,10 +186,34 @@ hi('DiffModified', { gui = 'none', fg = 'none', bg = "#353550" })
 hi('DiffDelete', { gui = 'none', fg = 'none', bg = "#453540" })
 hi('DiffText', { gui = 'none', bg = "#353550" })
 
--- Language highlighting
-hi('@keyword', { gui = 'italic', fg = nvim.g.color05 })
-hi('@keyword.function', { gui = 'italic', fg = nvim.g.color05 })
-hi('@keyword.return', { gui = 'italic', fg = nvim.g.color16 })
-hi('@variable', { fg = 'none' })
-hi('@exception', { gui = 'bold', fg = nvim.g.color09 })
-hi('@constructor', { gui = 'bold', fg = nvim.g.color12 })
+-- Barbar (tab/bufferline) highlights
+-- Tab/bufferline background
+hi('BufferTabpages', { fg = nvim.g.color18 })
+hi('BufferTabpageFill', { fg = nvim.g.colorbg, bg = nvim.g.colorbg })
+-- Inactive buffers
+hi('BufferInactive', { fg = nvim.g.color20, bg = nvim.g.color18 })
+hi('BufferInactiveIndex', { fg = nvim.g.color20, bg = nvim.g.color18 })
+hi('BufferInactiveMod',
+  { gui = 'italic', fg = nvim.g.color17, bg = nvim.g.color18 })
+hi('BufferInactiveSign', { fg = nvim.g.colorbg, bg = nvim.g.color18 })
+hi('BufferInactiveIcon', { fg = nvim.g.color20, bg = nvim.g.color17 })
+hi('BufferInactiveTarget',
+  { gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08 })
+-- Currently visible (but not active) buffer(s)
+hi('BufferVisible', { fg = nvim.g.color20, bg = nvim.g.color19 })
+hi('BufferVisibleIndex', { fg = nvim.g.color20, bg = nvim.g.color19 })
+hi('BufferVisibleMod',
+  { gui = 'italic', fg = nvim.g.color17, bg = nvim.g.color19 })
+hi('BufferVisibleSign', { fg = nvim.g.colorbg, bg = nvim.g.color19 })
+hi('BufferVisibleIcon', { fg = nvim.g.color21, bg = nvim.g.color19 })
+hi('BufferVisibleTarget',
+  { gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08 })
+-- Currently active/selected buffer
+hi('BufferCurrent', { fg = nvim.g.color15, bg = nvim.g.color19 })
+hi('BufferCurrentIndex', { fg = nvim.g.color15, bg = nvim.g.color19 })
+hi('BufferCurrentMod',
+  { gui = 'italic,bold', fg = nvim.g.color17, bg = nvim.g.color19 })
+hi('BufferCurrentSign', { fg = nvim.g.color04, bg = nvim.g.color19 })
+--hi('BufferCurrentIcon', { fg = 'bg', bg = nvim.g.color19 })
+hi('BufferCurrentTarget',
+  { gui = 'bold', fg = nvim.g.color17, bg = nvim.g.color08 })

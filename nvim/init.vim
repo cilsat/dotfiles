@@ -35,11 +35,6 @@ Plug 'pwntester/octo.nvim'              " Repo PR/MR editing directly from vim
 Plug 'norcalli/nvim-colorizer.lua'      " Show actual color on color tags
 Plug 'norcalli/nvim-base16.lua'         " base16 gui colors for neovim
 Plug 'lukas-reineke/indent-blankline.nvim' " Show indent lines on blank lines too
-  let g:indent_blankline_char='▏'
-  let g:indent_blankline_filetype_exclude = ['help', 'vim']
-  let g:indent_blankline_buftype_exclude = ['terminal', 'popup']
-  let g:indent_blankline_show_current_context = v:true
-  let g:indent_blankline_context_patterns = [ 'class', 'function', 'method', '^if', '^while', '^for', '^try', '^object', '^table', 'block', 'arguments', '^switch' ]
 Plug 'kyazdani42/nvim-web-devicons'     " Fancy icons/symbols
 " Search & Navigation
 Plug 'christoomey/vim-tmux-navigator'   " Navigate between tmux/vim panes

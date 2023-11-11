@@ -381,19 +381,28 @@ require('telescope').setup {
 }
 require('telescope').load_extension('fzf')
 
+-- Indent lines
+require('ibl').setup {
+  indent = { char = '▏' },
+  exclude = {
+    filetypes = { 'help', 'vim' },
+    buftypes = { 'terminal', 'popup' },
+  }
+}
+
 -- Load autopairs
 require('nvim-autopairs').setup {
   check_ts = true,
   map_c_w = true,
 }
 -- Modern folding
-require('ufo').setup {}
+require('ufo').setup()
 -- Git diff, file history, and conflicts
 require('diffview').setup {
   enhanced_diff_hl = true,
 }
 -- Add/delete/change surrounding pairs
-require('nvim-surround').setup {}
+require('nvim-surround').setup()
 -- Progress bar for LSP operations
 --require('fidget').setup {}
 -- Buffer navigation in 3-4 keystrokes

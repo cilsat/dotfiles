@@ -3,49 +3,49 @@
 
 set -g status "on"
 set -g status-position bottom
-set -g status-interval 5
+set -g status-interval 15
 set -g status-justify "centre"
 set -g status-left-style "none"
-set -g message-command-style "fg=colour7,bg=colour19"
+set -g message-command-style "fg=color7,bg=color19"
 set -g status-right-style "none"
-set -g pane-active-border-style "fg=colour4"
-set -g status-style "none,bg=colour18"
-set -g message-style "fg=colour7,bg=colour19"
-set -g pane-border-style "fg=colour19"
+set -g pane-active-border-style "fg=color4"
+set -g status-style "none,bg=color18"
+set -g message-style "fg=color7,bg=color19"
+set -g pane-border-style "fg=color19"
 set -g status-right-length "500"
 set -g status-left-length "50"
 setw -g window-status-activity-style "none"
 setw -g window-status-separator ""
-setw -g window-status-style "fg=colour7,bg=colour18"
+setw -g window-status-style "fg=color7,bg=color18"
 
 set -g @net_speed_format "%3s\ue340 %3s\ue353"
 set -g @net_speed_interfaces "wlan0"
 
 set -g status-left "\
-#[fg=colour0,bg=colour4] \uf303  \
-#[fg=colour4,bg=colour19]▍\
-#[fg=colour21,bg=colour19] #h:\
-#[fg=colour21,bg=colour19,bold]#S  "
+#[fg=color0,bg=color4] \uf303  \
+#[fg=color4,bg=color19]▍\
+#[fg=color7,bg=color19] #h:\
+#[fg=color7,bg=color19,bold]#S  "
 
 set -g status-right "\
-#[fg=colour19,bg=colour18]▐\
-#[fg=colour3,bg=colour19] \uf589  \
-#[fg=colour18,bg=colour19]│\
-#[fg=colour21,bg=colour19] #(~/.config/dotfiles/power_now.sh) \
-#[fg=colour18,bg=colour19]│#[fg=colour6,bg=colour19] \uf073  \
-#[fg=colour18,bg=colour19]│#[fg=colour21,bg=colour19] %d %b %H:%M "
+#[fg=color19,bg=color18]▐\
+#[fg=color3,bg=color19] \uf589  \
+#[fg=color18,bg=color19]│\
+#[fg=color7,bg=color19] #(~/.config/dotfiles/power_now.sh) \
+#[fg=color18,bg=color19]│#[fg=color6,bg=color19] \uf073  \
+#[fg=color18,bg=color19]│#[fg=color7,bg=color19] %d %b %H:%M "
 
 setw -g window-status-format "\
-#{?window_start_flag,#[fg=colour16#,bg=colour19]  \ufab1 #[fg=colour18#,bg=colour19]│,}\
-#{?window_last_flag,#[fg=colour16#,bg=colour19],#[fg=colour21#,bg=colour19]} #I \
-#{?window_last_flag,#[fg=colour19#,bg=colour8]▍,#[fg=colour18#,bg=colour19]│}\
-#{?window_last_flag,#[fg=colour16#,bg=colour8],#[fg=colour21#,bg=colour19]}  #W  \
+#{?window_start_flag,#[fg=color16#,bg=color19]  \ufab1 #[fg=color18#,bg=color19]│,}\
+#{?window_last_flag,#[fg=color16#,bg=color19],#[fg=color7#,bg=color19]} #I \
+#{?window_last_flag,#[fg=color19#,bg=color8]▍,#[fg=color18#,bg=color19]│}\
+#{?window_last_flag,#[fg=color16#,bg=color8],#[fg=color7#,bg=color19]}  #W  \
 #{?window_last_flag,\
-#{?window_end_flag,#[fg=colour8#,bg=colour18]▍,#[fg=colour8#,bg=colour19]▍},\
-#{?window_end_flag,#[fg=colour19#,bg=colour18]▍,#[fg=colour18#,bg=colour19]│}}"
+#{?window_end_flag,#[fg=color8#,bg=color18]▍,#[fg=color8#,bg=color19]▍},\
+#{?window_end_flag,#[fg=color19#,bg=color18]▍,#[fg=color18#,bg=color19]│}}"
 
 setw -g window-status-current-format "\
-#{?window_start_flag,#[fg=colour16#,bg=colour19]  \ufab1 #[fg=colour18#,bg=colour19]│,}\
-#[fg=colour16,bg=colour19,bold] #I ▐\
-#[fg=colour0,bg=colour16,bold]  #W  \
-#{?window_end_flag,#[fg=colour16#,bg=colour18],#[fg=colour16#,bg=colour19]}▍"
+#{?window_start_flag,#[fg=color16#,bg=color19]  \ufab1 #[fg=color18#,bg=color19]│,}\
+#[fg=color16,bg=color19,bold] #I ▐\
+#[fg=color0,bg=color16,bold]  #W  \
+#{?window_end_flag,#[fg=color16#,bg=color18],#[fg=color16#,bg=color19]}▍"

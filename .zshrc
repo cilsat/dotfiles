@@ -20,9 +20,16 @@ zstyle ':zim:termtitle' format '%1~'
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # Set pac alias
 zstyle ':zim:pacman' frontend 'paru'
+# Set identities to automatically load
+zstyle ':zim:ssh' ids 'id_rsa1'
 
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+      https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+fi
 # Initalize
-if [[ ${ZIM_HOME}/init.zsh -ot ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
   # Update static initialization script if it's outdated, before sourcing it
   source ${ZIM_HOME}/zimfw.zsh init -q
 fi
@@ -47,84 +54,12 @@ bindkey -M vicmd 'j' history-substring-search-down
 # -----------------
 # Home/User configuration
 # -----------------
-# Set base home paths
-export BASE16_SHELL="$HOME/src/base16-builder-python/output/shell"
-export FZF="/usr/share/fzf"
 
-# Check for Display
-if [ -n "$DISPLAY" ]; then
-  # Use a different color scheme for each workspace
-  ws=$(wmctrl -d | grep '*' | cut -d ' ' -f14)
-  if [ "$ws" = 1 ]; then
-    export BASE16_THEME="decaf"
-  elif [ "$ws" = 2 ]; then
-    export BASE16_THEME="oceanicnext-purple"
-  elif [ "$ws" = 3 ]; then
-    export BASE16_THEME="ocean"
-  elif [ "$ws" = 4 ]; then
-    export BASE16_THEME="materia"
-  else
-    export BASE16_THEME="decaf"
-  fi
-  [[ -n $BASE16_THEME ]] && source "$BASE16_SHELL/scripts/base16-$BASE16_THEME.sh"
-  # Start tmux service
-  if ! systemctl --user is-active --quiet tmux.service; then
-    systemctl --user start tmux.service;
-  fi
-  # Attach shell to workspace tmux session and force unicode
-  [[ -z $(tmux ls | grep -e $ws": .*attached") ]] && tmux -u new -As "$ws"
-fi
+# Attach shell to workspace tmux session and force unicode
+[[ -z $(tmux ls | grep -e $ws": .*attached") ]] && tmux -u new -As "$ws"
 
-# Preferred editor for local and remote sessions
-export EDITOR='nvim'
-if [[ -n "$SSH_CONNECTION" ]]; then
-    export DISPLAY=:0
-fi
-
-# System environment
-export LD_LIBRARY_PATH="/opt/OpenBLAS/lib:/opt/cuda/lib64:\
-/opt/cuda/extras/CUPTI/lib64:$HOME/.local/lib:$LD_LIBRARY_PATH"
-
-# Keys
-export GNUPGHOME="$HOME/.gnupg"
-export GPGKEY=716809DD
-export PASSWORD_STORE_DIR="$HOME/.password-store"
-
-#-1 User environment
-# Path needs to include composer and go bin paths
-export PATH="$HOME/.local/bin:$PATH:$HOME/.config/composer/vendor/bin:\
-$HOME/.local/share/go/bin:$HOME/.local/share/gem/ruby/3.0.0/bin"
-export LIBVA_DRIVER_NAME=iHD
-# Go path
-export GOPATH="$HOME/.local/share/go"
-# Java path
-export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
-# PyEnv
-pyenv() {
-  unset -f pyenv
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PATH:$PYENV_ROOT/bin"
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
-  pyenv $@
-}
-# NVM
-nvm() {
-  unset -f nvm
-  [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-  source /usr/share/nvm/nvm.sh --no-use
-  source /usr/share/nvm/bash_completion
-  source /usr/share/nvm/install-nvm-exec
-  nvm $@
-}
-
-# pager vars
-export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
-export LESS=" -R "
-export BAT_THEME="base16"
-# FZF vars
-source "$FZF/completion.zsh"
-source "$FZF/key-bindings.zsh"
+# FZF
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_COMPLETION_TRIGGER="**"
 export FZF_DEFAULT_OPTS="--height 50% \
   --preview='bat --style=numbers --color=always --line-range :500 {}' \
@@ -138,24 +73,31 @@ export FZF_DEFAULT_COMMAND="fd -i -H -I -F -L -E \".git\" -E \"node_modules\"\
 _fzf_compgen_path() {
   fd -i -H -I -F -L -E ".git" -E "node_modules" -E ".mypy_cache" -E "__pycache__" . "$1"
 }
-# LF vars
-#LF_ICONS=$(sed ~/.config/lf/diricons \
-#            -e '/^[ \t]*#/d'       \
-#            -e '/^[ \t]*$/d'       \
-#            -e 's/[ \t]\+/=/g'     \
-#            -e 's/$/ /')
-#LF_ICONS=${LF_ICONS//$'\n'/:}
-#export LF_ICONS
+
+# PyEnv
+pyenv() {
+  unset -f pyenv
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PATH:$PYENV_ROOT/bin"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+  pyenv $@
+}
+
+# NVM
+nvm() {
+  unset -f nvm
+  [ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+  source /opt/homebrew/opt/nvm/nvm.sh --no-use
+  source /opt/homebrew/opt/nvm/etc/bash_completion.d/nvm
+  nvm $@
+}
+
+# PHPBrew
+[[ -e $HOME/.phpbrew/bashrc ]] && source $HOME/.phpbrew/bashrc
 
 # Aliases
 alias nv="nvim"
-alias sc="sudo systemctl"
-alias scu="systemctl --user"
-alias jc="sudo journalctl"
-alias jcu="journalctl --user-unit"
-alias dk="docker"
-alias dkc="docker-compose"
-alias op="xdg-open"
 alias gssh="gcloud compute ssh"
 alias tre="fd | as-tree"
 alias kc="kubectl"

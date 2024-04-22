@@ -41,3 +41,5 @@ zmodule zsh-users/zsh-history-substring-search
 # }}} End configuration added by Zim install
 
 zmodule minimal
+
+zmodule macunha1/zsh-terraform

@@ -23,9 +23,10 @@ export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
 # Java path
-export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+export JAVA_HOME="/opt/homebrew/Cellar/openjdk/21.0.2/libexec/openjdk.jdk/Contents/Home"
 
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
 export BAT_THEME="base16"
+. "$HOME/.cargo/env"

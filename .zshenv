@@ -23,7 +23,7 @@ export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
 # Java path
-export JAVA_HOME="/opt/homebrew/Cellar/openjdk/21.0.2/libexec/openjdk.jdk/Contents/Home"
+export JAVA_HOME="/opt/homebrew/Cellar/openjdk/22.0.2/libexec/openjdk.jdk/Contents/Home"
 
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"

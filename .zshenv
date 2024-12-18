@@ -1,6 +1,8 @@
 export DEFAULT_USER=cilsat
 export HOME=/Users/$DEFAULT_USER
 
+export LANG=en_US.UTF-8
+
 # Set ZIM home
 export ZIM_HOME=${HOME}/.zim
 
@@ -23,10 +25,13 @@ export LIBVA_DRIVER_NAME=iHD
 # Go path
 export GOPATH="$HOME/.local/share/go"
 # Java path
-export JAVA_HOME="/opt/homebrew/Cellar/openjdk/22.0.2/libexec/openjdk.jdk/Contents/Home"
+export JAVA_HOME="/opt/homebrew/Cellar/openjdk/23.0.1/libexec/openjdk.jdk/Contents/Home"
 
 # pager vars
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
 export BAT_THEME="base16"
 . "$HOME/.cargo/env"
+
+# PHP 8.1
+export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"

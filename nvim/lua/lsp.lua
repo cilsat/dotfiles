@@ -66,7 +66,7 @@ capabilities.textDocument.foldingRange = {
 
 -- Use a loop to conveniently both setup all defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "gopls", "jdtls", "phpactor", "tsserver" }
+local servers = { "gopls", "jdtls", "intelephense", "ruff", "ts_ls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = capabilities }
 end
@@ -84,7 +84,9 @@ nvim_lsp.lua_ls.setup {
     Lua = {
       runtime = { version = 'LuaJIT', path = runtime_path },
       diagnostics = { globals = { 'vim' } },
-      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+      workspace = {
+        checkThirdParty = false,
+        library = { vim.env.VIMRUNTIME } },
       telemetry = { enable = false }
     }
   }
@@ -221,7 +223,9 @@ cmp.setup {
     { name = 'treesitter' },
     { name = 'buffer' },
     { name = 'path' },
-    { name = 'luasnip',                option = { show_autosnippets = true } },
+    { name = 'luasnip',
+      option = { show_autosnippets = true }
+    },
   }
 }
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
@@ -233,20 +237,17 @@ null_ls.setup {
   sources = {
     null_ls.builtins.diagnostics.hadolint,
     --null_ls.builtins.diagnostics.markdownlint,
-    null_ls.builtins.diagnostics.phpcs,
-    null_ls.builtins.diagnostics.ruff,
-    null_ls.builtins.formatting.trim_newlines,
-    null_ls.builtins.formatting.trim_whitespace,
+    --null_ls.builtins.diagnostics.phpstan,
+    null_ls.builtins.diagnostics.trail_space,
     null_ls.builtins.formatting.isort,
-    null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.clang_format,
     null_ls.builtins.formatting.gofmt,
     null_ls.builtins.formatting.goimports,
-    --null_ls.builtins.formatting.phpcbf,
     null_ls.builtins.formatting.pg_format,
-    null_ls.builtins.formatting.phpcsfixer,
+    null_ls.builtins.formatting.phpcsfixer.with({
+      extra_args = { "--rules=@Symfony" }
+    }),
     null_ls.builtins.formatting.prettierd,
-    null_ls.builtins.formatting.ruff,
     null_ls.builtins.formatting.shfmt,
     --null_ls.builtins.formatting.stylua,
   }
@@ -262,9 +263,10 @@ require('nvim-treesitter.configs').setup {
     "yaml"
   },
   sync_install = false,
+  auto_install = true,
   autopairs = { enable = true },
   highlight = { enable = true },
-  indent = { enable = false },
+  indent = { enable = true },
   rainbow = { enable = true, extended_mode = true },
   --playground = { enable = true },
   incremental_selection = {

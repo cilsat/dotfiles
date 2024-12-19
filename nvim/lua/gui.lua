@@ -25,15 +25,6 @@ require('barbar').setup {
   icons = {
     buffer_index = true,
     separator = { left = '▍', right = '' },
-    diagnostics = {
-      [vim.diagnostic.severity.ERROR] = { enabled = false, icon = 'Ⓧ ' },
-      [vim.diagnostic.severity.HINT] = { enabled = false, icon = '💡' },
-      [vim.diagnostic.severity.INFO] = { enabled = false, icon = 'ⓘ ' },
-      [vim.diagnostic.severity.WARN] = { enabled = false, icon = '⚠️ ' },
-    },
-    visible = {
-      separator = { left = '▍', right = '' },
-    },
   },
   maximum_length = 20,
   semantic_letters = false
@@ -60,23 +51,19 @@ require('lualine').setup {
   sections = {
     lualine_b = { { 'filename', file_status = true } },
     lualine_c = {
-      { 'branch', icon = '' }, {
-      'diff',
-      symbols = { added = ' ', modified = '柳', removed = ' ' },
-      color_added = nvim.g.color08,
-      color_modified = nvim.g.color08,
-      color_removed = nvim.g.color08
-    }
+      { 'branch', icon = '' }
     },
     lualine_x = {
       {
         'diagnostics',
-        sources = { 'nvim_diagnostic' },
+        sources = { 'nvim_lsp', 'nvim_diagnostic' },
         sections = { 'error', 'warn', 'info', 'hint' },
-        color_error = nvim.g.color17,
-        color_warn = nvim.g.color03,
-        color_info = nvim.g.color06,
-        color_hint = nvim.g.color08,
+        diagnostics_color = {
+          error = 'DiagnosticError',
+          warn = 'DiagnosticWarn',
+          info = 'DiagnosticInfo',
+          hint = 'DiagnosticHint',
+        },
         symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' }
       }, { 'encoding', upper = true }, 'fileformat'
     }
@@ -137,7 +124,11 @@ hi('RainbowCol7', { fg = nvim.g.color07 })
 hi('LspReferenceRead', { gui = 'bold', bg = nvim.g.color19 })
 hi('LspReferenceText', { gui = 'bold', bg = nvim.g.color19 })
 hi('LspReferenceWrite', { gui = 'bold', bg = nvim.g.color19 })
-hi('DiagnosticSignError', { gui = 'italic', fg = nvim.g.color17 })
+hi('DiagnosticError', { gui = 'italic', fg = nvim.g.color01, bg = nvim.g.color18 })
+hi('DiagnosticWarning', { gui = 'italic', fg = nvim.g.color11, bg = nvim.g.color18 })
+hi('DiagnosticInformation', { gui = 'italic', fg = nvim.g.color10, bg = nvim.g.color18 })
+hi('DiagnosticHint', { gui = 'italic', fg = nvim.g.color14, bg = nvim.g.color18 })
+hi('DiagnosticSignError', { gui = 'italic', fg = nvim.g.color01 })
 hi('DiagnosticSignWarning', { gui = 'italic', fg = nvim.g.color11 })
 hi('DiagnosticSignInformation', { gui = 'italic', fg = nvim.g.color10 })
 hi('DiagnosticSignHint', { gui = 'italic', fg = nvim.g.color14 })
@@ -145,7 +136,7 @@ hi('DiagnosticUnderlineError', { gui = 'undercurl' })
 hi('DiagnosticUnderlineWarning', { gui = 'undercurl' })
 hi('DiagnosticUnderlineInformation', { gui = 'undercurl' })
 hi('DiagnosticUnderlineHint', { gui = 'undercurl' })
-hi('DiagnosticVirtualTextError', { gui = 'italic', fg = nvim.g.color17 })
+hi('DiagnosticVirtualTextError', { gui = 'italic', fg = nvim.g.color01 })
 hi('DiagnosticVirtualTextWarning', { gui = 'italic', fg = nvim.g.color20 })
 hi('DiagnosticVirtualTextInfo', { gui = 'italic', fg = nvim.g.color19 })
 hi('DiagnosticVirtualTextHint', { gui = 'italic', fg = nvim.g.color19 })

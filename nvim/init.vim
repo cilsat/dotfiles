@@ -26,8 +26,7 @@ Plug 'l3mon4d3/luasnip'                 " Lua-based vscode snippets
 Plug 'rafamadriz/friendly-snippets'     " Collection of snippets for various languages
 Plug 'mfussenegger/nvim-jdtls'          " Neovim JDTLS langserver
 Plug 'simrat39/rust-tools.nvim'         " Improved rust experience (inlays, etc)
-Plug 'jose-elias-alvarez/typescript.nvim'
-Plug 'jose-elias-alvarez/null-ls.nvim'  " Generic LSP for formatting, linting, etc
+Plug 'nvimtools/none-ls.nvim'           " Generic LSP for formatting, linting, etc
 Plug 'windwp/nvim-autopairs'            " Auto-completion of bracket/quote pairs
 Plug 'pwntester/octo.nvim'              " Repo PR/MR editing directly from vim
 
@@ -90,17 +89,6 @@ lua require('impatient')
 luafile ~/.config/nvim/lua/options.lua
 luafile ~/.config/nvim/lua/gui.lua
 luafile ~/.config/nvim/lua/lsp.lua
-lua << EOF
-local opts = {
-  auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
-  auto_session_enable_last_session = true,
-  auto_session_enabled = true,
-  auto_save_enabled = true,
-  auto_restore_enabled = true,
-  auto_session_suppress_dirs = nil
-}
-require('auto-session').setup(opts)
-EOF
 
 " AUTOCOMMANDS
 " General autocommands
@@ -170,7 +158,7 @@ nmap <F3> :Git blame<CR>
 " <F4> set in lsp.lua
 "nmap <F4> :lua vim.lsp.buf.format({timeout_ms = 2000, async = true})<CR>
 nmap <F5> :PlugUpd<CR>
-nmap <F6> :SaveSession<CR>
+nmap <F6> :SessionSave<CR>
 
 nmap <F10> :call SynGroup()<CR>
 

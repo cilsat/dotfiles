@@ -1,6 +1,7 @@
 return {
   {
     "indent-blankline.nvim",
+    main = "ibl",
     opts = {
       indent = {
         char = "▏",
@@ -43,6 +44,7 @@ return {
     "folke/snacks.nvim",
     opts = {
       animate = { enabled = false },
+      scroll = { enabled = false },
       terminal = { enabled = false },
     }
   },

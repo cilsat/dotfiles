@@ -22,16 +22,12 @@ set -g @net_speed_format "%3s\ue340 %3s\ue353"
 set -g @net_speed_interfaces "wlan0"
 
 set -g status-left "\
-#[fg=color0,bg=color4] \uf303  \
+#[fg=color0,bg=color4]  \uf8ff  \
 #[fg=color4,bg=color19]▍\
 #[fg=color7,bg=color19] #h:\
 #[fg=color7,bg=color19,bold]#S  "
 
 set -g status-right "\
-#[fg=color19,bg=color18]▐\
-#[fg=color3,bg=color19] \uf589  \
-#[fg=color18,bg=color19]│\
-#[fg=color7,bg=color19] #(~/.config/dotfiles/power_now.sh) \
 #[fg=color18,bg=color19]│#[fg=color6,bg=color19] \uf073  \
 #[fg=color18,bg=color19]│#[fg=color7,bg=color19] %d %b %H:%M "
 

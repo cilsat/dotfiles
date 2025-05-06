@@ -59,7 +59,7 @@ bindkey -M vicmd 'j' history-substring-search-down
 [[ -z $(tmux ls | grep -e $ws": .*attached") ]] && tmux -u new -As "$ws"
 
 # FZF
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 export FZF_COMPLETION_TRIGGER="**"
 export FZF_DEFAULT_OPTS="--height 50% \
   --preview='bat --style=numbers --color=always --line-range :500 {}' \
@@ -96,9 +96,15 @@ nvm() {
 # PHPBrew
 [[ -e $HOME/.phpbrew/bashrc ]] && source $HOME/.phpbrew/bashrc
 
+# BAT
+export BAT_PAGER="less -R -I"
+export BAT_STYLE="plain"
+
 # Aliases
 alias nv="nvim"
 alias gssh="gcloud compute ssh"
 alias tre="fd | as-tree"
 alias kc="kubectl"
 alias tf="terraform"
+alias php74="/opt/homebrew/opt/php@7.4/bin/php"
+alias less="bat --paging=always"

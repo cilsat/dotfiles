@@ -31,7 +31,7 @@ export JAVA_HOME="/opt/homebrew/Cellar/openjdk/23.0.1/libexec/openjdk.jdk/Conten
 export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
 export LESS=" -R "
 export BAT_THEME="base16"
-. "$HOME/.cargo/env"
+#. "$HOME/.cargo/env"
 
 # PHP 8.1
 export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"

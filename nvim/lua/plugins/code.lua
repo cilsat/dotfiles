@@ -17,5 +17,8 @@ return {
       { "<leader>gdd", "<cmd>DiffviewOpen<cr>", desc = "Git diff against HEAD" },
       { "<leader>gdf", "<cmd>DiffviewFileHistory %<cr>", desc = "Git history of current buffer" },
     },
+    lazy = false,
   },
+  { "mason-org/mason.nvim", version = "^1.0.0" },
+  { "mason-org/mason-lspconfig.nvim", version = "^1.0.0" },
 }

@@ -66,10 +66,10 @@ font-family-bold-italic =
 # These are only valid if its corresponding font-family is also specified. If
 # no font-family is specified, then the font-style is ignored unless you're
 # disabling the font style.
-font-style = default
+font-style = Light
 
 font-style-bold = default
-font-style-italic = default
+font-style-italic = Light Italic
 font-style-bold-italic = default
 # Control whether Ghostty should synthesize a style if the requested style is
 # not available in the specified font-family.
@@ -922,7 +922,6 @@ keybind = super+shift+comma=reload_config
 keybind = super+minus=decrease_font_size:1
 keybind = shift+page_down=adjust_selection:page_down
 keybind = ctrl+tab=next_tab
-keybind = super+a=select_all
 keybind = alt+right=esc:f
 keybind = super+shift+enter=toggle_split_zoom
 keybind = super+alt+down=goto_split:bottom
@@ -950,6 +949,19 @@ keybind = super+up=jump_to_prompt:-1
 keybind = super+k=clear_screen
 keybind = super+physical:six=goto_tab:6
 keybind = super+v=paste_from_clipboard
+
+# Tmux keybinds
+keybind = super+a=text:\x01a
+keybind = super+z=text:\x01z
+keybind = super+1=text:\x011
+keybind = super+2=text:\x012
+keybind = super+3=text:\x013
+keybind = super+4=text:\x014
+keybind = super+5=text:\x015
+keybind = super+6=text:\x016
+keybind = super+7=text:\x017
+keybind = super+8=text:\x018
+keybind = super+9=text:\x019
 
 # Horizontal window padding. This applies padding between the terminal cells
 # and the left and right window borders. The value is in points, meaning that

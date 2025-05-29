@@ -35,3 +35,5 @@ export BAT_THEME="base16"
 
 # PHP 8.1
 export PATH="/opt/homebrew/opt/php@8.1/bin:$PATH"
+
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"

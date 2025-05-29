@@ -896,7 +896,7 @@ keybind = super+physical:eight=goto_tab:8
 keybind = super+alt+right=goto_split:right
 keybind = shift+up=adjust_selection:up
 keybind = super+down=jump_to_prompt:1
-keybind = super+enter=toggle_fullscreen
+keybind = super+enter=new_window
 keybind = super+t=new_tab
 keybind = super+c=copy_to_clipboard
 keybind = super+shift+right_bracket=next_tab
@@ -951,8 +951,12 @@ keybind = super+physical:six=goto_tab:6
 keybind = super+v=paste_from_clipboard
 
 # Tmux keybinds
-keybind = super+a=text:\x01a
+keybind = super+a=text:\x01l
 keybind = super+z=text:\x01z
+keybind = super+n=text:\x01n
+keybind = super+p=text:\x01p
+keybind = super+]=text:\x01}
+keybind = super+[=text:\x01{
 keybind = super+1=text:\x011
 keybind = super+2=text:\x012
 keybind = super+3=text:\x013

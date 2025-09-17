@@ -1,0 +1,39 @@
+# bootstrap.yml
+- name: Bootstrap system
+  hosts: all
+  gather_facts: false # Don't gather facts until Python is confirmed
+
+  tasks:
+    - name: Check for Python
+      raw: which python3 || which python
+      register: python_result
+      changed_when: false
+
+    - name: Fail if no Python found
+      fail:
+        msg: "No Python interpreter found. Install Python 3 first."
+      when: python_result.rc != 0
+
+    - name: Set Python interpreter fact
+      set_fact:
+        ansible_python_interpreter: "{{ python_result.stdout }}"
+
+    - name: Gather facts with proper Python
+      setup:
+
+    - name: Install homebrew if missing (macos only)
+      block:
+        - name: Check if homebrew exists
+          command: which brew
+          register: brew_check
+          changed_when: false
+          ignore_errors: true
+
+        - name: Install homebrew
+          shell: |
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          args:
+            creates: /opt/homebrew/bin/brew
+          when: brew_check.rc != 0
+
+      when: ansible_os_family == "Darwin"

@@ -1,0 +1,90 @@
+devices:
+  samplerate: 48000
+  chunksize: 64
+  adjust_period: 3
+  capture:
+    type: CoreAudio
+    channels: 2
+    device: "BlackHole 2ch"
+  playback:
+    type: CoreAudio
+    channels: 2
+    device: "Audio Out"
+
+mixers:
+  stereo:
+    channels:
+      out: 2
+      in: 2
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 12
+            scale: dB
+      - dest: 1
+        sources:
+          - channel: 1
+            gain: 12
+            scale: dB
+
+filters:
+  filter_1:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 70.0
+      gain: 3.0
+      q: 7.229
+  filter_2:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 98.5
+      gain: 4.5
+      q: 7.229
+  filter_3:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 114.5
+      gain: -7.5
+      q: 6.75
+  filter_4:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 140.5
+      gain: -7.5
+      q: 10.285
+  filter_5:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 175.4
+      gain: 3.5
+      q: 4.872
+  # filter_6:
+  #   type: Biquad
+  #   parameters:
+  #     type: Peaking
+  #     freq: 771.0
+  #     gain: -4.5
+  #     q: 7.5
+  gain:
+    type: Gain
+    parameters:
+      gain: 6
+      scale: dB
+
+pipeline:
+  - type: Filter
+    channels: [0, 1]
+    names:
+      - filter_1
+      - filter_2
+      - filter_3
+      - filter_4
+      - filter_5
+      # - filter_6
+      - gain

@@ -1,0 +1,146 @@
+devices:
+  samplerate: 48000
+  chunksize: 1024
+  adjust_period: 10
+  queuelimit: 4
+  capture:
+    type: CoreAudio
+    channels: 2
+    device: "BlackHole 2ch"
+  playback:
+    type: CoreAudio
+    channels: 2
+    device: "UltraLite-mk5"
+
+mixers:
+  stereo:
+    channels:
+      out: 2
+      in: 2
+    mapping:
+      - dest: 0
+        sources:
+          - channel: 0
+            gain: 12
+            scale: dB
+      - dest: 1
+        sources:
+          - channel: 1
+            gain: 12
+            scale: dB
+
+filters:
+  # Band 1: Peak 20 Hz, Q 1.1, +4.0 dB
+  hd650_1:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 20.0
+      gain: 4.0
+      q: 1.1
+
+  # Band 2: Peak 97 Hz, Q 0.7, -2.5 dB
+  hd650_2:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 97.0
+      gain: -2.5
+      q: 0.7
+
+  # Band 3: Lowshelf 105 Hz, Q 0.71, +5.5 dB
+  hd650_3:
+    type: Biquad
+    parameters:
+      type: Lowshelf
+      freq: 105.0
+      gain: 5.5
+      q: 0.71
+
+  # Band 4: Peak 215 Hz, Q 1.1, -1.7 dB
+  hd650_4:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 215.0
+      gain: -2.2
+      q: 1.1
+
+  # Band 5: Peak 1300 Hz, Q 1.5, -1.5 dB
+  hd650_5:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 1300.0
+      gain: -1.0
+      q: 1.5
+
+  # Band 6: Highshelf 2000 Hz, Q 0.71, +3.5 dB
+  hd650_6:
+    type: Biquad
+    parameters:
+      type: Highshelf
+      freq: 2000.0
+      gain: 3.5
+      q: 0.71
+
+  # Band 7: Peak 2700 Hz, Q 3.0, -1.4 dB
+  hd650_7:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 2700.0
+      gain: -1.4
+      q: 3.0
+
+  # Band 8: Peak 3300 Hz, Q 2.7, -3.7 dB
+  hd650_8:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 3300.0
+      gain: -3.7
+      q: 2.7
+
+  # Band 9: Peak 5350 Hz, Q 3.0, -3.4 dB
+  hd650_9:
+    type: Biquad
+    parameters:
+      type: Peaking
+      freq: 5350.0
+      gain: -3.4
+      q: 3.0
+
+  # Band 10: Highshelf 11000 Hz, Q 0.71, -2.5 dB
+  hd650_10:
+    type: Biquad
+    parameters:
+      type: Highshelf
+      freq: 11000.0
+      gain: -2.5
+      q: 0.71
+
+  # output gain: compensate for headroom used by correction boosts
+  gain:
+    type: Gain
+    parameters:
+      gain: -4.5
+      scale: dB
+
+pipeline:
+  - type: Mixer
+    name: stereo
+  - type: Filter
+    channels: [0, 1]
+    names:
+      - gain
+      - hd650_1
+      - hd650_2
+      - hd650_3
+      - hd650_4
+      - hd650_5
+      - hd650_6
+      - hd650_7
+      - hd650_8
+      - hd650_9
+      - hd650_10

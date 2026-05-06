@@ -9,7 +9,7 @@ devices:
   playback:
     type: CoreAudio
     channels: 2
-    device: "Audio Out"
+    device: "UltraList-mk5"
 
 mixers:
   stereo:
